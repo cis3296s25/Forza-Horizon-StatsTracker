@@ -1,10 +1,26 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [users, setUsers] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    fetch("http://localhost:5000/")
+    .then((response) => response.json())
+    .then((data) => {
+      setUsers(data)
+      setLoading(false)
+    
+    })
+    .catch((error) => {
+      console.error("Error Fetching Data", error)
+      setLoading(false)
+    });
+  },[])
 
   return (
     <>
@@ -28,6 +44,20 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      <h1>Users</h1>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <ul>
+          {users.map((user) => (
+            <li key={user.id}>
+              Name: {user.name}
+              <br />
+              Email: {user.email}
+            </li>
+          ))}
+        </ul>
+      )}
     </>
   )
 }
