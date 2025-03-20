@@ -5,8 +5,7 @@ import Nav from '../components/nav';
 
 
 const home = () => {
-    {/*}
-    const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0)
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(false)
 
@@ -48,8 +47,6 @@ const home = () => {
       setIsLoading(false)
     }, 800)
   }
-  
-  */}
   return (
     <div>
     <div className="forza-app">
@@ -62,11 +59,45 @@ const home = () => {
           <div className="search-bar">
             <input 
               type="text" 
-              placeholder="Enter Gamertag" 
+              value={gamertag}
+              onChange={(e) => setGamertag(e.target.value)}
+              placeholder="Enter Gamertag"
+              onKeyPress={(e) => e.key === 'Enter' && searchGamertag()}
             />
-            <button>Search</button>
+            <button onClick={searchGamertag}>Search</button>
           </div>
         </div>
+        {isLoading && (
+          <div className="stats-container loading">
+            <p>Loading stats...</p>
+          </div>
+        )}
+        
+        {playerStats && !isLoading && (
+          <div className="stats-container">
+            <div className="stats-header">
+              <span className="gamertag-display">{playerStats.gamertag}</span>
+            </div>
+            <div className="stats-grid">
+              <div className="stat-card">
+                <span className="stat-title">RACES COMPLETED</span>
+                <span className="stat-value">{playerStats.stats.races}</span>
+              </div>
+              <div className="stat-card">
+                <span className="stat-title">WINS</span>
+                <span className="stat-value">{playerStats.stats.wins}</span>
+              </div>
+              <div className="stat-card">
+                <span className="stat-title">TOTAL DISTANCE</span>
+                <span className="stat-value">{playerStats.stats.totalDistance} km</span>
+              </div>
+              <div className="stat-card">
+                <span className="stat-title">CARS OWNED</span>
+                <span className="stat-value">{playerStats.stats.carsOwned}</span>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
       
      {/*} <footer className="forza-footer">
