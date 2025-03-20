@@ -8,6 +8,9 @@ const home = () => {
   const [count, setCount] = useState(0)
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(false)
+  const [gamertag, setGamertag] = useState('')
+  const [playerStats, setPlayerStats] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     fetch("http://localhost:5000/")
