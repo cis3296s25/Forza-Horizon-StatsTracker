@@ -1,27 +1,10 @@
-
-import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState } from 'react'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-  const [users, setUsers] = useState([])
-  const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    fetch("http://localhost:5000/")
-    .then((response) => response.json())
-    .then((data) => {
-      setUsers(data)
-      setLoading(false)
-    
-    })
-    .catch((error) => {
-      console.error("Error Fetching Data", error)
-      setLoading(false)
-    });
-  },[])
+  const [gamertag, setGamertag] = useState('')
+  const [playerStats, setPlayerStats] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const backgroundImage = '/forzaHome.jpg'
 
