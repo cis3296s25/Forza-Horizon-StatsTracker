@@ -1,100 +1,31 @@
-import { useState } from 'react'
-import './App.css'
+import { useState, useEffect, lazy, Suspense } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import LoadingScreen from './pages/loadingScreen';
+
+// Lazy load the Home and About components
+const Home = lazy(() => import('./pages/home'));
+//const About = lazy(() => import('./pages/About'));
 
 function App() {
-  const [gamertag, setGamertag] = useState('')
-  const [playerStats, setPlayerStats] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [loading, setLoading] = useState(true);
 
-  const backgroundImage = '/forzaHome.jpg'
-
-
-  const searchGamertag = async () => {
-    if (!gamertag.trim()) {
-      alert('Please enter a gamertag')
-      return
-    }
-
-    setIsLoading(true)
-    
+  useEffect(() => {
     setTimeout(() => {
+      setLoading(false);
+    }, 4300);
+  }, []);
 
-      const mockData = {
-        gamertag: gamertag,
-        stats: {
-          races: Math.floor(Math.random() * 1000),
-          wins: Math.floor(Math.random() * 300),
-          totalDistance: Math.floor(Math.random() * 50000),
-          carsOwned: Math.floor(Math.random() * 100)
-        }
-      }
-      
-      setPlayerStats(mockData)
-      setIsLoading(false)
-    }, 800)
-  }
   return (
-    <div className="forza-app">
-      <main className="forza-main">
-        <div 
-          className="hero-section"
-          style={{
-            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${backgroundImage})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        >
-          <h1>FORZA HORIZON 5 STATS</h1>
-          <div className="search-bar">
-            <input 
-              type="text" 
-              value={gamertag}
-              onChange={(e) => setGamertag(e.target.value)}
-              placeholder="Enter Gamertag" 
-              onKeyPress={(e) => e.key === 'Enter' && searchGamertag()}
-            />
-            <button onClick={searchGamertag}>Search</button>
-          </div>
-        </div>
-        
-        {isLoading && (
-          <div className="stats-container loading">
-            <p>Loading stats...</p>
-          </div>
-        )}
-        
-        {playerStats && !isLoading && (
-          <div className="stats-container">
-            <div className="stats-header">
-              <span className="gamertag-display">{playerStats.gamertag}</span>
-            </div>
-            <div className="stats-grid">
-              <div className="stat-card">
-                <span className="stat-title">RACES COMPLETED</span>
-                <span className="stat-value">{playerStats.stats.races}</span>
-              </div>
-              <div className="stat-card">
-                <span className="stat-title">WINS</span>
-                <span className="stat-value">{playerStats.stats.wins}</span>
-              </div>
-              <div className="stat-card">
-                <span className="stat-title">TOTAL DISTANCE</span>
-                <span className="stat-value">{playerStats.stats.totalDistance} km</span>
-              </div>
-              <div className="stat-card">
-                <span className="stat-title">CARS OWNED</span>
-                <span className="stat-value">{playerStats.stats.carsOwned}</span>
-              </div>
-            </div>
-          </div>
-        )}
-      </main>
-      
-      <footer className="forza-footer">
-        <p>© 2025 Forza Horizon 5 Stats</p>
-      </footer>
-    </div>
-  )
+    <Router>
+      {loading ? (
+        <LoadingScreen />
+      ) : (
+          <Routes>
+          <Route path="/" element={<Home />} />
+          </Routes>
+      )}
+    </Router>
+  );
 }
 
-export default App
+export default App;
