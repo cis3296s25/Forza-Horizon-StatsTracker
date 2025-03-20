@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import "../styles/nav.css";
+import Logo from '../forzaImgs/forzaLogo.png';
+import Profile from '../forzaImgs/profileLogo.png'; 
+import Leaderboard from '../forzaImgs/leaderboardLogo.png';
+import Car from '../forzaImgs/carLogo.png';
+import Map from '../forzaImgs/mapLogo.png';
 
 const NavBar = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -14,32 +19,32 @@ const NavBar = () => {
         <nav className={`navbar ${isHovered ? 'show' : ''}`}>
           {/* Logo Section */}
           <div className="logo-container">
-            <img src="src/forzaImgs/forzaLogo.png" alt="Logo" className="logo" />
+            <img src={Logo} alt="Logo" className="logo" />
           </div>
 
           {/* Navigation Links */}
           <ul className="nav-links">
             <li>
               <a href="#">
-                <img src="src/forzaImgs/profileLogo.png" alt="Profile" className="nav-icon" />
+                <img src={Profile} alt="Profile" className="nav-icon" />
                 Profile
               </a>
             </li>
             <li>
               <a href="#">
-                <img src="src/forzaImgs/leaderboardLogo.png" alt="Leaderboards" className="nav-icon" />
+                <img src={Leaderboard} alt="Leaderboards" className="nav-icon" />
                 Leaderboards
               </a>
             </li>
             <li>
               <a href="#">
-                <img src="src/forzaImgs/carLogo.png" alt="Cars" className="nav-icon" />
+                <img src={Car} alt="Cars" className="nav-icon" />
                 Cars
               </a>
             </li>
             <li>
               <a href="#">
-                <img src="src/forzaImgs/mapLogo.png" alt="Map" className="nav-icon" />
+                <img src={Map} alt="Map" className="nav-icon" />
                 Map
               </a>
             </li>
