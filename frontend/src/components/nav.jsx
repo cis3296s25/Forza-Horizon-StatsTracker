@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import "../styles/nav.css";
-import Logo from '../forzaImgs/forzaLogo.png';
-import Profile from '../forzaImgs/profileLogo.png'; 
-import Leaderboard from '../forzaImgs/leaderboardLogo.png';
-import Car from '../forzaImgs/carLogo.png';
-import Map from '../forzaImgs/mapLogo.png';
+import Logo from '../assets/forzaImgs/forzaLogo.png';
+import Profile from '../assets/forzaImgs/profileLogo.png'; 
+import Leaderboard from '../assets/forzaImgs/leaderboardLogo.png';
+import Car from '../assets/forzaImgs/carLogo.png';
+import Map from '../assets/forzaImgs/mapLogo.png';
 
 const NavBar = () => {
   const [isHovered, setIsHovered] = useState(false);
