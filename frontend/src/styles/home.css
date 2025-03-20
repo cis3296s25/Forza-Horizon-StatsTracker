@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+
+:root{
+    --forza-yellow: #f9a825;
+    --forza-dark: #111111;
+    --forza-text: #ffffff;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--forza-dark);
+    color: var(--forza-text);
+    line-height: 1.6;
+  }
+
+.forza-app {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../forzaImgs/forzaHome.jpg') no-repeat center center;
+    background-size: cover;
+    z-index: 9999;
+    cursor: default;
+}
+
+.forza-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    z-index: 9999;
+    cursor: default;
+    background: url('../forzaImgs/forzaHorizon4.jpg') no-repeat center center/cover;
+    background-size: cover;
+  
+ 
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.hero-section h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.search-bar {
+  display: flex;
+  width: 100%;
+  max-width: 20rem;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 4px 0 0 4px;
+}
+
+.search-bar button {
+  padding: 0.75rem 1.25rem;
+  background-color: var(--forza-yellow);
+  color: var(--forza-dark);
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  border-radius: 0 4px 4px 0;
+  transition: background-color 0.3s;
+}
+
+.search-bar button:hover {
+  background-color: #f57f17;
+}
+
+.stats-container {
+  margin-top: -3rem;
+  width: 100%;
+  max-width: 50rem;
+  padding: 2rem;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.stats-container.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 12rem;
+}
+
+.stats-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.gamertag-display {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-title {
+  font-size: 0.875rem;
+  opacity: 0.7;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--forza-yellow);
+}
+
+.forza-footer {
+  padding: 3rem;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  font-size: 0.875rem;
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .hero-section h1 {
+    font-size: 2rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-bar {
+    flex-direction: column;
+  }
+  
+  .search-bar input {
+    border-radius: 4px 4px 0 0;
+  }
+  
+  .search-bar button {
+    border-radius: 0 0 4px 4px;
+  }
+}
