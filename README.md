@@ -3,7 +3,7 @@
 ## Overview
 Forza Horizon 5 StatHub is a web application designed to allow users to view and compare their Forza Horizon 5 in-game stats with other players around the world. Stats will be gathered via users self-reporting their in-game stats into the web application. The stats that will be gathered will include: time played, credits earned, number of victories, time in first places, etc. Through this website, users will be able to view a global leaderboard where they can analyze the top players’ stats or compare their own stats with another identified user.
 
-
+![homepage](./homepage.png)
 
 ## Feautures
 - **Appealing UI**: An Interactive website  
