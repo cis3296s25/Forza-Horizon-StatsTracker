@@ -150,14 +150,6 @@ body {
   color: var(--forza-yellow);
 }
 
-.forza-footer {
-  padding: 3rem;
-  text-align: center;
-  background-color: rgba(0, 0, 0, 0.7);
-  font-size: 0.875rem;
-  opacity: 0.7;
-}
-
 @media (max-width: 768px) {
   .hero-section h1 {
     font-size: 2rem;

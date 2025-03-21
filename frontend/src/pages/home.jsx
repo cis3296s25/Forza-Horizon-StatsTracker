@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect,useState } from 'react';
 import "../styles/home.css";
 import Nav from '../components/nav';
+import Footer from '../components/footer';
 
 
 const home = () => {
@@ -103,9 +104,8 @@ const home = () => {
         )}
       </main>
       
-     {/*} <footer className="forza-footer">
-        <p>© 2025 Forza Horizon 5 Stats</p>
-      </footer>*/}
+     <Footer />
+     
     </div>
     </div>
   )
