@@ -7,7 +7,6 @@ const express = require('express');
 const { connectDB } = require('./connection.js');
 const cors = require('cors');
 
-
 console.log("Env test | MONGO_URI:", process.env.MONGO_URI)
 
 const port = process.env.PORT || 3000;
@@ -34,6 +33,13 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
   res.send("API is working with /api/v1");
 });
+
+const userRouter = require('./routes/users');
+const statsRouter = require('./routes/stats'); 
+
+app.use("/api/userAccount", userRouter); 
+//app.use("/api/userStats", statsRouter);
+
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
