@@ -48,6 +48,11 @@ const NavBar = () => {
                 Map
               </a>
             </li>
+            <li>
+              <a href="#">
+                SignUp
+              </a>
+            </li>
           </ul>
         </nav>
       </header>
