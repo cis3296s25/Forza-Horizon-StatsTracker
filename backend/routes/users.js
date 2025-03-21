@@ -1,8 +1,19 @@
-const express = require('express')
-const router = express.Router()
-const hub_user = require('../models/hub_user')
-const { platform } = require('os')
+const express = require('express');
+const router = express.Router();
+const { newUser, loginUsers, logoutUsers, searchUsers, updateUsers, deleteUsers } = require('../controllers/users');
 
+// Define routes with controller functions
+router.post("/newUser", newUser);
+router.post("/login", loginUsers);
+router.post("/logout", logoutUsers);
+router.post("/search", searchUsers);
+router.post("/update", updateUsers);
+router.post("/delete", deleteUsers);
+
+module.exports = router;
+
+
+/*
 //getting all users
 router.get('/', async (req,res) =>{
 
@@ -78,6 +89,4 @@ return res.status(500).json({message: err.message})
 }
 res.hub_user = user
 next()
-}
-
-module.exports = router 
+}*/

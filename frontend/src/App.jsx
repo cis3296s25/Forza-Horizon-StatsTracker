@@ -1,5 +1,6 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Toaster } from "react-hot-toast";
 import LoadingScreen from './pages/loadingScreen';
 
 // Lazy load the Home and About components
@@ -24,6 +25,7 @@ function App() {
           <Route path="/" element={<Home />} />
           </Routes>
       )}
+      <Toaster position="bottom-center" />
     </Router>
   );
 }
