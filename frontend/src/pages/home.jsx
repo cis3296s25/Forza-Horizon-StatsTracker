@@ -103,9 +103,7 @@ const home = () => {
           </div>
         )}
       </main>
-      
-     <Footer />
-     
+      <Footer/>
     </div>
     </div>
   )

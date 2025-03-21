@@ -23,6 +23,7 @@ body {
     background-size: cover;
     z-index: 9999;
     cursor: default;
+    display: flex;
 }
 
 .forza-main {
@@ -149,6 +150,7 @@ body {
   font-weight: 700;
   color: var(--forza-yellow);
 }
+
 
 @media (max-width: 768px) {
   .hero-section h1 {
