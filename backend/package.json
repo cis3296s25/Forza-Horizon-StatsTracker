@@ -1,19 +1,28 @@
 {
-  "name": "backend",
+  "name": "forza-horizon-statstracker",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Put here a short paragraph describing your project.  Adding an screenshot or a mockup of your application in action would be nice.",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "devStart": "nodemon server.js"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cis3296s25/Forza-Horizon-StatsTracker.git"
+  },
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
-  "description": "",
+  "bugs": {
+    "url": "https://github.com/cis3296s25/Forza-Horizon-StatsTracker/issues"
+  },
+  "homepage": "https://github.com/cis3296s25/Forza-Horizon-StatsTracker#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mongoose": "^8.12.1"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.7",
+    "nodemon": "^3.1.9"
   }
 }
