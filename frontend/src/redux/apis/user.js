@@ -19,6 +19,7 @@ export const signupAPI = createApi({
 });
 
 // API for Search (Query)
+
 export const searchAPI = createApi({
   reducerPath: "searchApi",
   // base URL for the API
@@ -37,5 +38,25 @@ export const searchAPI = createApi({
 });
 
 
+export const loginAPI = createApi({
+  reducerPath: "loginApi",
+  // base URL for the API
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${import.meta.env.VITE_SERVER}/api/userAccount/`,
+  }),
+  endpoints: (builder) => ({
+    search: builder.mutation({
+      query: (body) => ({
+        url: "login", 
+        method: "POST", 
+        body,     
+      }),
+    }),
+  }),
+});
+
+
+
 export const { useSearchMutation } = searchAPI; 
 export const { useSignupMutation } = signupAPI;
+export const{useLoginMutation} = loginAPI;
