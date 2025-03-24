@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+.profile-mainContainer {
+    height: 100vh;
+    width: 100%;
+    background: url('../assets/forzaImgs/profileBackground.jpg') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .login-input {
+    width: 250px;
+    padding: 15px;
+    margin: 10px 0;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.5);
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+    font-size: 14px;
+    outline: none;
+  }
+  
+  .login-button {
+    width: 250px;
+    padding: 15px;
+    margin-top: 10px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.6);
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-button:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+  
