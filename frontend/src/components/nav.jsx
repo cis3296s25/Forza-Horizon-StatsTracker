@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import "../styles/nav.css";
 import Logo from '../assets/forzaImgs/forzaLogo.png';
 import Profile from '../assets/forzaImgs/profileLogo.png'; 
@@ -19,16 +20,18 @@ const NavBar = () => {
         <nav className={`navbar ${isHovered ? 'show' : ''}`}>
           {/* Logo Section */}
           <div className="logo-container">
-            <img src={Logo} alt="Logo" className="logo" />
+            <Link to ="/#">
+              <img src={Logo} alt="Logo" className="logo" />
+            </Link>
           </div>
 
           {/* Navigation Links */}
           <ul className="nav-links">
             <li>
-              <a href="#">
+              <Link to ="/profile">
                 <img src={Profile} alt="Profile" className="nav-icon" />
                 Profile
-              </a>
+              </Link>
             </li>
             <li>
               <a href="#">
@@ -49,9 +52,9 @@ const NavBar = () => {
               </a>
             </li>
             <li>
-              <a href="#">
+              <Link to ="/signup">
                 SignUp
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>
