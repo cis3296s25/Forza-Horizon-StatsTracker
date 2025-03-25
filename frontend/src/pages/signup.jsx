@@ -1,8 +1,9 @@
 import React from 'react';
 import "../styles/signup.css";
 import Nav from '../components/nav';
+import Footer from '../components/footer';
 
-function Signup() {
+const Signup = () => {
   return (
     <div className="signup-mainContainer">
       <Nav />
@@ -19,6 +20,7 @@ function Signup() {
 
         <button className="signup-button">SIGN UP</button>
       </div>
+      <Footer />
     </div>
   );
 }
