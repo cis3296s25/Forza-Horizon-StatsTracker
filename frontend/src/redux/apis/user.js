@@ -37,7 +37,6 @@ export const searchAPI = createApi({
   }),
 });
 
-
 export const loginAPI = createApi({
   reducerPath: "loginApi",
   // base URL for the API
@@ -45,18 +44,16 @@ export const loginAPI = createApi({
     baseUrl: `${import.meta.env.VITE_SERVER}/api/userAccount/`,
   }),
   endpoints: (builder) => ({
-    search: builder.mutation({
+    login: builder.mutation({
       query: (body) => ({
-        url: "login", 
-        method: "POST", 
-        body,     
+        url: "login",
+        method: "POST",
+        body,
       }),
     }),
   }),
 });
 
-
-
 export const { useSearchMutation } = searchAPI; 
 export const { useSignupMutation } = signupAPI;
-export const{useLoginMutation} = loginAPI;
+export const { useLoginMutation } = loginAPI;
