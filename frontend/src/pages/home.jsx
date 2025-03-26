@@ -1,55 +1,37 @@
-import React from 'react';
-import { useEffect,useState } from 'react';
+import React, { useState } from 'react';
 import "../styles/home.css";
 import Nav from '../components/nav';
+import Footer from '../components/footer';
+import toast from "react-hot-toast";
+import { useSearchMutation } from '../redux/apis/user';
 
 
 const home = () => {
-    {/*}
-    const [count, setCount] = useState(0)
-  const [users, setUsers] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [gamertag, setGamertag] = useState('');
 
-  useEffect(() => {
-    fetch("http://localhost:5000/")
-    .then((response) => response.json())
-    .then((data) => {
-      setUsers(data)
-      setLoading(false)
-    
-    })
-    .catch((error) => {
-      console.error("Error Fetching Data", error)
-      setLoading(false)
+const [search, {isLoading}] = useSearchMutation();
+
+const searchGamertag =  async (e) => {
+  if (e) e.preventDefault();
+
+  try {
+    const res = await search({
+      userName: gamertag
     });
-  },[])
-  
-  const searchGamertag = async () => {
-    if (!gamertag.trim()) {
-      alert('Please enter a gamertag')
-      return
+
+    if ("data" in res) {
+      toast.success("User found");
+      setGamertag("");
+    } else {
+      toast.error("User not found");
+      setGamertag("");
     }
-
-    setIsLoading(true)
-    
-    setTimeout(() => {
-
-      const mockData = {
-        gamertag: gamertag,
-        stats: {
-          races: Math.floor(Math.random() * 1000),
-          wins: Math.floor(Math.random() * 300),
-          totalDistance: Math.floor(Math.random() * 50000),
-          carsOwned: Math.floor(Math.random() * 100)
-        }
-      }
-      
-      setPlayerStats(mockData)
-      setIsLoading(false)
-    }, 800)
+  } catch (error) {
+    toast.error("There was an error searching for the user. Try again later.");
+    setGamertag("");
   }
-  
-  */}
+};
+
   return (
     <div>
     <div className="forza-app">
@@ -62,16 +44,15 @@ const home = () => {
           <div className="search-bar">
             <input 
               type="text" 
-              placeholder="Enter Gamertag" 
+              value={gamertag}
+              onChange={(e) => setGamertag(e.target.value)}
+              placeholder="Enter Gamertag"
             />
-            <button>Search</button>
+            <button onClick={searchGamertag} disabled={isLoading}>Search</button>
           </div>
         </div>
       </main>
-      
-     {/*} <footer className="forza-footer">
-        <p>© 2025 Forza Horizon 5 Stats</p>
-      </footer>*/}
+      <Footer/>
     </div>
     </div>
   )
