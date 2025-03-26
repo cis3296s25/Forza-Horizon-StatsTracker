@@ -2,15 +2,74 @@ import React, {useState} from 'react';
 import "../styles/signup.css";
 import Nav from '../components/nav';
 import Footer from '../components/footer';
-
+import { useSignupMutation } from '../redux/apis/user';
+import toast from 'react-hot-toast';
 const Signup = () => {
 
+  const [gamertag, setGamertag] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState("");
-  
+  const [platformId, setPlatformId] = useState("");  
+  const [signup, {isLoading}] = useSignupMutation();
+
   const handlePlatformChange = (e) => {
     setSelectedPlatform(e.target.value);
+    setPlatformId("");
   };
 
+  const signupFunction = (e) => {
+    if (e) e.preventDefault();
+
+    // checks for balid inputs
+    if (!gamertag) {
+      toast.error("Gamertag is required");
+      return;
+    }
+
+    if (!password) {
+      toast.error("Password is required");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    if (!selectedPlatform) {
+      toast.error("Please select a platform");
+      return;
+    }
+
+    if ((selectedPlatform === 'steam' || selectedPlatform === 'xbox') && !platformId) {
+      toast.error(`Please enter your ${selectedPlatform} ID`);
+      return;
+    }
+
+    //signup page
+    //used .then to say what should happen and in all other cases errprs 
+    signup({
+      userName: gamertag,
+      password: password,
+      platform: selectedPlatform,
+      platformId: platformId || null
+    })
+    .then((res) => {
+      if ("data" in res) {
+        toast.success("Successfully signed up");
+        // resets the fielcs once signed in
+        setGamertag("");
+        setPassword("");
+        setConfirmPassword("");
+        setSelectedPlatform("");
+        setPlatformId("");
+      } else {
+        toast.error("Signup failed. Please try again.");
+      }
+    })
+    
+  };
   return (
     <div className="signup-mainContainer">
       <Nav />
