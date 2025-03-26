@@ -17,8 +17,11 @@ const userSchema = new mongoose.Schema({
     password:{
       type: String, //Need to learn bcrypt for the user passwords (Hashing in database)
       required: true,
-    }
-
+    },
+    verify:{
+      type: Boolean, //Need to learn bcrypt for the user passwords (Hashing in database)
+      required: true,
+    },
    }
 )
 module.exports = mongoose.model('hub_user', userSchema)
