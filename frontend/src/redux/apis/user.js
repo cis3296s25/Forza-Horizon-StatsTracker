@@ -54,6 +54,25 @@ export const loginAPI = createApi({
   }),
 });
 
+// logout api
+export const logoutAPI = createApi({
+  reducerPath: "logoutApi",
+  // base URL for the API
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${import.meta.env.VITE_SERVER}/api/userAccount/`,
+  }),
+  endpoints: (builder) => ({
+    logout: builder.mutation({
+      query: () => ({
+        url: "logout",
+        method: "POST",
+      }),
+    }),
+  }),
+});
+
+
 export const { useSearchMutation } = searchAPI; 
 export const { useSignupMutation } = signupAPI;
 export const { useLoginMutation } = loginAPI;
+export const { useLogoutMutation } = logoutAPI;
