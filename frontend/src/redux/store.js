@@ -1,5 +1,5 @@
 import {configureStore} from '@reduxjs/toolkit';
-import {getUserStatsAPI, loginAPI, logoutAPI, searchAPI, signupAPI } from './apis/user';
+import {getUserStatsAPI, loginAPI, logoutAPI, searchAPI, deleteAPI,signupAPI } from './apis/user';
 
 
 export const server = import.meta.env.VITE_SERVER;

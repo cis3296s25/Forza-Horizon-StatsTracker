@@ -1,0 +1,22 @@
+.tablestyle {
+    width: 100%;
+    border-radius: 2rem;
+    text-align: center;
+}
+
+.backBtn {
+    border-radius: 1rem;
+    background-color: #808080;
+    color: white;
+    padding: 0.5rem 1rem;
+    margin: 2rem;
+}
+
+.nextBtn {
+    border-radius: 1rem;
+    background-color: #808080;
+    color: white;
+    padding: 0.5rem 1rem;
+    margin: 2rem;
+}
+
