@@ -8,7 +8,7 @@ router.post("/login", loginUsers);
 router.post("/logout", logoutUsers);
 router.post("/search", searchUsers);
 router.post("/update", updateUsers);
-router.post("/delete", deleteUsers);
+router.delete("/delete", deleteUsers);
 
 module.exports = router;
 
