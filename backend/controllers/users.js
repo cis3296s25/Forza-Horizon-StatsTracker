@@ -103,7 +103,7 @@ exports.deleteUsers = async (req, res) => {
     const {userName} = req.body;
     try{
         const user = await hub_user.findOneAndDelete({userName});
-        //const userStats= await user_stats.findOneAndDelete({userName});
+        const userStats= await user_stats.findOneAndDelete({userName});
 
         if(!user && !userStats){
             return res.status(404).json({message: "User not found"});

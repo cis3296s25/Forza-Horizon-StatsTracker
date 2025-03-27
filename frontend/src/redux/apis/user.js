@@ -54,6 +54,42 @@ export const loginAPI = createApi({
   }),
 });
 
+// logout API
+export const logoutAPI = createApi({
+  reducerPath: "logoutApi",
+  // base URL for the API
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${import.meta.env.VITE_SERVER}/api/userAccount/`,
+  }),
+  endpoints: (builder) => ({
+    logout: builder.mutation({
+      query: () => ({
+        url: "logout",
+        method: "POST",
+      }),
+    }),
+  }),
+});
+
+// delete API
+export const deleteAPI = createApi({
+  reducerPath: "deleteApi",
+  // base URL for the API
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${import.meta.env.VITE_SERVER}/api/userAccount/`,
+  }),
+  endpoints: (builder) => ({
+    deleteUser: builder.mutation({
+      query: () => ({
+        url: "delete",
+        method: "DELETE",
+      }),
+    }),
+  }),
+});
+
 export const { useSearchMutation } = searchAPI; 
 export const { useSignupMutation } = signupAPI;
 export const { useLoginMutation } = loginAPI;
+export const { useLogoutMutation } = logoutAPI;
+export const { useDeleteUserMutation } = deleteAPI;
