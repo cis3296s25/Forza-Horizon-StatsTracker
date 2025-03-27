@@ -1,4 +1,5 @@
 const hub_user = require('../models/hub_user');
+const user_stats = require('../models/user_stats');
 const fetch = require('node-fetch');
 
 exports.newUser = async (req, res) => {
@@ -12,7 +13,7 @@ exports.newUser = async (req, res) => {
         return res.status(400).json({ message: "All fields are required" });
     }
     try {
-        if (platform =="steam" && gameId) {
+        if (platform =="Steam" && gameId) {
             const url = `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${process.env.STEAM_API_KEY}&steamid=${gameId}&format=json`;
             const response = await fetch(url);
             const data = await response.json();
@@ -36,6 +37,30 @@ exports.newUser = async (req, res) => {
                 });
             }
         }
+        if (platform === "Xbox" && gameId) {
+            const url = `https://xbl.io/api/v2/achievements/player/${gameId}/2030093255`;
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'x-authorization': `${process.env.XBOX_API_KEY}`,
+                        'accept': '*/*',
+                    },
+                });
+
+                if (!response.ok) {
+                    return res.status(400).json({
+                        message: "We can't verify if you have the game."
+                    });
+                }
+
+                // If fetch is successful and no errors, assume verification is true.
+                verify = true;  // Assuming the API verification is enough
+            } catch (error) {
+                console.error('Error fetching Xbox data:', error);
+                return res.status(500).json({ message: 'Error verifying Xbox game.', error: error.message });
+            }
+        }       
         const newUser = new hub_user({ userName, platform, password, verify });
         await newUser.save();
         res.status(201).json({ message: "User created successfully" });
@@ -115,3 +140,24 @@ exports.deleteUsers = async (req, res) => {
         res.status(500).json({message: "Error deleting user", error: error.message});
     }
 }
+
+exports.getUserStats = async (req, res) => {
+    const { userName } = req.query;
+
+    if (!userName) {
+        return res.status(400).json({ message: "User is not logged in" });
+    }
+
+    try {
+        const stats = await user_stats.findOne({ userName });
+
+        if (!stats) {
+            return res.status(404).json({ message: "User stats not found" });
+        }
+
+        res.status(200).json({stats });  // Return user stats if found
+    } catch (error) {
+        console.error('Error fetching user stats:', error);
+        res.status(500).json({ message: "Error searching user stats", error: error.message });
+    }
+};
