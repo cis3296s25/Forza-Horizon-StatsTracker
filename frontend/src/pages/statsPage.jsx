@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Table from '../components/Table/Table';
 import "../styles/table.css";
-import Nav from '../components/nav';
-import Footer from '../components/footer';
 
 function StatsPage() {
     const gamertag = "Tirth Patel"; // Hardcoding the gamertag here
@@ -30,15 +28,14 @@ function StatsPage() {
     }, [gamertag]);
 
     return (
-        <div className='forza-stats'>
+        <div>
             <h1>Stats</h1>
             {isLoading ? (
                 <p>Loading stats...</p>
             ) : error ? (
                 <p>{error.message}</p> // Display error message
             ) : (
-                <Table list={stats} colNames={['userName','garageValue', 'numberofCarsOwned']}
-                colNameMap={{userName: 'UserName', garageValue: ' Garage Value', numberofCarsOwned: 'Number of Cars Owned'}} />
+                <Table list={stats} colNames={['garageValue', 'numberofCarsOwned']} />
             )}
         </div>
     );

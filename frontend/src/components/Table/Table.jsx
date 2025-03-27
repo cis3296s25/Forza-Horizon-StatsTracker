@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 
-
-
-function Table({ list, colNames, colNameMap = {}, pageNum = 0, pageSize = 10}) {
+function Table({ list, colNames, pageNum = 0, pageSize = 10 }) {
     const [page, setPage] = useState(pageNum);
     const [sortedList, setSortedList] = useState([]);
     const [Ascending, setAscending] = useState(true);
-    const [sortedColumn, setSortedColumn] = useState(null);
 
     useEffect(() => {
         // Ensure list is an array before setting sortedList
@@ -32,50 +29,34 @@ function Table({ list, colNames, colNameMap = {}, pageNum = 0, pageSize = 10}) {
     };
 
     const sortByColumn = (col) => {
-        const tempSortedList = [...sortedList];
-        const newSortDir = col === sortedColumn ? !Ascending : true;
-    
-        tempSortedList.sort((a, b) => {
-          if (a[col] < b[col]) {
-            return newSortDir ? -1 : 1;
-            } else {
-                return newSortDir ? 1 : -1;
-            }
-        });
+        let tempSortedList = [...sortedList];
+        let newSortDir = !Ascending;
 
+        if (newSortDir) {
+            tempSortedList.sort((a, b) => {
+                if (a[col] < b[col]) {
+                    return -1;
+                }
+                if (a[col] > b[col]) {
+                    return 1;
+                }
+                return 0;
+            });
+        } else {
+            tempSortedList.sort((a, b) => {
+                if (a[col] < b[col]) {
+                    return 1;
+                }
+                if (a[col] > b[col]) {
+                    return -1;
+                }
+                return 0;
+            });
+        }
 
-    
-        setSortedColumn(col);
-        setAscending(newSortDir);
-        setSortedList(tempSortedList);
-      };
-
-
-        // if (newSortDir) {
-        //     tempSortedList.sort((a, b) => {
-        //         if (a[col] < b[col]) {
-        //             return -1;
-        //         }
-        //         if (a[col] > b[col]) {
-        //             return 1;
-        //         }
-        //         return 0;
-        //     });
-        // } else {
-        //     tempSortedList.sort((a, b) => {
-        //         if (a[col] < b[col]) {
-        //             return 1;
-        //         }
-        //         if (a[col] > b[col]) {
-        //             return -1;
-        //         }
-        //         return 0;
-        //     });
-        // }
-
-    //     setAscending(newSortDir); // keeps track of the current sort direction
-    //     setSortedList(tempSortedList); // updates the sorted list
-    // };
+        setAscending(newSortDir); // keeps track of the current sort direction
+        setSortedList(tempSortedList); // updates the sorted list
+    };
 
     const currentPage = sortedList.slice(pageSize * page, pageSize * page + pageSize);
 
@@ -87,8 +68,8 @@ function Table({ list, colNames, colNameMap = {}, pageNum = 0, pageSize = 10}) {
                         <tr>
                             {colNames.map((col, index) => (
                                 <th key={index} onClick={() => sortByColumn(col)}>
-                                    {colNameMap[col] || col.toUpperCase()}
-                                 {/* <img src="icons/blackSort.png" alt="sort icon" /> */}
+                                    {col.toUpperCase()}
+                                  {/* <img src="icons/blackSort.png" alt="sort icon" />*/}
                                 </th>
                             ))}
                         </tr>
