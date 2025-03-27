@@ -8,6 +8,7 @@ import LoadingScreen from './pages/loadingScreen';
 const Home = lazy(() => import('./pages/home'));
 const Profile = lazy(() => import('./pages/profile'));
 const Signup = lazy(() => import('./pages/signup'));
+const Stats = lazy(() => import('./pages/statsPage'));
 //const About = lazy(() => import('./pages/About'));
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/stats" element={<Stats />} />
           </Routes>
       )}
       <Toaster position="bottom-center" />
