@@ -6,6 +6,8 @@ import Profile from '../assets/forzaImgs/profileLogo.png';
 import Leaderboard from '../assets/forzaImgs/leaderboardLogo.png';
 import Car from '../assets/forzaImgs/carLogo.png';
 import Map from '../assets/forzaImgs/mapLogo.png';
+import { useLogoutMutation } from '../services/auth';
+import { useNavigate } from 'react-router-dom';
 
 const NavBarLog = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -20,15 +22,12 @@ const NavBarLog = () => {
       if ("data" in res) {
         // logged out
         toast.success("Logged out successfully");
-        
-        // redirect back to home but we can also make it login
-        navigate('/', { replace: true });
+        navigate('/');
       } else {
         //failed to log out
         toast.error("Unable to log out. Please try again.");
       }
     } catch (error) {
-  // any other errors
       toast.error("There was an error logging out. Try again later.");
     }
   };

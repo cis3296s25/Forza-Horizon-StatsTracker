@@ -3,34 +3,36 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Toaster } from "react-hot-toast";
 import LoadingScreen from './pages/loadingScreen';
 
-
-// Lazy load the Home and About components
+// Lazy load the components
 const Home = lazy(() => import('./pages/home'));
 const Profile = lazy(() => import('./pages/profile'));
 const Signup = lazy(() => import('./pages/signup'));
-const Stats = lazy(() => import('./pages/statsPage'));
-//const About = lazy(() => import('./pages/About'));
 
 function App() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!localStorage.getItem("visited"));
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 4300);
-  }, []);
+    if (loading) {
+      setTimeout(() => {
+        setLoading(false);
+        localStorage.setItem("visited", "true");
+      }, 4300);
+    }
+  }, [loading]);
 
   return (
     <Router>
       {loading ? (
         <LoadingScreen />
       ) : (
+        <Suspense fallback={<LoadingScreen />}>
           <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/stats" element={<Stats />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/user/:username" element={<Profile />} />
           </Routes>
+        </Suspense>
       )}
       <Toaster position="bottom-center" />
     </Router>

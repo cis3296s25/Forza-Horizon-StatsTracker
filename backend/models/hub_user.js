@@ -9,8 +9,8 @@ const userSchema = new mongoose.Schema({
 
     platform:{
       type:String, 
-      enum: ["Xbox" ,"Steam", "PC","Manually"],
-      default:"PC",
+      enum: ["xbox" ,"steam", "pc","manually"],
+      default:"pc",
       required: true
     },
 
