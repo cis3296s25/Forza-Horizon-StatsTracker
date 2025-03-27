@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {useParams} from 'react-router-dom';
 import Table from '../components/Table/Table';
+import Nav from '../components/nav';
+import Footer from '../components/footer';
+import "../styles/statsPage.css";
 
 function StatsPage() {
     const {gamertag} = useParams(); // gets the gamertag from the URL
@@ -11,7 +14,7 @@ function StatsPage() {
 
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/user-stats/${gamertag}')
+        fetch(`http://localhost:5000/api/user-stats/${gamertag}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch stats for user');
@@ -32,7 +35,9 @@ function StatsPage() {
             
 
     return (
-        <div>
+        <div className="statsPage-mainContainer">
+        <Nav />
+        {/**<div>
             <h1>Stats</h1>
             {isLoading ? (
                 <p>Loading stats...</p>
@@ -41,7 +46,9 @@ function StatsPage() {
             ) : (
                 <Table list ={stats}/>
             )}
-        </div>
+        </div>**/}
+        <Footer />
+      </div>
     );
 }
 

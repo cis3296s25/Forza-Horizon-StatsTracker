@@ -7,6 +7,7 @@ import LoadingScreen from './pages/loadingScreen';
 const Home = lazy(() => import('./pages/home'));
 const Profile = lazy(() => import('./pages/profile'));
 const Signup = lazy(() => import('./pages/signup'));
+const StatsPage = lazy(() => import('./pages/statsPage'));
 
 function App() {
   const [loading, setLoading] = useState(!localStorage.getItem("visited"));
@@ -31,6 +32,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/user/:username" element={<Profile />} />
+            <Route path="/statsPage" element={<StatsPage />} />
           </Routes>
         </Suspense>
       )}
