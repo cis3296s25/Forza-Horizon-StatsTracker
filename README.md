@@ -6,19 +6,11 @@ Forza Horizon 5 StatHub is a web application designed to allow users to view and
 ![homepage](./homepage.png)
 
 ## Features
-- **Appealing UI**: An Interactive website  
+- **Search for Stats**: User can search up their username for their Forza Horizon 5 Stats and it will display a stats table 
 
-- **Accessibility**: An ease of navigation 
+- **Compare Stats**: Signed-in user will be able to compare their stats with another user
 
-- **Search for a User**: A user is able to input their username to look up the information 
-
-- **User Sign up & Stats Input**: A user can sign up and manually put the information, but the user will have to maintain it 
-
-- **Compare Stats**: A comparison table where users can compare other users’ data with theirs 
-
-- **Profile**: A profile page where users can see their data 
-
-- **Leaderboard**: A leaderboard page where they can check who is on the first place 
+- **View Community Leaderboard**: Users will be able to view a community leaderboard to see where they rank amongst other registered users
 
 ## Conceptual Design
 - **Backend**: Node.js, express 

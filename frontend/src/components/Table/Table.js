@@ -5,8 +5,9 @@ function Table({list, colNames, pageNum = 0, pageSize = 10}) {
     const [sortedList, setSortedList] = useState(list);
     const [Ascending, setAscending] = useState(true);
 
-    colNames = list.length > 0 ? Object.keys(list[0]) : [];
+    //const colNames = list.length > 0 ? Object.keys(list[0]) : [];
 
+    const colNames = ["garageValue,", "numberofCarsOwned"];
 
     
     const onBack = () => {
