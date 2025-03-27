@@ -5,7 +5,7 @@ Forza Horizon 5 StatHub is a web application designed to allow users to view and
 
 ![homepage](./homepage.png)
 
-## Feautures
+## Features
 - **Appealing UI**: An Interactive website  
 
 - **Accessibility**: An ease of navigation 
