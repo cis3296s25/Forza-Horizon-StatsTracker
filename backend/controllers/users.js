@@ -3,41 +3,49 @@ const user_stats = require('../models/user_stats');
 const fetch = require('node-fetch');
 
 exports.newUser = async (req, res) => {
-    const { userName, platform, password,gameId } = req.body;
+    const { userName, platform, password, gameId } = req.body;
     let verify = false;
+
     const account = await hub_user.findOne({ userName });
     if (account) {
         return res.status(400).json({ message: "User already exists" });
     }
-    if (!userName || !platform || !password || !gameId) {
+
+    // Check for required fields
+    if (!userName || !platform || !password) {
         return res.status(400).json({ message: "All fields are required" });
     }
+
+    // Handle platform verification
     try {
-        if (platform =="Steam" && gameId) {
+        if ((platform === "steam" || platform === "xbox") && !gameId) {
+            return res.status(400).json({
+                message: `Platform ID is required for ${platform}. Please provide your Steam/Xbox ID.`,
+            });
+        }
+
+        if (platform === "steam" && gameId) {
             const url = `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${process.env.STEAM_API_KEY}&steamid=${gameId}&format=json`;
             const response = await fetch(url);
             const data = await response.json();
 
-            console.log("Steam API Response Data:", JSON.stringify(data, null, 2)); // Log the full data
-
             if (data.response && data.response.games && data.response.games.length > 0) {
-
                 const hasForza = data.response.games.some(g => g.appid === 1551360);
                 if (hasForza) {
                     verify = true;
                 } else {
-                    console.log("User doesn't own the specified game.");
                     return res.status(400).json({
-                        message: "We can't verify if you have the game. Change your Steam profile to public and try again."
+                        message: "We can't verify if you have the game. Change your Steam profile to public and try again.",
                     });
                 }
             } else {
                 return res.status(400).json({
-                    message: "We can't verify if you have the game. Change your Steam profile to public and try again."
+                    message: "We can't verify if you have the game. Change your Steam profile to public and try again.",
                 });
             }
         }
-        if (platform === "Xbox" && gameId) {
+
+        if (platform === "xbox" && gameId) {
             const url = `https://xbl.io/api/v2/achievements/player/${gameId}/2030093255`;
             try {
                 const response = await fetch(url, {
@@ -50,21 +58,27 @@ exports.newUser = async (req, res) => {
 
                 if (!response.ok) {
                     return res.status(400).json({
-                        message: "We can't verify if you have the game."
+                        message: "We can't verify if you have the game.",
                     });
                 }
-
-                // If fetch is successful and no errors, assume verification is true.
-                verify = true;  // Assuming the API verification is enough
+                verify = true; // Assume verification success on valid API response
             } catch (error) {
                 console.error('Error fetching Xbox data:', error);
                 return res.status(500).json({ message: 'Error verifying Xbox game.', error: error.message });
             }
-        }       
+        }
+
+        // Manual Verification (No gameId required)
+        if (platform === "manual") {
+            verify = false; // Manual users remain unverified initially
+        }
+
+        // Save the new user in the database
         const newUser = new hub_user({ userName, platform, password, verify });
         await newUser.save();
         res.status(201).json({ message: "User created successfully" });
     } catch (err) {
+        console.error("Error creating user:", err);
         res.status(500).json({ message: 'Error creating user.', error: err.message });
     }
 };
