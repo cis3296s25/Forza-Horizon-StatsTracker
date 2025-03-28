@@ -26,7 +26,6 @@ function App() {
       {loading ? (
         <LoadingScreen />
       ) : (
-        <Suspense fallback={<LoadingScreen />}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
@@ -34,7 +33,6 @@ function App() {
             <Route path="/signup-stats" element={<SignupForm />} />
             <Route path="/user/:username" element={<StatsPage />} />
           </Routes>
-        </Suspense>
       )}
       <Toaster position="bottom-center" />
     </Router>

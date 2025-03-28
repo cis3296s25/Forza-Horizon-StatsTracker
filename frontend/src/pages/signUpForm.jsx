@@ -15,44 +15,41 @@ const SignupForm = () => {
   const [garageValue, setGarageValue] = useState('');
   const [signup, { isLoading }] = useSignupMutation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!gamertag || !password || !selectedPlatform) {
+      toast.error("Good Try but your attempt failed");
+      navigate("/signup", { state: {} });
+    }
+  }, [gamertag, password, selectedPlatform, navigate]);
   
   const handleSubmit = async (e) => {
     if (!victories || !numberofCarsOwned || !garageValue) {
-      return toast.error("Please fill in all the fields.");
-    }
+      return toast.error("All fields must be filled out.");
+  }
 
-    const numVictories = parseInt(victories);
-    const numCarsOwned = parseInt(numberofCarsOwned);
-
-
-    try {
-      const res = await signup({
+  try {
+    const response = await signup({
         userName: gamertag,
-        password: password,
+        password,
         platform: selectedPlatform,
         gameId: gameId || null,
-        victories: numVictories,
-        numberofCarsOwned: numCarsOwned,
+        victories: parseInt(victories),
+        numberofCarsOwned: parseInt(numberofCarsOwned),
         garageValue,
-      });
+    });
 
-      if ("data" in res) {
-        toast.success("Signup successful!");
-        navigate("/");
-      } else {
-        victories("");
-        numberofCarsOwned("");
-        garageValue("");
-        toast.error("Signup failed. Please try again later.");
-        navigate("/");
-      }
-    } catch (error) {
-      setVictories("");
-      setNumberOfCarsOwned("");
-      setGarageValue("");
-      toast.error("An error occurred. Please try again.");
+    if ("data" in response) {
+      toast.success("Signup successful!");
       navigate("/");
-    }
+  } else {
+      toast.error(response.error?.data?.message || "Signup failed. Please try again.");
+      navigate("/signup", { state: {} });
+  }
+} catch (error) {
+  toast.error("An unexpected error occurred.");
+  navigate("/signup", { state: {} });
+}
   };
 
   return (

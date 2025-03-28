@@ -12,82 +12,19 @@ const Signup = () => {
   const [selectedPlatform, setSelectedPlatform] = useState("");
   const [gameId, setGameId] = useState("");
   const navigate = useNavigate();
-  //const [signup, { isLoading }] = useSignupMutation();
-
- {/* const signupFunction = async(e) => {
-    e.preventDefault(); // Prevent page reload
-
-    // Input validation
-    if (!gamertag) return toast.error("Gamertag is required");
-    if (!password) return toast.error("Password is required");
-    if (password !== confirmPassword) return toast.error("Passwords do not match");
-    if (!selectedPlatform) return toast.error("Please select a platform");
-    if ((selectedPlatform === 'steam' || selectedPlatform === 'xbox') && !gameId) {
-      return toast.error(`Please enter your ${selectedPlatform} Id`);
-    }
-
-    try{
-      const res = await signup({
-        userName: gamertag,
-        password: password,
-        platform: selectedPlatform,
-        gameId: gameId || null,
-      });
-      if ("data" in res) {
-        toast.success("Successfully signed up");
-        setGamertag("");
-        setPassword("");
-        setConfirmPassword("");
-        setSelectedPlatform("");
-        setGameId("");
-      } else {
-        toast.error("Signup failed. Either you dont have the game");
-        toast.error("Try again later.");
-        setGamertag("");
-        setPassword("");
-        setConfirmPassword("");
-        setSelectedPlatform("");
-        setGameId("");
-      }
-    } catch (error) {
-        toast.error("Try again later.");
-        setGamertag("");
-        setPassword("");
-        setConfirmPassword("");
-        setSelectedPlatform("");
-        setGameId("");
-        }
-      };*/}
-
       const handleNext = (e) => {
         e.preventDefault();
     
-        // Basic validation
-        if (!gamertag || !password || password !== confirmPassword) {
-        setGamertag("");
-        setPassword("");
-        setConfirmPassword("");
-        setSelectedPlatform("");
-        setGameId("");
-          return toast.error("Please complete all required fields.");
-        }
-        if (!selectedPlatform) {
-        setGamertag("");
-        setPassword("");
-        setConfirmPassword("");
-        setSelectedPlatform("");
-        setGameId("");
-          return toast.error("Please select a platform.")};
-        if ((selectedPlatform === 'steam' || selectedPlatform === 'xbox') && !gameId) {
-        setGamertag("");
-        setPassword("");
-        setConfirmPassword("");
-        setSelectedPlatform("");
-        setGameId("");
-          return toast.error(`Please enter your ${selectedPlatform} ID.`);
-        }
+        if (!gamertag || !password || password !== confirmPassword || !selectedPlatform) {
+          toast.error("Please fill out all fields correctly.");
+          return;
+      }
+  
+      if ((selectedPlatform === 'steam' || selectedPlatform === 'xbox') && !gameId) {
+          toast.error(`Please enter your ${selectedPlatform} ID.`);
+          return;
+      }
     
-        // Pass data to the next page
         navigate('/signup-stats', {
           state: { gamertag, password, selectedPlatform, gameId },
         });
@@ -169,10 +106,6 @@ const Signup = () => {
     onChange={(e) => setGameId(e.target.value)} // Fix here
   />
 )}
-
-        {/*<button className="signup-button" onClick={signupFunction} disabled={isLoading}>
-          {isLoading ? "Signing Up..." : "SIGN UP"}
-        </button>*/}
         <button className="signup-button" onClick={handleNext}>
           Next Step
         </button>
