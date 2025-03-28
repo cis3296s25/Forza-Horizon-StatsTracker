@@ -31,7 +31,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
         toast.error("User not found");
         setGamertag("");
         setPassword("");
-        navigate("/");
+        navigate("/profile");
       }
     } catch (error) {
       toast.error("There was an error searching for the user. Try again later.");

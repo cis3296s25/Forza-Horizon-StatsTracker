@@ -38,7 +38,7 @@ const userRouter = require('./routes/users');
 const statsRouter = require('./routes/stats'); 
 
 app.use("/api/userAccount", userRouter); 
-app.use("/api/userStats", statsRouter);
+//app.use("/api/userStats", statsRouter);
 
 
 app.listen(port, () => {

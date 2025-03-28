@@ -3,7 +3,7 @@ const user_stats = require('../models/user_stats');
 const fetch = require('node-fetch');
 
 exports.newUser = async (req, res) => {
-    const { userName, platform, password, gameId } = req.body;
+    const { userName, platform, password, gameId,victories,numberofCarsOwned,garageValue } = req.body;
     let verify = false;
 
     const account = await hub_user.findOne({ userName });
@@ -75,7 +75,9 @@ exports.newUser = async (req, res) => {
 
         // Save the new user in the database
         const newUser = new hub_user({ userName, platform, password, verify });
+        const newUserStats = new user_stats({ userName, victories, numberofCarsOwned, garageValue });
         await newUser.save();
+        await newUserStats.save();
         res.status(201).json({ message: "User created successfully" });
     } catch (err) {
         console.error("Error creating user:", err);
