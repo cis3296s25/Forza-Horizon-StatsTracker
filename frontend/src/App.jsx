@@ -7,15 +7,16 @@ import LoadingScreen from './pages/loadingScreen';
 const Home = lazy(() => import('./pages/home'));
 const Profile = lazy(() => import('./pages/profile'));
 const Signup = lazy(() => import('./pages/signup'));
+const StatsPage = lazy(() => import('./pages/statsPage'));
+const SignupForm = lazy(() => import('./pages/signUpForm'));
 
 function App() {
-  const [loading, setLoading] = useState(!localStorage.getItem("visited"));
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (loading) {
       setTimeout(() => {
         setLoading(false);
-        localStorage.setItem("visited", "true");
       }, 4300);
     }
   }, [loading]);
@@ -30,7 +31,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/user/:username" element={<Profile />} />
+            <Route path="/signup-stats" element={<SignupForm />} />
+            <Route path="/user/:username" element={<StatsPage />} />
           </Routes>
         </Suspense>
       )}

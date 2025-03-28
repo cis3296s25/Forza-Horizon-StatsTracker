@@ -17,7 +17,17 @@ const port = process.env.PORT || 3000;
 connectDB(mongoURI);
 const app = express();
 
-app.use(cors({ origin: "*" }));
+app.options("*", cors());
+
+app.use(
+  cors({
+    origin: "https://forza-horizon-statstracker.onrender.com",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"],
+    allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
+  })
+);
+
 app.use(express.json());
 
 // Middleware to parse incoming JSON data
