@@ -96,7 +96,7 @@ export const getUserStatsAPI = createApi({
   endpoints: (builder) => ({
     getUserStats: builder.query({
       query: (userName) => ({
-        url: `stats/${userName}`, 
+        url: `stats?userName=${userName}`, 
         method: 'GET',
       }),
     }),

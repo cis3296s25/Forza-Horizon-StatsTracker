@@ -10,7 +10,6 @@ function StatsPage() {
     const [stats, setStats] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-
     useEffect(() => {
         //fetch(`http://localhost:3000/api/user-stats/${gamertag}`)
         fetch(`http://localhost:3000/api/userAccount/stats?userName=${username}`)

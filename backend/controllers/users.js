@@ -95,6 +95,13 @@ exports.loginUsers = async (req, res) => {
         if(!password){
             return res.status(400).json({message: "No password provided or password is incorrect"});
         }
+        const user = await hub_user.findOne({ userName });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        if (user.password !== password) {  // Simple password comparison
+            return res.status(400).json({ message: "Incorrect password" });
+        }
         res.status(200).json({message: "Login successful"});
     }
     catch(error){
