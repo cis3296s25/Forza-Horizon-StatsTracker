@@ -16,7 +16,7 @@ const SignupForm = () => {
       <Nav />
       <div className="signUpForm-Container">
         <form>
-          <label for="numVictories">Number Of Victories</label><br/>
+          <label for="numVictories">Number of Victories</label><br/>
           <input type="number" id="numVictories" name="numVictories"/><br/>
           <label for="numCars">Number of Cars Owned</label><br/>
           <input type="number" id="numCars" name="numCars"/><br/>
