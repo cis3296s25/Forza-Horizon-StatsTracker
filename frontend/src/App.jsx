@@ -32,10 +32,10 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/user/:username" element={<Profile />} />
-            <Route path="/statsPage" element={<StatsPage />} />
+            <Route path="/statsPage/:gamertag" element={<StatsPage />} />
           </Routes>
         </Suspense>
-      )}
+      )}a
       <Toaster position="bottom-center" />
     </Router>
   );

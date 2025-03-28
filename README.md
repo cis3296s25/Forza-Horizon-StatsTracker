@@ -68,6 +68,11 @@ npx nodemon server.js
 
 In your browser, go to http://localhost:5173/
 
+## DISCLAIMER - For Users Signing Up with Xbox
+
+On the signup page, if you have selected Xbox, you need to navigate to https://www.cxkes.me/xbox/xuid and put 
+your Xbox username in the input box. Afterwards, you will need to copy and paste the XUID (DEC) for your account into the id field for the signup page. 
+
 ## Project Board
 
 Project Board Link: https://github.com/orgs/cis3296s25/projects/65
