@@ -2,10 +2,11 @@ const hub_user = require('../models/hub_user');
 const user_stats = require('../models/user_stats');
 const fetch = require('node-fetch');
 
+//https://forza-horizon-statstracker-backend.onrender.com
 exports.newUser = async (req, res) => {
     const { userName, platform, password, gameId,victories,numberofCarsOwned,garageValue } = req.body;
     let verify = false;
-
+    console.log(req.body);
     const account = await hub_user.findOne({ userName });
     if (account) {
         return res.status(400).json({ message: "User already exists" });
@@ -19,6 +20,7 @@ exports.newUser = async (req, res) => {
     // Handle platform verification
     try {
         if ((platform === "steam" || platform === "xbox") && !gameId) {
+            console.log("error");
             return res.status(400).json({
                 message: `Platform ID is required for ${platform}. Please provide your Steam/Xbox ID.`,
             });
@@ -34,6 +36,7 @@ exports.newUser = async (req, res) => {
                 if (hasForza) {
                     verify = true;
                 } else {
+                    console.log("error");
                     return res.status(400).json({
                         message: "We can't verify if you have the game. Change your Steam profile to public and try again.",
                     });
