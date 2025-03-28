@@ -34,7 +34,7 @@ exports.newUser = async (req, res) => {
 
             if (data.response && data.response.games && data.response.games.length > 0) {
                 const hasForza = data.response.games.some(g => g.appid === 1551360);
-                console.log("steam game",req.body);
+                console.log("steam game",data.response);
                 if (hasForza) {
                     verify = true;
                 } else {

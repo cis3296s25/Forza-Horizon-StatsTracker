@@ -44,12 +44,14 @@ const SignupForm = () => {
         numberofCarsOwned("");
         garageValue("");
         toast.error("Signup failed. Please try again later.");
+        navigate("/");
       }
     } catch (error) {
       setVictories("");
       setNumberOfCarsOwned("");
       setGarageValue("");
       toast.error("An error occurred. Please try again.");
+      navigate("/");
     }
   };
 
