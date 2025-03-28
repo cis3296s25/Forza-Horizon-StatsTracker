@@ -27,14 +27,14 @@ exports.newUser = async (req, res) => {
         }
 
         if (platform === "steam" && gameId) {
-            console.log("setam incom");
+            console.log("steam is used",req.body);
             const url = `https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${process.env.STEAM_API_KEY}&steamid=${gameId}&format=json`;
             const response = await fetch(url);
             const data = await response.json();
 
             if (data.response && data.response.games && data.response.games.length > 0) {
                 const hasForza = data.response.games.some(g => g.appid === 1551360);
-                console.log("setam incom");
+                console.log("steam game",req.body);
                 if (hasForza) {
                     verify = true;
                 } else {
@@ -44,7 +44,7 @@ exports.newUser = async (req, res) => {
                     });
                 }
             } else {
-                console.log("setam error");
+                console.log("steam is used and there is error",req.body);
                 return res.status(400).json({
                     message: "We can't verify if you have the game. Change your Steam profile to public and try again.",
                 });
