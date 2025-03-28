@@ -6,8 +6,9 @@ import Profile from '../assets/forzaImgs/profileLogo.png';
 import Leaderboard from '../assets/forzaImgs/leaderboardLogo.png';
 import Car from '../assets/forzaImgs/carLogo.png';
 import Map from '../assets/forzaImgs/mapLogo.png';
-import { useLogoutMutation } from '../services/auth';
+import { useLogoutMutation } from '../redux/apis/user';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const NavBarLog = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -76,7 +77,6 @@ const NavBarLog = () => {
             <li>
                 <button onClick={handleLogout} disabled={isLoading}>
                 {isLoading ? 'Logging Out...' : 'LOGOUT'}
-                Log Out
                 </button>
             </li>
           </ul>

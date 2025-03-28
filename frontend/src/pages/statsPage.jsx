@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Table from '../components/Table/Table';
-import Nav from '../components/nav';
+import Nav from '../components/navLog';
 import Footer from '../components/footer';
 import "../styles/statsPage.css";
 
 function StatsPage() {
-    const {gamertag} = useParams(); // Hardcoding the gamertag here
+    const {username } = useParams(); // Hardcoding the gamertag here
     const [stats, setStats] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         //fetch(`http://localhost:3000/api/user-stats/${gamertag}`)
-        fetch('http://localhost:3000/api/userAccount/stats?userName=Tirth%20Patel')
+        fetch(`http://localhost:3000/api/userAccount/stats?userName=${username}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch stats for user');
@@ -28,7 +28,7 @@ function StatsPage() {
                 setError(error);
                 setIsLoading(false);
             });
-    }, [gamertag]);
+    }, [username]);
 
     return (
         <div className="statsPage-mainContainer">
@@ -40,8 +40,8 @@ function StatsPage() {
             ) : error ? (
                 <p>{error.message}</p> // Display error message
             ) : (
-                <Table list={stats} colNames={['userName','garageValue', 'numberofCarsOwned']}
-                colNameMap={{userName: 'UserName', garageValue: ' Garage Value', numberofCarsOwned: 'Number of Cars Owned'}} />
+                <Table list={stats} colNames={['victories', 'numberofCarsOwned','garageValue']}
+                colNameMap={{victories: 'Victories', numberofCarsOwned: 'Number of Cars Owned', garageValue: ' Garage Value'}} />
             )}
         </div>}
         <Footer />
