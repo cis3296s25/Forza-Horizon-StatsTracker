@@ -14,3 +14,74 @@
     justify-content: center;
     align-items: center;
   }
+
+  table {
+    width: 100%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+ }
+ 
+ 
+ thead {
+    background-color: #f5f5f5;
+ }
+ 
+ 
+ th,td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+ }
+ 
+ 
+ td {
+    background-color: white;
+    opacity: 0.5;
+ }
+ 
+ 
+ th {
+    font-weight: bold;
+ }
+ 
+ 
+ tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+ }
+ 
+ 
+ tfoot td {
+    padding: 12px;
+ }
+ 
+ 
+ button {
+    padding: 6px 12px;
+    margin: 0 10px;
+    border: none;
+    background-color: #333;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+ }
+ 
+ 
+ button:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+ }
+ 
+ 
+ h1 {
+    text-align: center;
+    margin-top: 20px;
+    color:white;
+ }
+ 
+ 
+ button:hover {
+    background-color: #555;
+ }
+ 
