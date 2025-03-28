@@ -18,6 +18,14 @@ connectDB(mongoURI);
 const app = express();
 
 app.use(cors({ origin: "*" }));
+app.use(
+  cors({
+    origin: "https://forza-horizon-statstracker.onrender.com", // Frontend domain
+    credentials: true, // Allow cookies and credentials
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS","HEAD"],
+    allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
+  })
+);
 app.use(express.json());
 
 // Middleware to parse incoming JSON data
