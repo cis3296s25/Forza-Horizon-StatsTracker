@@ -1,10 +1,14 @@
+import bcrypt from 'bcrypt'
 const hub_user = require('../models/hub_user');
 const user_stats = require('../models/user_stats');
 const fetch = require('node-fetch');
 
+
 //https://forza-horizon-statstracker-backend.onrender.com
 exports.newUser = async (req, res) => {
+
     const { userName, platform, password, gameId,victories,numberofCarsOwned,garageValue } = req.body;
+
     let verify = false;
     console.log(req.body);
     const account = await hub_user.findOne({ userName });
@@ -76,11 +80,16 @@ exports.newUser = async (req, res) => {
             verify = false; // Manual users remain unverified initially
         }
 
+        /*Hashing user password for userbase storage*/ 
+        let hashedPassword = await bcrypt.hash(password,10);
         // Save the new user in the database
-        const newUser = new hub_user({ userName, platform, password, verify });
+
+        const newUser = new hub_user({ userName, platform, password: hashedPassword, verify });
         const newUserStats = new user_stats({ userName, victories, numberofCarsOwned, garageValue });
         await newUser.save();
         await newUserStats.save();
+
+
         res.status(201).json({ message: "User created successfully" });
     } catch (err) {
         console.error("Error creating user:", err);
@@ -102,9 +111,11 @@ exports.loginUsers = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        if (user.password !== password) {  // Simple password comparison
+        const isMatch = await bcrypt.compare(password,user.password)
+        if(!isMatch){
             return res.status(400).json({ message: "Incorrect password" });
         }
+
         res.status(200).json({message: "Login successful"});
     }
     catch(error){
