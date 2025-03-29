@@ -2,10 +2,11 @@ const hub_user = require('../models/hub_user');
 const user_stats = require('../models/user_stats');
 const fetch = require('node-fetch');
 
+//https://forza-horizon-statstracker-backend.onrender.com
 exports.newUser = async (req, res) => {
-    const { userName, platform, password, gameId } = req.body;
+    const { userName, platform, password, gameId,victories,numberofCarsOwned,garageValue } = req.body;
     let verify = false;
-
+    console.log(req.body);
     const account = await hub_user.findOne({ userName });
     if (account) {
         return res.status(400).json({ message: "User already exists" });
@@ -19,6 +20,7 @@ exports.newUser = async (req, res) => {
     // Handle platform verification
     try {
         if ((platform === "steam" || platform === "xbox") && !gameId) {
+            console.log("error");
             return res.status(400).json({
                 message: `Platform ID is required for ${platform}. Please provide your Steam/Xbox ID.`,
             });
@@ -34,6 +36,7 @@ exports.newUser = async (req, res) => {
                 if (hasForza) {
                     verify = true;
                 } else {
+                    console.log("error");
                     return res.status(400).json({
                         message: "We can't verify if you have the game. Change your Steam profile to public and try again.",
                     });
@@ -75,7 +78,9 @@ exports.newUser = async (req, res) => {
 
         // Save the new user in the database
         const newUser = new hub_user({ userName, platform, password, verify });
+        const newUserStats = new user_stats({ userName, victories, numberofCarsOwned, garageValue });
         await newUser.save();
+        await newUserStats.save();
         res.status(201).json({ message: "User created successfully" });
     } catch (err) {
         console.error("Error creating user:", err);
@@ -92,6 +97,13 @@ exports.loginUsers = async (req, res) => {
         // will need to updated this after encrying and decrypting the password
         if(!password){
             return res.status(400).json({message: "No password provided or password is incorrect"});
+        }
+        const user = await hub_user.findOne({ userName });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        if (user.password !== password) {  // Simple password comparison
+            return res.status(400).json({ message: "Incorrect password" });
         }
         res.status(200).json({message: "Login successful"});
     }

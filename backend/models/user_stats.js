@@ -7,7 +7,6 @@ const statsSchema = new mongoose.Schema({
     },
     timeDriven:{
         type: String,
-        required: true
        },
     numberofCarsOwned:{
         type: Number,
@@ -15,40 +14,36 @@ const statsSchema = new mongoose.Schema({
        },
     mostValuableCar:{
         type: String,
-        required: true
        },
     totalWinnningsinCR:{
         type: Number,
-        required: true
        },
     favoriteCar:{
         type: String,
-        required: true
        },
     garageValue:{
-        type: Number,
+        type: String,
         required: true
        },
     longestSkillChain:{
         type: String,
-        required: true
        },
     distanceDrivenInMiles:{
         type: Number,
-        required: true
        },
     longestJump:{
         type: Number,
-        required: true
        },
     topSpeed:{
         type: Number,
-        required: true
        },
     biggestAir:{
         type: String,
+       },
+    victories:{
+        type: Number,
         required: true
-       }
+       },
 })
 
 module.exports = mongoose.model('user_stats', statsSchema);

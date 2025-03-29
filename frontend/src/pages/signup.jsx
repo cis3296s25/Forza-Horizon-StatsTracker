@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import "../styles/signup.css";
 import Nav from '../components/nav';
 import Footer from '../components/footer';
-import { useSignupMutation } from '../redux/apis/user';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const Signup = () => {
@@ -11,9 +11,10 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState("");
   const [gameId, setGameId] = useState("");
-  const [signup, { isLoading }] = useSignupMutation();
+  const navigate = useNavigate();
+  //const [signup, { isLoading }] = useSignupMutation();
 
-  const signupFunction = async(e) => {
+ {/* const signupFunction = async(e) => {
     e.preventDefault(); // Prevent page reload
 
     // Input validation
@@ -56,7 +57,41 @@ const Signup = () => {
         setSelectedPlatform("");
         setGameId("");
         }
-    };
+      };*/}
+
+      const handleNext = (e) => {
+        e.preventDefault();
+    
+        // Basic validation
+        if (!gamertag || !password || password !== confirmPassword) {
+        setGamertag("");
+        setPassword("");
+        setConfirmPassword("");
+        setSelectedPlatform("");
+        setGameId("");
+          return toast.error("Please complete all required fields.");
+        }
+        if (!selectedPlatform) {
+        setGamertag("");
+        setPassword("");
+        setConfirmPassword("");
+        setSelectedPlatform("");
+        setGameId("");
+          return toast.error("Please select a platform.")};
+        if ((selectedPlatform === 'steam' || selectedPlatform === 'xbox') && !gameId) {
+        setGamertag("");
+        setPassword("");
+        setConfirmPassword("");
+        setSelectedPlatform("");
+        setGameId("");
+          return toast.error(`Please enter your ${selectedPlatform} ID.`);
+        }
+    
+        // Pass data to the next page
+        navigate('/signup-stats', {
+          state: { gamertag, password, selectedPlatform, gameId },
+        });
+      };
 
   return (
     <div className="signup-mainContainer">
@@ -135,8 +170,11 @@ const Signup = () => {
   />
 )}
 
-        <button className="signup-button" onClick={signupFunction} disabled={isLoading}>
+        {/*<button className="signup-button" onClick={signupFunction} disabled={isLoading}>
           {isLoading ? "Signing Up..." : "SIGN UP"}
+        </button>*/}
+        <button className="signup-button" onClick={handleNext}>
+          Next Step
         </button>
       </div>
       <Footer />
