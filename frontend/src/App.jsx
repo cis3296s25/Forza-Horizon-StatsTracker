@@ -8,7 +8,7 @@ const Profile = lazy(() => import('./pages/profile'));
 const Signup = lazy(() => import('./pages/signup'));
 const StatsPage = lazy(() => import('./pages/statsPage'));
 const SignupForm = lazy(() => import('./pages/signUpForm'));
-const NotFound = lazy(() => import('./components/NotFound'));
+const NotFound = lazy(() => import('./components/notFound'));
 
 function App() {
   const [loading, setLoading] = useState(true);
