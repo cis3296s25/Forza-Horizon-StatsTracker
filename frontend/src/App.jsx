@@ -27,7 +27,7 @@ function App() {
       {loading ? (
         <LoadingScreen />
       ) : (
-        <Suspense fallback={<LoadingScreen />}>
+        <Suspense>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
