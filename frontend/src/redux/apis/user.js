@@ -88,24 +88,9 @@ export const deleteAPI = createApi({
   }),
 });
 
-export const getUserStatsAPI = createApi({
-  reducerPath: 'getUserStatsApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_SERVER}/api/userAccount/`, // Update base URL accordingly
-  }),
-  endpoints: (builder) => ({
-    getUserStats: builder.query({
-      query: (userName) => ({
-        url: `stats?userName=${userName}`, 
-        method: 'GET',
-      }),
-    }),
-  }),
-});
 
 export const { useSearchMutation } = searchAPI; 
 export const { useSignupMutation } = signupAPI;
 export const { useLoginMutation } = loginAPI;
 export const { useLogoutMutation } = logoutAPI;
 export const { useDeleteUserMutation } = deleteAPI;
-export const { useGetUserStatsQuery } = getUserStatsAPI;

@@ -20,7 +20,7 @@ app.options("*", cors());
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: `${process.env.SERVER}`,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"],
     allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
@@ -47,45 +47,9 @@ const userRouter = require('./routes/users');
 const statsRouter = require('./routes/stats'); 
 
 app.use("/api/userAccount", userRouter); 
-//app.use("/api/userStats", statsRouter);
+app.use("/api/userStats", statsRouter);
 
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
