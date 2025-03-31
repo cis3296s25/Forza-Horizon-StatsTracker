@@ -198,3 +198,31 @@ exports.getUserStats = async (req, res) => {
         res.status(500).json({ message: "Error searching user stats", error: error.message });
     }
 };
+
+exports.compareUsers = async(req,res)=>{
+const {userA, userB} = req.query;
+if(!userA || !userB){
+    return res.status(400).json({message: "Both userA and userB must be provided"})
+}
+
+try{
+
+const userAstats = await user_stats.findOne({username: userA});
+const userBstats = await user_stats.findOne({username: userB});
+if(!userAstats || !userBstats){
+    return res.status(400).json({message: "One or both users are not found in our database"});
+}
+
+const userStats = {
+    userA: userAstats,
+    userB: userBstats
+}
+
+res.status(200).json(userStats);
+
+}catch(error){
+    console.error('Error fetching user stats:', error);
+    res.status(500).json({message:"Error searching user stats", error:error.message});
+}
+
+}
