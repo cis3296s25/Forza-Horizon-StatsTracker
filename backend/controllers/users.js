@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt'
+const bcrypt = require('bcrypt');
 const hub_user = require('../models/hub_user');
 const user_stats = require('../models/user_stats');
 const fetch = require('node-fetch');
@@ -11,10 +11,10 @@ exports.newUser = async (req, res) => {
 
     let verify = false;
     console.log(req.body);
-    const account = await hub_user.findOne({ userName });
-    if (account) {
-        return res.status(400).json({ message: "User already exists" });
-    }
+   // const account = await hub_user.findOne({ userName });
+    //if (account) {
+     //   return res.status(400).json({ message: "User already exists" });
+    //}
 
     // Check for required fields
     if (!userName || !platform || !password) {
@@ -199,6 +199,8 @@ exports.getUserStats = async (req, res) => {
     }
 };
 
+
+/*
 exports.compareUsers = async(req,res)=>{
 const {userA, userB} = req.query;
 if(!userA || !userB){
@@ -226,3 +228,4 @@ res.status(200).json(userStats);
 }
 
 }
+*/
