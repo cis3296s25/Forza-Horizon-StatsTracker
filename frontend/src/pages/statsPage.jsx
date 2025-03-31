@@ -11,8 +11,7 @@ function StatsPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     useEffect(() => {
-        //fetch(`http://localhost:3000/api/user-stats/${gamertag}`)
-        fetch(`${import.meta.env.VITE_SERVER}/api/userAccount/stats?userName=${username}`)
+        fetch(`${import.meta.env.VITE_SERVER}/api/userStats/stats?userName=${username}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch stats for user');
