@@ -5,7 +5,7 @@ import Nav from '../components/nav';
 import Footer from '../components/footer';
 import { useLoginMutation } from '../redux/apis/user';
 import toast from 'react-hot-toast';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
  const Profile = () => {
     const [gamertag, setGamertag] = useState('');
@@ -22,19 +22,19 @@ import { Navigate, useNavigate } from 'react-router-dom';
         password: password
       });
   
-      if ("data" in res) {
-        toast.success("User found");
+      if (res.data) {
+        toast.success(res.data.message || "Login successful");
         setGamertag("");
         setPassword("");
         navigate(`/user/${gamertag}`);
-      } else {
-        toast.error("User not found");
+      } else if (res.error) {
+        const errorMessage = res.error.data?.message || "Login failed";
+        toast.error(errorMessage);
         setGamertag("");
         setPassword("");
-        navigate("/profile");
       }
     } catch (error) {
-      toast.error("There was an error searching for the user. Try again later.");
+      toast.error("There was an error logging in. Please try again later.");
       setGamertag("");
       setPassword("");
     }
@@ -48,7 +48,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 
           <input type="password" placeholder="Enter Password" className="login-input" value = {password}
           onChange={(e) => setPassword(e.target.value)} />
-          <button className="login-button" onClick={loginFunction} disabled={isLoading}>SIGN IN</button>
+          <button className="login-button" onClick={loginFunction} disabled={isLoading}> {isLoading ? "Signing In..." : "SIGN IN"}</button>
         </div>
         <Footer />
       </div>

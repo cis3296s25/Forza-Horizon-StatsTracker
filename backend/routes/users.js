@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { newUser, loginUsers, logoutUsers, searchUsers, updateUsers, deleteUsers, getUserStats } = require('../controllers/users');
+const { newUser, loginUsers, logoutUsers, searchUsers, updateUsers, deleteUsers } = require('../controllers/users');
 
 // Define routes with controller functions
 router.post("/newUser", newUser);
@@ -13,4 +13,3 @@ router.get("/stats", getUserStats);
 //router.get('/compare',compareUsers);
 
 module.exports = router;
-
