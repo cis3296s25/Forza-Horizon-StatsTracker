@@ -1,20 +1,19 @@
+/*Bringing in libraries*/
 const dotenv = require('dotenv');
 dotenv.config()
-
-
-
 const express = require('express');
 const { connectDB } = require('./connection.js');
 const cors = require('cors');
-
 console.log("Env test | MONGO_URI:", process.env.MONGO_URI)
+
+
 
 const port = process.env.PORT || 3000;
 
-
- const mongoURI = process.env.MONGO_URI || "";
+const mongoURI = process.env.MONGO_URI || "";
 
 connectDB(mongoURI);
+
 const app = express();
 
 app.options("*", cors());
