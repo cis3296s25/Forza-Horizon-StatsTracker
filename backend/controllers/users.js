@@ -1,10 +1,18 @@
+const bcrypt = require('bcrypt');
 const hub_user = require('../models/hub_user');
 const user_stats = require('../models/user_stats');
 const fetch = require('node-fetch');
 
 exports.newUser = async (req, res) => {
+
     const { userName, platform, password, gameId,victories,numberofCarsOwned,garageValue } = req.body;
+
     let verify = false;
+    console.log(req.body);
+   const account = await hub_user.findOne({ userName });
+    if (account) {
+        return res.status(400).json({ message: "User already exists" });
+    }
 
     try{
         const account = await hub_user.findOne({ userName });
@@ -52,11 +60,16 @@ exports.newUser = async (req, res) => {
             verify = true;
         }
 
+        /*Hashing user password for userbase storage*/ 
+        let hashedPassword = await bcrypt.hash(password,10);
         // Save the new user in the database
-        const newUser = new hub_user({ userName, platform, password, verify });
+
+        const newUser = new hub_user({ userName, platform, password: hashedPassword, verify });
         const newUserStats = new user_stats({ userName, victories, numberofCarsOwned, garageValue });
         await newUser.save();
         await newUserStats.save();
+
+
         res.status(201).json({ message: "User created successfully" });
     } catch (err) {
         res.status(500).json({ message: 'Server error while creating the user.', error: err.message });
@@ -77,11 +90,14 @@ exports.loginUsers = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        if (user.password !== password) {
+        const isMatch = await bcrypt.compare(password,user.password)
+        if(!isMatch){
             return res.status(400).json({ message: "Incorrect password" });
         }
-        res.status(200).json({ message: "Login successful" });
-    } catch (error) {
+
+        res.status(200).json({message: "Login successful"});
+    }
+  catch (error) {
         console.error("Error logging in:", error);
         res.status(500).json({ message: "Internal server error", error: error.message });
     }
@@ -143,3 +159,33 @@ exports.deleteUsers = async (req, res) => {
         res.status(500).json({message: "Error deleting user", error: error.message});
     }
 }
+
+/*
+exports.compareUsers = async(req,res)=>{
+const {userA, userB} = req.query;
+if(!userA || !userB){
+    return res.status(400).json({message: "Both userA and userB must be provided"})
+}
+
+try{
+
+const userAstats = await user_stats.findOne({username: userA});
+const userBstats = await user_stats.findOne({username: userB});
+if(!userAstats || !userBstats){
+    return res.status(400).json({message: "One or both users are not found in our database"});
+}
+
+const userStats = {
+    userA: userAstats,
+    userB: userBstats
+}
+
+res.status(200).json(userStats);
+
+}catch(error){
+    console.error('Error fetching user stats:', error);
+    res.status(500).json({message:"Error searching user stats", error:error.message});
+}
+
+}
+*/
