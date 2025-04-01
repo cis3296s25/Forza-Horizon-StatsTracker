@@ -8,15 +8,6 @@ exports.newUser = async (req, res) => {
     const { userName, platform, password, gameId, victories, numberofCarsOwned, garageValue, timeDriven, mostValuableCar,
         totalWinnningsinCR, favoriteCar, longestSkillChain, distanceDrivenInMiles, longestJump, topSpeed, biggestAir} = req.body;
 
-    if (!favoriteCar || !mostValuableCar) {
-        return res.status(400).json({message: "Not a valid response"});
-    }
-
-    if (victories < 0  || numberofCarsOwned < 0 || garageValue < 0 || timeDriven < 0 ||  totalWinnningsinCR < 0 
-        || longestSkillChain < 0 || distanceDrivenInMiles < 0 || longestJump < 0 || topSpeed < 0 || biggestAir < 0) {
-        return res.status(400).json({message: "Stats cannot be negative"});
-    }
-
     let verify = false;
     console.log(req.body);
    const account = await hub_user.findOne({ userName });
@@ -32,6 +23,15 @@ exports.newUser = async (req, res) => {
 
     if (!userName || !platform || !password) {
         return res.status(400).json({ message: "All fields are required" });
+    }
+
+    if (!favoriteCar || !mostValuableCar) {
+        return res.status(400).json({message: "Not a valid response"});
+    }
+
+    if (victories < 0  || numberofCarsOwned < 0 || garageValue < 0 || timeDriven < 0 ||  totalWinnningsinCR < 0 
+        || longestSkillChain < 0 || distanceDrivenInMiles < 0 || longestJump < 0 || topSpeed < 0 || biggestAir < 0) {
+        return res.status(400).json({message: "Stats cannot be negative"});
     }
 
     if ((platform === "steam" || platform === "xbox") && !gameId) {
