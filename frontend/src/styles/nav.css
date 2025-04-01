@@ -13,11 +13,10 @@
 
 .navbar {
   position: absolute;
-  top: -70px;  
   left: 0;
   width: 100%;
-  background-color: transparent;
-  transition: top 0.5s ease-in-out, background-color 0.3s ease;
+  top:0;
+  background-color: rgba(255, 255, 255, 0.6); 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0);  
   display: flex;
   justify-content: space-between; 
@@ -26,10 +25,6 @@
   height: 70px;
 }
 
-.navbar.show {
-  top: 0;  
-  background-color: rgba(255, 255, 255, 0.6); 
-}
 
 .nav-links {
   list-style-type: none;
