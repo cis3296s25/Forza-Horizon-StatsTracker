@@ -32,6 +32,9 @@ function StatsPage() {
         <div className="statsPage-mainContainer">
         <Nav />
         {<div>
+            <br/>
+            <br/>
+            <br/>
             <h1>Stats</h1>
             {isLoading ? (
                 <p>Loading stats...</p>
