@@ -2,6 +2,7 @@ import { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import LoadingScreen from './pages/loadingScreen';
+import './App.css';
 //import RouteProtection from './components/routeProtection';
 
 // Lazy load the components
@@ -11,7 +12,7 @@ const Signup = lazy(() => import('./pages/signup'));
 const StatsPage = lazy(() => import('./pages/statsPage'));
 const SignupForm = lazy(() => import('./pages/signUpForm'));
 const NotFound = lazy(() => import('./components/notFound'));
-const comparePage = lazy(() => import('./pages/compareStats'));
+const ComparePage = lazy(() => import('./pages/compareStats'));
 
 function App() {
   const [loading, setLoading] = useState(true);
