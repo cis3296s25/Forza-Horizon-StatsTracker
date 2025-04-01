@@ -2,6 +2,7 @@ import { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import LoadingScreen from './pages/loadingScreen';
+//import RouteProtection from './components/routeProtection';
 
 // Lazy load the components
 const Home = lazy(() => import('./pages/home'));
@@ -33,7 +34,11 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/signup-stats" element={<SignupForm />} />
-            <Route path="/user/:username" element={<StatsPage />} />
+            
+            <Route
+              path="/user/:username" element={<StatsPage />}
+            />
+
             <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
           </Routes>
         </Suspense>
