@@ -45,10 +45,13 @@ const NavBar = () => {
                 Cars
               </a>
             </li>
+
             <li>
               <a href="#">
                 <img src={Map} alt="Map" className="nav-icon" />
-                Compare Stats
+                <Link to ="/compare-page">
+                  Compare Stats
+                </Link>
               </a>
             </li>
             <li>
