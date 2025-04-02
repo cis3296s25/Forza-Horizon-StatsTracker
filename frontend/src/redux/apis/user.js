@@ -88,6 +88,7 @@ export const deleteAPI = createApi({
   }),
 });
 
+
 export const { useSearchMutation } = searchAPI; 
 export const { useSignupMutation } = signupAPI;
 export const { useLoginMutation } = loginAPI;

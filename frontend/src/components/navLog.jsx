@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "../styles/nav.css";
 import Logo from '../assets/forzaImgs/forzaLogo.png';
 import Profile from '../assets/forzaImgs/profileLogo.png'; 
 import Leaderboard from '../assets/forzaImgs/leaderboardLogo.png';
 import Car from '../assets/forzaImgs/carLogo.png';
 import Map from '../assets/forzaImgs/mapLogo.png';
+import { useLogoutMutation } from '../redux/apis/user';  // Logout API from Redux toolkit
+import toast from 'react-hot-toast';
 
 const NavBarLog = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -17,19 +19,16 @@ const NavBarLog = () => {
     try {
       const res = await logout();
 
-      if ("data" in res) {
-        // logged out
-        toast.success("Logged out successfully");
-        
-        // redirect back to home but we can also make it login
-        navigate('/', { replace: true });
-      } else {
-        //failed to log out
-        toast.error("Unable to log out. Please try again.");
+      if (res.data) {
+        toast.success(res.data.message || "Logged out successfully");
+        navigate('/');
+      } else if (res.error) {
+        const errorMessage = res.error.data?.message || "Unable to log out. Please try again.";
+        toast.error(errorMessage);
       }
     } catch (error) {
-  // any other errors
       toast.error("There was an error logging out. Try again later.");
+      console.error("Logout error:", error);
     }
   };
 
@@ -71,13 +70,14 @@ const NavBarLog = () => {
             <li>
               <a href="#">
                 <img src={Map} alt="Map" className="nav-icon" />
-                Map
+                <Link to ="/compare-page">
+                  Compare Stats
+                </Link>
               </a>
             </li>
             <li>
                 <button onClick={handleLogout} disabled={isLoading}>
                 {isLoading ? 'Logging Out...' : 'LOGOUT'}
-                Log Out
                 </button>
             </li>
           </ul>
