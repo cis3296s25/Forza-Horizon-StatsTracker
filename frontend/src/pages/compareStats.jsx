@@ -1,10 +1,17 @@
-import React from 'react'
+import React from 'react';
+import  './CompareStats.css';
 
-const compareStats = () => {
+const CompareStats = () => {
   return (
-    <div>compareStats</div>
+   <div
+    className="compare-stats-container">
+       <h1>
+    COMPARE STATS WITH FRIENDS
+   </h1>
+   </div>
+  
     
   )
 }
 
-export default compareStatS
+export default CompareStats;
