@@ -7,3 +7,65 @@
   font-size: 2rem;
   font-weight: bold;
 }
+
+.username-input{
+    padding: 10px 16px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    width: 250px;
+    margin-top: 1rem;
+}
+
+.username-display{
+    color: white; 
+    margin-top: 1rem;
+    font-weight: bold;
+
+}
+
+.contents-of-compare{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    /*background-color: rgba(0,0,0,0.4);*/
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+.search-section{
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.search-input{
+    padding: 16px 32px;
+    font-size: 16px;
+    text-align: center;
+    font-weight: bold;
+    background-color:white;
+    color: black;
+    border:none;
+    border-radius:6px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+.compare-btn{
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight:bold;
+    background-color:white;
+    color:black; border: none;
+    border-radius: 6px;
+    cursor:pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+.compare-btn:hover{
+    background-color: #f0f0f0;
+}
