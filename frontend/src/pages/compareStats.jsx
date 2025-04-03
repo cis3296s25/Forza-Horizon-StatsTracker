@@ -1,49 +1,84 @@
-import React from 'react';
+import React, { useState } from 'react';
 import "../styles/CompareStats.css";
-import race from '../assets/forzaImgs/mclaren.jpg';
-import{ useState } from 'react';
+import Nav from '../components/nav';
+import CompareTable from '../components/Table/comparisonTable';
+import Footer from '../components/footer';
+
+
+
 
 const CompareStats = () => {
-  const[userName, setUserName] = useState('');
+  const[inputName, setInputName] = useState('');
+   const[userStats, setUserStats] = useState({});
+   const [error,setError] = useState('');
 
-  const handleChange = (event) =>{
-    setUserName(event.target.value);
-  }
-
-  return (
-    
-<div
+  const handleCompare = async () =>{
+    const username = inputName.trim();
   
-className="compare-stats-container"
-    
-style = {{backgroundImage: `url(${race})`, 
-backgroundSize: 'cover',
-backgroundPosition: 'center',
-backgroundRepeat: 'no-repeat', 
-height: '100vh',
-width: '100%',
-display: 'flex',
-justifyContent: 'flex-start',
-alignItems: 'flex-start',
-padding: '1rem'
-}} >   
 
-<div className = "contents-of-compare">
-  <h1>COMPARE STATS</h1>
+if(!username){
+  setError("Please enter a username.");
+  return;
+}
 
-  <div className = "search-contents">
+if(userStats[username]){
+  setError(`"Already displaying stats for "${username}".`)
+  return;
+}
+
+/*Gonna user the fetching api*/
+}
+
+
+
+const playerNames = Object.keys(userStats);
+
+return (  
+<div className="compare-stats-container">   
+
+<Nav/>
+
+<div className = "main-content">
+  <div className = "contents-of-compare">
+
+<h1>COMPARE STATS</h1>
+  
+<div className = "search-section">
 <input 
 type ="text" 
 className = "username-input"
-placeholder="Enter a UserName to Compare With"
-onChange={handleChange}
-/>
-<button className = "compare-btn">COMPARE</button>
-    </div>
-</div>
+placeholder="Enter a UserName for Comparison"
+value={inputName}
+onChange= {(e) => setInputName(e.target.value)} />
 
+<button className = "compare-btn" onClick = {handleCompare}>COMPARE</button>
 
  </div>
+
+ {error && <p className="error-msg">{error} </p>}
+
+{playerNames.length > 0 &&(
+
+<div className = "stats-table">
+<CompareTable
+colNames = {['victories' , 'garageValue', 'topSpeed']}
+colNameMap={{
+  victories: '# of victories',
+  garageValue: 'Garage Value',
+  topSpeed: 'Top Speed'
+}}
+players={playerNames}
+stats={userStats}
+/>
+   </div>
+)}
+</div>
+  </div>
+
+  <Footer />
+
+ </div>
+
   )
 }
 

@@ -47,7 +47,7 @@ function StatsPage() {
                 mostValuableCar: 'Most Valuable Car', totalWinnningsinCR: 'Total Winnings in CR', favoriteCar: 'Favorite Car', longestSkillChain: 'Longest Skill Chain',
                 distanceDrivenInMiles: 'Distance Driven in Miles', longestJump: 'Longest Jump', topSpeed: 'Top Speed', biggestAir: 'Biggest Air'
                 }} />
-            )}
+            )  }
         </div>}
         <Footer />
       </div>

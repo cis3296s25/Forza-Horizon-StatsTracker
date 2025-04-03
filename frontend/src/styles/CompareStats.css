@@ -1,12 +1,27 @@
 .compare-stats-container{
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
+  
+  width:100vw;
   align-items: center;
   color: white;
   text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
   font-size: 2rem;
   font-weight: bold;
+  background:url('../assets/forzaImgs/mclaren.jpg') no-repeat center center ;
+  background-size: cover;
+   position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+     z-index: 9999;
+    cursor: default;
+    display: flex;
+  
 }
+
 
 .username-input{
     padding: 10px 16px;
@@ -25,23 +40,17 @@
 
 }
 
-.contents-of-compare{
+.main-content{
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    /*background-color: rgba(0,0,0,0.4);*/
+   /*} background-color: rgba(0,0,0,0.4);*/
     padding: 2rem;
     border-radius: 10px;
 }
 
-.search-section{
-    display:flex;
-    flex-direction: column;
-    align-items:center;
-    gap: 1rem;
-    margin-top: 2rem;
-}
+
 
 .search-input{
     padding: 16px 32px;
@@ -68,4 +77,35 @@
 
 .compare-btn:hover{
     background-color: #f0f0f0;
+}
+
+.stats-table{
+    width:100%;
+    max-width: 1000px;
+    margin: 2rem auto;
+    border-collapse: collapse;
+    background-color: rgba(0,0,0,0.6);
+    color:white;
+    text-align: center;
+    font-family: 'Arial Black', sans-serif;
+    font-size: 1.1rem;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.stats-table th,.stats-table td{
+    padding:1rem;
+    border:1px solid rgba(255,255,255,0.25);
+}
+
+.stats-table th{
+background-color:rgba(255,255,255,0.1);
+text-transform:uppercase;
+font-weight:bold;
+}
+
+.stats-table td:first-child{
+    text-align:left;
+    padding-left: 1.5rem;
+    font-weight: bold;
 }
