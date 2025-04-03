@@ -11,26 +11,33 @@ const home = () => {
 
 const [search, {isLoading}] = useSearchMutation();
 
-const searchGamertag =  async (e) => {
+const searchGamertag = async (e) => {
   if (e) e.preventDefault();
 
-  try {
-    const res = await search({
-      userName: gamertag
-    });
+  if (!gamertag.trim()) {
+    toast.error("Please enter a valid gamertag");
+    return;
+  }
 
-    if ("data" in res) {
-      toast.success("User found");
-      setGamertag("");
-    } else {
-      toast.error("User not found");
+  try {
+    const res = await search({ userName: gamertag });
+
+    if (res.data) {
+      toast.success(res.data.message || "User found");
+      setGamertag(""); 
+    } else if (res.error) {
+
+      const errorMessage = res.error.data?.message || "User not found";
+      toast.error(errorMessage);
       setGamertag("");
     }
   } catch (error) {
     toast.error("There was an error searching for the user. Try again later.");
+    console.error("Error searching gamertag:", error);
     setGamertag("");
   }
 };
+
 
   return (
     <div>
