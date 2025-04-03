@@ -22,6 +22,12 @@ const userSchema = new mongoose.Schema({
       type: Boolean, //Need to learn bcrypt for the user passwords (Hashing in database)
       required: true,
     },
+
+    gameid:{
+      type: String,
+      default: null,
+      required: false
+     },
    }
 )
 module.exports = mongoose.model('hub_user', userSchema)
