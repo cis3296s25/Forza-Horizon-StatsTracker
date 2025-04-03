@@ -1,17 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 .signup-mainContainer{
-    height: 100vh;
-    width: 100%;
-    background: url('../assets/forzaImgs/profileBackground.jpg') no-repeat center center;
-    background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: url('../assets/forzaImgs/profileBackground.jpg') no-repeat center center;
+  background-size: cover;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   }
   
   .signup-container {
+    flex:1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 120px;
+    justify-content: center;
   }
   
   .signup-input {
