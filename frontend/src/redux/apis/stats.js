@@ -15,4 +15,20 @@ export const getUserStatsAPI = createApi({
   }),
 });
 
+export const getUserProfileStatsAPI = createApi({
+  reducerPath: 'getUserProfileStatsApi',
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${import.meta.env.VITE_SERVER}/api/userStats/`, // Update base URL accordingly
+  }),
+  endpoints: (builder) => ({
+    getUserProfileStats: builder.query({
+      query: (userName) => ({
+        url: `profile-stats?userName=${userName}`, 
+        method: 'GET',
+      }),
+    }),
+  }),
+});
+
 export const { useGetUserStatsQuery } = getUserStatsAPI;
+export const { useGetUserProfileStatsQuery } = getUserProfileStatsAPI;
