@@ -41,8 +41,12 @@ function StatsPage() {
             ) : error ? (
                 <p>{error.message}</p> // Display error message
             ) : (
-                <Table list={stats} colNames={['victories', 'numberofCarsOwned','garageValue']}
-                colNameMap={{victories: 'Victories', numberofCarsOwned: 'Number of Cars Owned', garageValue: ' Garage Value'}} />
+                <Table list={stats} colNames={['victories', 'numberofCarsOwned','garageValue', 'timeDriven', 'mostValuableCar', 'totalWinnningsinCR', 
+                    'favoriteCar', 'longestSkillChain', 'distanceDrivenInMiles', 'longestJump', 'topSpeed', 'biggestAir']}
+                colNameMap={{victories: 'Victories', numberofCarsOwned: 'Number of Cars Owned', garageValue: ' Garage Value', timeDriven: 'Time Driven', 
+                mostValuableCar: 'Most Valuable Car', totalWinnningsinCR: 'Total Winnings in CR', favoriteCar: 'Favorite Car', longestSkillChain: 'Longest Skill Chain',
+                distanceDrivenInMiles: 'Distance Driven in Miles', longestJump: 'Longest Jump', topSpeed: 'Top Speed', biggestAir: 'Biggest Air'
+                }} />
             )}
         </div>}
         <Footer />
