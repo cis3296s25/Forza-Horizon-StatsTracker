@@ -3,6 +3,15 @@ const hub_user = require('../models/hub_user');
 const user_stats = require('../models/user_stats');
 const fetch = require('node-fetch');
 
+const jwt = require("jsonwebtoken");
+const generateToken = (user) => {
+    return jwt.sign(
+      { id: user._id, userName: user.userName },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+};
+
 exports.newUser = async (req, res) => {
 
     const { userName, platform, password, gameId, victories, numberofCarsOwned, garageValue, timeDriven, mostValuableCar,
@@ -105,7 +114,15 @@ exports.loginUsers = async (req, res) => {
             return res.status(400).json({ message: "Incorrect password" });
         }
 
-        res.status(200).json({message: "Login successful"});
+        const token = generateToken(user);
+        res.status(200).json({
+            success: true,
+            message: "Login successful",
+            token,
+            user
+          });
+
+        //res.status(200).json({message: "Login successful"});
     }
   catch (error) {
         console.error("Error logging in:", error);
