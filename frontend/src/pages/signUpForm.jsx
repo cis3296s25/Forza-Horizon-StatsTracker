@@ -109,7 +109,7 @@ return (
                 value={numberofCarsOwned}
                 className="signup-input"
                 placeholder='100' 
-                onChange={(e) => setNumberofCarsOwned(e.target.value)}
+                onChange={(e) => setNumberOfCarsOwned(e.target.value)}
                 style={{width: "100%", display: "block", marginTop: "5px"}}
               />
             </td>

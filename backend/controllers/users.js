@@ -71,7 +71,7 @@ exports.newUser = async (req, res) => {
             return res.status(400).json({ message: "User already exists" });
         }
         const idCheck = await hub_user.findOne({ gameId });
-        if(idCheck){
+        if(idCheck.gameId!= null){
             return res.status(400).json({ message: "User already exists" });
         }
 
