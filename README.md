@@ -76,3 +76,5 @@ your Xbox username in the input box. Afterwards, you will need to copy and paste
 ## Project Board
 
 Project Board Link: https://github.com/orgs/cis3296s25/projects/65
+
+## Example User Gamertag to Test Web Application
