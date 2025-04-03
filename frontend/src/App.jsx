@@ -38,7 +38,8 @@ function App() {
             <Route path="/signup-stats" element={<SignupForm />} />
             <Route path="/compare-page" element={<ComparePage />}/>
             <Route
-              path="/user/:username" element={<StatsPage />}
+              path="/user/:username"
+               element={<StatsPage />}
             />
 
             <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
