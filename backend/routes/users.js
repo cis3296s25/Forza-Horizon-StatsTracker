@@ -7,7 +7,7 @@ router.post("/newUser", newUser);
 router.post("/login", loginUsers);
 router.post("/logout", logoutUsers);
 router.post("/search", searchUsers);
-router.post("/update", updateUsers);
+//router.post("/update", updateUsers);
 router.delete("/delete", deleteUsers);
 //router.get('/compare',compareUsers);
 

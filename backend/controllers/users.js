@@ -2,6 +2,60 @@ const bcrypt = require('bcrypt');
 const hub_user = require('../models/hub_user');
 const user_stats = require('../models/user_stats');
 const fetch = require('node-fetch');
+const user_profile = require('../models/user_profile');
+
+
+// helper function to fetch player data for Steam or Xbox
+const fetchPlayerData = async (platform, gameId) => {
+    let level = 0;
+    let profilePic = "";
+
+    try {
+        if (platform === "steam" && gameId) {
+            // Fetch Steam level
+            const profileUrlLevel = `https://api.steampowered.com/IPlayerService/GetSteamLevel/v1/?key=${process.env.STEAM_API_KEY}&steamid=${gameId}`;
+            const result_level = await fetch(profileUrlLevel);
+            const data_level = await result_level.json();
+            if (data_level?.response?.player_level !== undefined) {
+                level = data_level.response.player_level;
+            }
+
+            // Fetch Steam avatar
+            const profilePicUrl = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${process.env.STEAM_API_KEY}&steamids=${gameId}`;
+            const result_Pic = await fetch(profilePicUrl);
+            const data_Pic = await result_Pic.json();
+            if (data_Pic?.response?.players && data_Pic.response.players.length > 0) {
+                profilePic = data_Pic.response.players[0].avatar;
+            }
+        }
+
+        if (platform === "xbox" && gameId) {
+            // Fetch Xbox profile data
+            const profileUrlStat = `https://xbl.io/api/v2/player/summary/${gameId}`;
+            const responses = await fetch(profileUrlStat, {
+                method: 'GET',
+                headers: {
+                    'x-authorization': `${process.env.XBOX_API_KEY}`,
+                    accept: '*/*',
+                },
+            });
+            const player_stats = await responses.json();
+            if (player_stats?.people && player_stats.people.length > 0) {
+                const player = player_stats.people[0];
+                profilePic = player.displayPicRaw;
+                level = player.gamerScore;
+            }
+        }
+        if(platform == "manually"){
+                level = 0;
+                profilePic = "https://avatarfiles.alphacoders.com/282/thumb-1920-282375.jpg";
+        }
+    } catch (error) {
+        console.log(`Error fetching player data for ${platform}:`, error);
+    }
+
+    return { level, profilePic };
+};
 
 const jwt = require("jsonwebtoken");
 const generateToken = (user) => {
@@ -19,14 +73,14 @@ exports.newUser = async (req, res) => {
 
     let verify = false;
     console.log(req.body);
-   const account = await hub_user.findOne({ userName });
-    if (account) {
-        return res.status(400).json({ message: "User already exists" });
-    }
 
     try{
         const account = await hub_user.findOne({ userName });
         if (account) {
+            return res.status(400).json({ message: "User already exists" });
+        }
+        const idCheck = await hub_user.findOne({ gameId });
+        if(idCheck){
             return res.status(400).json({ message: "User already exists" });
         }
 
@@ -78,15 +132,18 @@ exports.newUser = async (req, res) => {
             }
             verify = true;
         }
-
         /*Hashing user password for userbase storage*/ 
         let hashedPassword = await bcrypt.hash(password,10);
         // Save the new user in the database
 
-        const newUser = new hub_user({ userName, platform, password: hashedPassword, verify });
+        const { level, profilePic } = await fetchPlayerData(platform, gameId);
+
+        const newUser = new hub_user({ userName, platform, password: hashedPassword, verify, gameId});
         const newUserStats = new user_stats({ userName, victories, numberofCarsOwned, garageValue });
+        const newUserProfile = new user_profile({userName,platform,level,profilePic});
         await newUser.save();
         await newUserStats.save();
+        await newUserProfile.save();
 
 
         res.status(201).json({ message: "User created successfully" });
@@ -123,6 +180,27 @@ exports.loginUsers = async (req, res) => {
           });
 
         //res.status(200).json({message: "Login successful"});
+        const { level, profilePic } = await fetchPlayerData(user.platform, user.gameId);
+        const updatedUser = await user_profile.findOneAndUpdate(
+            { userName: user.userName },  // Match the user by their username
+            {
+                $set: {
+                    level: level,          // Update the level field
+                    profilePic: profilePic // Update the profilePic field
+                }
+            },
+            { new: true } // Option to return the updated document
+        );
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User profile not found" });
+        }
+        const token = generateToken(user);
+        res.status(200).json({
+            success: true,
+            message: "Login successful",
+            token,
+            user
+          });
     }
   catch (error) {
         console.error("Error logging in:", error);
@@ -159,14 +237,24 @@ exports.searchUsers = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
+        const { level, profilePic } = await fetchPlayerData(user.platform, user.gameId);
+        const updatedUser = await user_profile.findOneAndUpdate(
+            { userName: user.userName },
+            {
+                $set: {
+                    level: level,
+                    profilePic: profilePic
+                }
+            },
+            { new: true }
+        );
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User profile not found" });
+        }
         res.status(200).json({ message: "User found"});
     } catch (error) {
         res.status(500).json({ message: "Error searching user", error: error.message });
     }
-};
-
-
-exports.updateUsers = async (req, res) => {
 };
 
 // will need to updated this once we have the stats ready
