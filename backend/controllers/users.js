@@ -138,6 +138,7 @@ exports.newUser = async (req, res) => {
         const { level, profilePic } = await fetchPlayerData(platform, gameId);
 
         const newUser = new hub_user({ userName, platform, password: hashedPassword, verify, gameId});
+
         const newUserStats = new user_stats({ userName, victories, numberofCarsOwned, garageValue,timeDriven, mostValuableCar,
             totalWinnningsinCR, favoriteCar, longestSkillChain, distanceDrivenInMiles, longestJump, topSpeed, biggestAir });
         const newUserProfile = new user_profile({userName,platform,level,profilePic});

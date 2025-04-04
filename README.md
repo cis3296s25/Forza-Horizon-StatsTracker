@@ -10,7 +10,7 @@ Forza Horizon 5 StatHub is a web application designed to allow users to view and
 
 - **Compare Stats**: Signed-in user will be able to compare their stats with another user
 
-- **View Community Leaderboard**: Users will be able to view a community leaderboard to see where they rank amongst other registered users
+- **View Community Leaderboard (Coming Soon)**: Users will be able to view a community leaderboard to see where they rank amongst other registered users
 
 ## Conceptual Design
 - **Backend**: Node.js, express 
@@ -68,13 +68,39 @@ npx nodemon server.js
 
 In your browser, go to http://localhost:5173/
 
-## DISCLAIMER - For Users Signing Up with Xbox
+## How to Sign Up for Different Types of Users
+
+
+### Xbox Users
 
 On the signup page, if you have selected Xbox, you need to navigate to https://www.cxkes.me/xbox/xuid and put 
 your Xbox username in the input box. Afterwards, you will need to copy and paste the XUID (DEC) for your account into the id field for the signup page. 
+
+### Steam Users
+In order to sign up with Steam, you must first make your Steam profile public. To do that follow the steps below.
+
+1. Navigate to the Steam app and click on your profile to show the profile drop-down menu. (Top right of Steam page)
+2. Click "View my Profile." (One of the options listed in the drop-down menu from previous step)
+3. Click "Edit Profile" (It will show up on the top right of the Steam page)
+4. Click "Privacy Settings" on the left sidebar
+5. Lastly, click on "My Profile" and set your account to public, and in the sub settings of the "My Profile" section set the "Game Details" public. 
+
+Afterwards, you will need your Steam ID and the steps to find your steam ID are below.
+
+1. Click on your profile drop-down menu
+2. Click account details
+3. Now, the Steam ID should be on the top left under your account name
+
+### Manual Sign-Up (For Users Who Do Not Own The Game)
+If you are a user who wants to test the web application, but do not own the Forza Horizon 5 game, you can create an account manually using the Signup page. After inputting your information into the Signup form, use the username you created the account with in place for areas of the web application where it asks for a gamertag. For example, on the home page of the web application it asks to "Enter gamertag" in order to look up your stats, but in this case you will enter the username you created your account with in place of the gamertag. This will allow you to view your manually created stats.  
+
+
+
 
 ## Project Board
 
 Project Board Link: https://github.com/orgs/cis3296s25/projects/65
 
-## Example User Gamertag to Test Web Application
+## Example User Gamertag to Compare Stats to 
+
+Gamertag: forzafan123
