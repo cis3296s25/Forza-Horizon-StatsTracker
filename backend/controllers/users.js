@@ -244,10 +244,12 @@ exports.searchUsers = async (req, res) => {
         const userStats = await user_stats.findOne({ userName });
         res.status(200).json({
             message: "User found",
+            userName: user.userName,
+            platform: user.platform,
             userStats: {
                 platform: userStats.platform,
                 timeDriven: userStats.timeDriven,
-                numberOfCarsOwned: userStats.numberOfCarsOwned,
+                numberofCarsOwned: userStats.numberofCarsOwned,
                 garageValue: userStats.garageValue,
                 distanceDrivenInMiles: userStats.distanceDrivenInMiles
             },
