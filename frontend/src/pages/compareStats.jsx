@@ -3,6 +3,7 @@ import "../styles/CompareStats.css";
 import Nav from '../components/nav';
 import CompareTable from '../components/Table/comparisonTable';
 import Footer from '../components/footer';
+import { searchAPI } from '../redux/apis/user';
 
 
 
@@ -26,8 +27,16 @@ if(userStats[username]){
   return;
 }
 
-/*Gonna user the fetching api*/
+
+/*Gonna user the fetching api
+try{
+const res = await search(inputName)
+}catch(Error){
+
 }
+*/
+}
+
 
 
 
