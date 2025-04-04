@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import LoadingScreen from './pages/loadingScreen';
 import './App.css';
-//import RouteProtection from './components/routeProtection';
+import RouteProtection from './components/routeProtection';
 
 // Lazy load the components
 const Home = lazy(() => import('./pages/home'));
@@ -39,7 +39,9 @@ function App() {
             <Route path="/compare-page" element={<ComparePage />}/>
             <Route
               path="/user/:username"
-               element={<StatsPage />}
+              element={
+           <RouteProtection element={<StatsPage />} />
+            }
             />
 
             <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
