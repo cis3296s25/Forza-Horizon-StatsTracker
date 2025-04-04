@@ -59,12 +59,16 @@ body {
   font-weight: 900;
   margin-bottom: 1rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  margin-left: -400px;
+  margin-top: -200px;
 }
 
 .search-bar {
   display: flex;
   width: 100%;
   max-width: 20rem;
+  left: -200px;
+  position: relative;
 }
 
 .search-bar input {
@@ -91,66 +95,100 @@ body {
   background-color: #f57f17;
 }
 
-.stats-container {
-  margin-top: -3rem;
-  width: 100%;
-  max-width: 50rem;
-  padding: 2rem;
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+.no-user-box {
+  position: absolute;
+  right: 100px;
+  width: 400px;
+  height: 400px;
+  padding: 0px 30px;
+  margin-top: 50px;
+  background-color: rgba(36, 36, 36, 0.500);
+  color: rgba(255, 255, 255, 0.679);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(36, 36, 36, 1);
+  text-align: center;
 }
 
-.stats-container.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 12rem;
+.no-user-box h2 {
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 10px;
 }
-
-.stats-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-.gamertag-display {
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-}
-
-.stat-card {
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 1.5rem;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.3s;
-}
-
-.stat-card:hover {
-  transform: translateY(-5px);
-}
-
-.stat-title {
-  font-size: 0.875rem;
-  opacity: 0.7;
-  margin-bottom: 0.5rem;
-}
-
-.stat-value {
+.no-user-box h3 {
   font-size: 2rem;
   font-weight: 700;
-  color: var(--forza-yellow);
+  margin-bottom: 10px;
 }
 
+.user-box {
+  position: absolute;
+  right: 100px;
+  width: 400px;
+  height: auto;
+  padding: 0px 30px;
+  margin-top: 50px;
+  background-color: rgba(36, 36, 36, 0.500);
+  color: rgba(255, 255, 255, 0.795);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(36, 36, 36, 1);
+  text-align: center;
+}
+
+.user-box h2 {
+  font-size: 3rem;
+  font-weight: 900;
+  margin: 0;
+}
+
+.user-box p {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.boxes {
+  width: auto;
+  height: 40px;
+  background-color: rgba(68, 68, 68, 1);
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  padding: 8px;
+}
+
+.boxe {
+  width: auto;
+  height: 40px;
+  background-color:  rgba(85, 0, 142, 1);
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  padding: 8px;
+  margin: 0;
+}
+
+.platform-level {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px; 
+}
+
+.time-cars {
+  display: flex;
+  justify-content: space-between; /* Time and Cars next to each other */
+  gap: 10px;
+  color: white;
+}
+
+.garage-miles {
+  display: flex;
+  justify-content: space-between; /* Time and Cars next to each other */
+  gap: 10px;
+}
+
+.colors{
+  color: white;
+  text-shadow: 1px 1px 2px rgba(154, 2, 255, 1), -1px -1px 2px rgba(154, 2, 255, 1), 1px -1px 2px rgba(154, 2, 255, 1), -1px 1px 2px rgba(154, 2, 255, 1);
+}
 
 @media (max-width: 768px) {
   .hero-section h1 {
