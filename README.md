@@ -103,4 +103,5 @@ Project Board Link: https://github.com/orgs/cis3296s25/projects/65
 
 ## Example User Gamertag to Compare Stats to 
 
-Gamertag: forzafan123
+Gamertag: Tester1
+
