@@ -23,6 +23,9 @@ import { useNavigate } from 'react-router-dom';
       });
   
       if (res.data) {
+
+        localStorage.setItem('jwtToken', res.data.token);
+
         toast.success(res.data.message || "Login successful");
         setGamertag("");
         setPassword("");
@@ -35,8 +38,6 @@ import { useNavigate } from 'react-router-dom';
       }
     } catch (error) {
       toast.error("There was an error logging in. Please try again later.");
-      setGamertag("");
-      setPassword("");
     }
   };
     return (
@@ -44,10 +45,10 @@ import { useNavigate } from 'react-router-dom';
         <Nav />
         <div className="login-container">
           <input type="text" placeholder="Enter Gamertag" className="login-input" value = {gamertag} 
-          onChange={(e) => setGamertag(e.target.value)}/>
+          onChange={(e) => setGamertag(e.target.value)} required/>
 
           <input type="password" placeholder="Enter Password" className="login-input" value = {password}
-          onChange={(e) => setPassword(e.target.value)} />
+          onChange={(e) => setPassword(e.target.value)} required />
           <button className="login-button" onClick={loginFunction} disabled={isLoading}> {isLoading ? "Signing In..." : "SIGN IN"}</button>
         </div>
         <Footer />

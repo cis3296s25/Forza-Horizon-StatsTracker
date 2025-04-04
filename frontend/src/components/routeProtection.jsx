@@ -1,22 +1,17 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { useAuth } from './AuthContext';
+import { Navigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
-const RouteProtection = ({ element, ...rest }) => {
-  const { user } = useAuth();
+const ProtectedRoute = ({ element, ...rest }) => {
+    const token = localStorage.getItem("jwtToken");
 
-  return (
-    <Route
-      {...rest}
-      render={({ location }) => {
-        if (user && user.userName === rest.username) {
-          return element;
-        }
+    if (!token) {
+        // If the token is not present, redirect to the login page
+        toast.error("Good try but your attempt failed successfully. First log in");
+        return <Navigate to="/profile" replace />;
+    }
 
-        return <Redirect to={{ pathname: '/profile', state: { from: location } }} />;
-      }}
-    />
-  );
+    return element;
 };
 
-export default RouteProtection;
+export default ProtectedRoute;

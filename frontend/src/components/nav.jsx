@@ -47,12 +47,10 @@ const NavBar = () => {
             </li>
 
             <li>
-              <a href="#">
                 <img src={Map} alt="Map" className="nav-icon" />
                 <Link to ="/compare-page">
                   Compare Stats
                 </Link>
-              </a>
             </li>
             <li>
               <Link to ="/signup">
