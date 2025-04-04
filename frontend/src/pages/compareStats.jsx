@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import "../styles/CompareStats.css";
 import Nav from '../components/nav';
 import CompareTable from '../components/Table/comparisonTable';
 import Footer from '../components/footer';
 import { toast } from "react-hot-toast";
-import { useGetCompareStatsQuery } from '../redux/apis/stats';
+import { useLazyGetCompareStatsQuery } from '../redux/apis/stats';
 
 const CompareStats = () => {
   const [inputName1, setInputName1] = useState('');
@@ -13,8 +13,8 @@ const CompareStats = () => {
 
 
   // useGetCompareStatsQuery now takes userName1 and userName2 as arguments
-  const { data, error, isLoading } = useGetCompareStatsQuery({ userName1: inputName1, userName2: inputName2 });
-
+  //const { data, error, isLoading } = useGetCompareStatsQuery({ userName1: inputName1, userName2: inputName2 });
+const[triggerCompareStats, {data,error,isLoading}] = useLazyGetCompareStatsQuery();
   const handleCompare = async () => {
     const username1 = inputName1.trim();
     const username2 = inputName2.trim();
@@ -26,7 +26,7 @@ const CompareStats = () => {
     }
 
     // Check if both usernames are the same
-    if (username1 === username2) {
+    if (username1.toLowerCase() === username2.toLowerCase()) {
       toast.error("Both usernames must be different.");
       return;
     }
@@ -37,11 +37,18 @@ const CompareStats = () => {
       return;
     }
 
+    try{
+      await triggerCompareStats({userName1: username1, userName2: username2});
+    }
+    catch{
+      toast.error("Failed to fetch stats.")
+    }
+
     // If stats are not fetched yet, the hook will automatically fetch the data
   };
 
   // Effect to handle the result from the API (success or error)
-  React.useEffect(() => {
+  useEffect(() => {
     if (data) {
       const statsData = data.users.reduce((acc, userStat) => {
         acc[userStat.userName] = userStat.stats;
