@@ -71,7 +71,7 @@ exports.newUser = async (req, res) => {
             return res.status(400).json({ message: "User already exists" });
         }
         const idCheck = await hub_user.findOne({ gameId });
-        if(idCheck.gameId!= null){
+        if (idCheck && idCheck.gameId != null) {
             return res.status(400).json({ message: "User already exists" });
         }
 
@@ -130,7 +130,8 @@ exports.newUser = async (req, res) => {
         const { level, profilePic } = await fetchPlayerData(platform, gameId);
 
         const newUser = new hub_user({ userName, platform, password: hashedPassword, verify, gameId});
-        const newUserStats = new user_stats({ userName, victories, numberofCarsOwned, garageValue });
+        const newUserStats = new user_stats({ userName, victories, numberofCarsOwned, garageValue, timeDriven, mostValuableCar,
+            totalWinnningsinCR, favoriteCar, longestSkillChain, distanceDrivenInMiles, longestJump, topSpeed, biggestAir });
         const newUserProfile = new user_profile({userName,platform,level,profilePic});
         await newUser.save();
         await newUserStats.save();
