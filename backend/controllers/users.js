@@ -3,7 +3,15 @@ const hub_user = require('../models/hub_user');
 const user_stats = require('../models/user_stats');
 const fetch = require('node-fetch');
 const user_profile = require('../models/user_profile');
+const jwt = require("jsonwebtoken");
 
+const generateToken = (user) => {
+    return jwt.sign(
+      { id: user._id, userName: user.userName },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+};
 
 // helper function to fetch player data for Steam or Xbox
 const fetchPlayerData = async (platform, gameId) => {
@@ -57,15 +65,6 @@ const fetchPlayerData = async (platform, gameId) => {
     return { level, profilePic };
 };
 
-const jwt = require("jsonwebtoken");
-const generateToken = (user) => {
-    return jwt.sign(
-      { id: user._id, userName: user.userName },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
-};
-
 exports.newUser = async (req, res) => {
 
     const { userName, platform, password, gameId, victories, numberofCarsOwned, garageValue, timeDriven, mostValuableCar,
@@ -82,7 +81,7 @@ exports.newUser = async (req, res) => {
         const idCheck = await hub_user.findOne({ gameId });
         if (idCheck && idCheck.gameId != null) {
             return res.status(400).json({ message: "User already exists" });
-        }
+        }        
 
     if (!userName || !platform || !password) {
         return res.status(400).json({ message: "All fields are required" });
@@ -139,7 +138,8 @@ exports.newUser = async (req, res) => {
         const { level, profilePic } = await fetchPlayerData(platform, gameId);
 
         const newUser = new hub_user({ userName, platform, password: hashedPassword, verify, gameId});
-        const newUserStats = new user_stats({ userName, victories, numberofCarsOwned, garageValue, timeDriven, mostValuableCar,
+
+        const newUserStats = new user_stats({ userName, victories, numberofCarsOwned, garageValue,timeDriven, mostValuableCar,
             totalWinnningsinCR, favoriteCar, longestSkillChain, distanceDrivenInMiles, longestJump, topSpeed, biggestAir });
         const newUserProfile = new user_profile({userName,platform,level,profilePic});
         await newUser.save();
@@ -171,14 +171,6 @@ exports.loginUsers = async (req, res) => {
         if(!isMatch){
             return res.status(400).json({ message: "Incorrect password" });
         }
-
-        const token = generateToken(user);
-        res.status(200).json({
-            success: true,
-            message: "Login successful",
-            token,
-            user
-          });
 
         //res.status(200).json({message: "Login successful"});
         const { level, profilePic } = await fetchPlayerData(user.platform, user.gameId);
@@ -221,12 +213,9 @@ exports.logoutUsers = async (req, res) => {
 };
 
 
-// will need to updated this once we have the profile page ready
-// Controller function to search users by username
 exports.searchUsers = async (req, res) => {
-    const { userName } = req.body;  // Extracting userName from req.body
+    const { userName } = req.body; 
 
-    // Check if userName is provided
     if (!userName) {
         return res.status(400).json({ message: "User name is required" });
     }
@@ -250,9 +239,21 @@ exports.searchUsers = async (req, res) => {
             { new: true }
         );
         if (!updatedUser) {
-            return res.status(404).json({ message: "User profile not found" });
+            return res.status(404).json({ message: "User profile not found"});
         }
-        res.status(200).json({ message: "User found"});
+        const userStats = await user_stats.findOne({ userName });
+        res.status(200).json({
+            message: "User found",
+            userStats: {
+                platform: userStats.platform,
+                timeDriven: userStats.timeDriven,
+                numberOfCarsOwned: userStats.numberOfCarsOwned,
+                garageValue: userStats.garageValue,
+                distanceDrivenInMiles: userStats.distanceDrivenInMiles
+            },
+            level: updatedUser.level,
+            profilePic: updatedUser.profilePic
+        });
     } catch (error) {
         res.status(500).json({ message: "Error searching user", error: error.message });
     }

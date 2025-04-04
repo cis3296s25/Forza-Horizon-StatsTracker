@@ -20,6 +20,7 @@ const NavBarLog = () => {
       const res = await logout();
 
       if (res.data) {
+        localStorage.removeItem('jwtToken');
         toast.success(res.data.message || "Logged out successfully");
         navigate('/');
       } else if (res.error) {
@@ -68,12 +69,10 @@ const NavBarLog = () => {
               </a>
             </li>
             <li>
-              <a href="#">
                 <img src={Map} alt="Map" className="nav-icon" />
                 <Link to ="/compare-page">
                   Compare Stats
                 </Link>
-              </a>
             </li>
             <li>
                 <button onClick={handleLogout} disabled={isLoading}>
