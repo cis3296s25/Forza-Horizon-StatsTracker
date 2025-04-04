@@ -5,14 +5,48 @@ import Nav from '../components/navLog';
 import Footer from '../components/footer';
 import "../styles/statsPage.css";
 import { useGetUserStatsQuery } from '../redux/apis/stats'; 
+import { useSearchMutation } from '../redux/apis/user';
 import toast from 'react-hot-toast';
 
 function StatsPage() {
     const { username } = useParams();
     const navigate = useNavigate();
-    
-    const { data, error, isLoading } = useGetUserStatsQuery(username);
+    const [search, { isLoading }] = useSearchMutation();
+    const [userStats, setUserStats] = useState(null);
+    const [userFound, setUserFound] = useState(false);
+    const [noUserFound, setNoUserFound] = useState(false);
+
+    const { data, error, isLoading: statsLoading } = useGetUserStatsQuery(username);
     console.log("Data from API:", data); // Log the data received from the API
+
+    // Trigger searchGamertag automatically when the username is available
+    useEffect(() => {
+        if (username) {
+            searchGamertag();  // Call the search function automatically when username is present
+        }
+    }, [username]);
+
+    // Function to search for a user and update the state
+    const searchGamertag = async () => {
+        const res = await search({ userName: username });
+
+        if (res.data) {
+            toast.success(res.data.message || "User found");
+            setUserFound(true);
+            setNoUserFound(false); // Reset the no user found state
+            const platforms = res.data.platform.charAt(0).toUpperCase() + res.data.platform.slice(1).toLowerCase();
+            setUserStats({
+                userName: res.data.userName,
+                platform: platforms,
+                level: res.data.level,
+            });
+        } else if (res.error) {
+            const errorMessage = res.error.data?.message || "User not found";
+            toast.error(errorMessage);
+            setUserFound(false);
+            setNoUserFound(true);
+        }
+    };
 
     useEffect(() => {
         if (error && error.status === 403) {
@@ -22,7 +56,7 @@ function StatsPage() {
         }
     }, [error, navigate]);
 
-    if (isLoading) {
+    if (statsLoading || isLoading) {
         return (
             <div className="statsPage-mainContainer">
                 <Nav />
@@ -49,26 +83,54 @@ function StatsPage() {
                 <br />
                 <br />
                 <br />
+                <h1>Profile</h1>
+                    <div className="user-box">
+                        <h2>Welcome, {userStats.userName}</h2>
+                        <div className="platform-level">
+                            <p className='boxes'><strong>Platform:</strong> {userStats.platform}</p>
+                            <p className='boxes'><strong>Level:</strong> {userStats.level}</p>
+                        </div>
+                    </div>
+                <br />
+                <br />
+
+                <br />
+
+                <br />
+
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+
                 <h1>Stats</h1>
-                <Table
-                    list={[data?.stats]} // Wrap the stats object in an array if needed
-                    colNames={['victories', 'numberofCarsOwned', 'garageValue', 'timeDriven', 'mostValuableCar', 'totalWinnningsinCR', 
-                        'favoriteCar', 'longestSkillChain', 'distanceDrivenInMiles', 'longestJump', 'topSpeed', 'biggestAir']}
-                    colNameMap={{
-                        victories: 'Victories',
-                        numberofCarsOwned: 'Number of Cars Owned',
-                        garageValue: ' Garage Value',
-                        timeDriven: 'Time Driven',
-                        mostValuableCar: 'Most Valuable Car',
-                        totalWinnningsinCR: 'Total Winnings in CR',
-                        favoriteCar: 'Favorite Car',
-                        longestSkillChain: 'Longest Skill Chain',
-                        distanceDrivenInMiles: 'Distance Driven in Miles',
-                        longestJump: 'Longest Jump',
-                        topSpeed: 'Top Speed',
-                        biggestAir: 'Biggest Air',
-                    }}
-                />
+                {data && data.stats && (
+                    <Table
+                        list={[data?.stats]} // Wrap the stats object in an array if needed
+                        colNames={[
+                            'victories', 'numberofCarsOwned', 'garageValue', 'timeDriven', 'mostValuableCar', 'totalWinnningsinCR', 
+                            'favoriteCar', 'longestSkillChain', 'distanceDrivenInMiles', 'longestJump', 'topSpeed', 'biggestAir'
+                        ]}
+                        colNameMap={{
+                            victories: 'Victories',
+                            numberofCarsOwned: 'Number of Cars Owned',
+                            garageValue: ' Garage Value',
+                            timeDriven: 'Time Driven',
+                            mostValuableCar: 'Most Valuable Car',
+                            totalWinnningsinCR: 'Total Winnings in CR',
+                            favoriteCar: 'Favorite Car',
+                            longestSkillChain: 'Longest Skill Chain',
+                            distanceDrivenInMiles: 'Distance Driven in Miles',
+                            longestJump: 'Longest Jump',
+                            topSpeed: 'Top Speed',
+                            biggestAir: 'Biggest Air',
+                        }}
+                    />
+                )}
             </div>
             <Footer />
         </div>
