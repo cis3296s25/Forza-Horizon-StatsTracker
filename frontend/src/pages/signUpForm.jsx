@@ -83,14 +83,14 @@ return (
   <div className="signup-mainContainer">
     <Nav />
     <div className="signup-container">
-      <h2 style={{textAlign: "center", marginBottom: "20px"}}>Driver Statistics</h2>
+      <h2 style={{textAlign: "center", marginBottom: "5px"}}>Driver Statistics</h2>
       
-      <table style={{width: "100%", borderCollapse: "separate", borderSpacing: "10px"}}>
+      <table style={{width: "100%", borderCollapse: "separate", borderSpacing: "30px"}}>
         <tbody>
           {/* Row 1 */}
           <tr>
             <td>
-              <label style={{fontWeight:"700"}}>Number Of Victories *</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Number Of Victories</label>
               <input
                 type="number"
                 id="numVictories"
@@ -98,11 +98,11 @@ return (
                 className="signup-input" 
                 placeholder='100'
                 onChange={(e) => setVictories(e.target.value)}
-                style={{width: "100%", display: "block", marginTop: "5px"}}
+                style={{width: "100%", display: "block"}}
               />
             </td>
             <td>
-              <label style={{fontWeight:"700"}}>Number of Cars Owned *</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Number of Cars Owned</label>
               <input
                 type="number"
                 id="numCars"
@@ -110,11 +110,11 @@ return (
                 className="signup-input"
                 placeholder='100' 
                 onChange={(e) => setNumberOfCarsOwned(e.target.value)}
-                style={{width: "100%", display: "block", marginTop: "5px"}}
+                style={{width: "100%", display: "block"}}
               />
             </td>
             <td>
-              <label style={{fontWeight:"700"}}>Garage Value *</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Garage Value</label>
               <input
                 type="text"
                 id="garageVal"
@@ -122,7 +122,7 @@ return (
                 className="signup-input" 
                 placeholder='10,000 Cr'
                 onChange={(e) => setGarageValue(e.target.value)}
-                style={{width: "100%", display: "block", marginTop: "5px"}}
+                style={{width: "100%", display: "block"}}
               />
             </td>
           </tr>
@@ -130,36 +130,36 @@ return (
           {/* Row 2 */}
           <tr>
             <td>
-              <label style={{fontWeight:"700"}}>Time Driven</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Time Driven</label>
               <input
                 type="text"
                 value={timeDriven}
                 className="signup-input"
                 placeholder='100 hours'
                 onChange={(e) => setTimeDriven(e.target.value)}
-                style={{width: "100%", display: "block", marginTop: "5px"}}
+                style={{width: "100%", display: "block"}}
               />
             </td>
             <td>
-              <label style={{fontWeight:"700"}}>Most Valuable Car</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Most Valuable Car</label>
               <input
                 type="text"
                 value={mostValuableCar}
                 className="signup-input"
                 placeholder='Ferrari F40'
                 onChange={(e) => setMostValuableCar(e.target.value)}
-                style={{width: "100%", display: "block", marginTop: "5px"}}
+                style={{width: "100%", display: "block"}}
               />
             </td>
             <td>
-              <label style={{fontWeight:"700"}}>Total Winnings (CR)</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Total Winnings (CR)</label>
               <input
                 type="number"
                 value={totalWinnningsinCR}
                 className="signup-input"
                 placeholder='500000'
                 onChange={(e) => setTotalWinningsinCR(e.target.value)}
-                style={{width: "100%", display: "block", marginTop: "5px"}}
+                style={{width: "100%", display: "block"}}
               />
             </td>
           </tr>
@@ -167,36 +167,36 @@ return (
           {/* Row 3 */}
           <tr>
             <td>
-              <label style={{fontWeight:"700"}}>Favorite Car</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Favorite Car</label>
               <input
                 type="text"
                 value={favoriteCar}
                 className="signup-input"
                 placeholder='Porsche 911 GT3'
                 onChange={(e) => setFavoriteCar(e.target.value)}
-                style={{width: "100%", display: "block", marginTop: "5px"}}
+                style={{width: "100%", display: "block"}}
               />
             </td>
             <td>
-              <label style={{fontWeight:"700"}}>Longest Skill Chain</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Longest Skill Chain</label>
               <input
                 type="text"
                 value={longestSkillChain}
                 className="signup-input"
                 placeholder='500,000 points'
                 onChange={(e) => setLongestSkillChain(e.target.value)}
-                style={{width: "100%", display: "block", marginTop: "5px"}}
+                style={{width: "100%", display: "block"}}
               />
             </td>
             <td>
-              <label style={{fontWeight:"700"}}>Distance Driven (Miles)</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Distance Driven (Miles)</label>
               <input
                 type="number"
                 value={distanceDrivenInMiles}
                 className="signup-input"
                 placeholder='1000'
                 onChange={(e) => setDistanceDrivenInMiles(e.target.value)}
-                style={{width: "100%", display: "block", marginTop: "5px"}}
+                style={{width: "100%", display: "block"}}
               />
             </td>
           </tr>
@@ -204,36 +204,36 @@ return (
           {/* Row 4 */}
           <tr>
             <td>
-              <label style={{fontWeight:"700"}}>Longest Jump (Feet)</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Longest Jump (Feet)</label>
               <input
                 type="number"
                 value={longestJump}
                 className="signup-input"
                 placeholder='500'
                 onChange={(e) => setLongestJump(e.target.value)}
-                style={{width: "100%", display: "block", marginTop: "5px"}}
+                style={{width: "100%", display: "block"}}
               />
             </td>
             <td>
-              <label style={{fontWeight:"700"}}>Top Speed (MPH)</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Top Speed (MPH)</label>
               <input
                 type="number"
                 value={topSpeed}
                 className="signup-input"
                 placeholder='250'
                 onChange={(e) => setTopSpeed(e.target.value)}
-                style={{width: "100%", display: "block", marginTop: "5px"}}
+                style={{width: "100%", display: "block"}}
               />
             </td>
             <td>
-              <label style={{fontWeight:"700"}}>Biggest Air</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Biggest Air</label>
               <input
                 type="text"
                 value={biggestAir}
                 className="signup-input"
                 placeholder='100 feet'
                 onChange={(e) => setBiggestAir(e.target.value)}
-                style={{width: "100%", display: "block", marginTop: "5px"}}
+                style={{width: "100%", display: "block"}}
               />
             </td>
           </tr>
