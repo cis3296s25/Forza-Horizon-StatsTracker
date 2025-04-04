@@ -102,3 +102,5 @@ If you are a user who wants to test the web application, but do not own the Forz
 Project Board Link: https://github.com/orgs/cis3296s25/projects/65
 
 ## Example User Gamertag to Compare Stats to 
+
+Gamertag: forzafan123
