@@ -3,5 +3,8 @@
     "bcrypt": "^5.1.1",
     "react-redux": "^9.2.0",
     "redux": "^5.0.1"
+  },
+  "devDependencies": {
+    "vite": "^6.2.5"
   }
 }
