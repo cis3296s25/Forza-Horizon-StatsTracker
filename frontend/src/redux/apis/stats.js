@@ -15,8 +15,10 @@ export const getUserStatsAPI = createApi({
   endpoints: (builder) => ({
     getUserStats: builder.query({
       query: (userName) => ({
-        url: `stats?userName=${userName}`,
+        //url: `stats?userName=${userName}`,
+        url:`stats`,
         method: "GET",
+        params: {userName},
       }),
     }),
   }),
@@ -38,8 +40,10 @@ export const getUserProfileStatsAPI = createApi({
   endpoints: (builder) => ({
     getUserProfileStats: builder.query({
       query: (userName) => ({
-        url: `profile-stats?userName=${userName}`, 
+        //url: `profile-stats?userName=${userName}`, 
+        url: `profile-stats`,
         method: 'GET',
+        params: {userName},
       }),
     }),
   }),
@@ -54,8 +58,9 @@ export const getCompareStatsAPI = createApi({
     getCompareStats: builder.query({
       query: ({ userName1, userName2 }) => ({
         url: 'compareStats',
-        params: { userName1, userName2 },
+       // params: { userName1, userName2 },
         method: 'GET',
+        params: {userName1, userName2},
       }),
     }),
   }),
@@ -63,4 +68,4 @@ export const getCompareStatsAPI = createApi({
 
 export const { useGetUserStatsQuery } = getUserStatsAPI;
 export const { useGetUserProfileStatsQuery } = getUserProfileStatsAPI;
-export const { useGetCompareStatsQuery } = getCompareStatsAPI;
+export const { useGetCompareStatsQuery,useLazyGetCompareStatsQuery } = getCompareStatsAPI;
