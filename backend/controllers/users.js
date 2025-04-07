@@ -279,32 +279,17 @@ exports.deleteUsers = async (req, res) => {
     }
 }
 
-/*
-exports.compareUsers = async(req,res)=>{
-const {userA, userB} = req.query;
-if(!userA || !userB){
-    return res.status(400).json({message: "Both userA and userB must be provided"})
+exports.getUsersList = async (req, res) => {
+    const {prefix} = req.query;
+    try {
+        const users = await hub_user.find({
+            userName: { $regex: `^${prefix}`, $options: 'i' }
+        }).select('userName');
+        
+        return res.status(200).json({users});
+    }
+    catch (error) {
+        console.error("Error fetching users:", error);
+        res.status(500).json({ message: "Internal server error", error: error.message });
+    }
 }
-
-try{
-
-const userAstats = await user_stats.findOne({username: userA});
-const userBstats = await user_stats.findOne({username: userB});
-if(!userAstats || !userBstats){
-    return res.status(400).json({message: "One or both users are not found in our database"});
-}
-
-const userStats = {
-    userA: userAstats,
-    userB: userBstats
-}
-
-res.status(200).json(userStats);
-
-}catch(error){
-    console.error('Error fetching user stats:', error);
-    res.status(500).json({message:"Error searching user stats", error:error.message});
-}
-
-}
-*/
