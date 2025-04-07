@@ -6,9 +6,6 @@
   width:100vw;
   align-items: center;
   color: white;
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
-  font-size: 2rem;
-  font-weight: bold;
   background:url('../assets/forzaImgs/mclaren.jpg') no-repeat center center ;
   background-size: cover;
    position: fixed;
@@ -31,6 +28,7 @@
     outline: none;
     width: 250px;
     margin-top: 1rem;
+    margin-right: 10px;
 }
 
 .username-display{
@@ -44,10 +42,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
-   /*} background-color: rgba(0,0,0,0.4);*/
+    justify-content: center;
     padding: 2rem;
     border-radius: 10px;
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+    padding-top: 70px;
 }
 
 
