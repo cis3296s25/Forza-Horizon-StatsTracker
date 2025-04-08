@@ -1,17 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import "../styles/home.css";
 import Nav from '../components/nav';
 import Footer from '../components/footer';
 import toast from "react-hot-toast";
 import { useSearchMutation } from '../redux/apis/user';
+import { useGetUsersListQuery } from '../redux/apis/user';
 
 const Home = () => {
   const [gamertag, setGamertag] = useState('');
   const [noUserFound, setNoUserFound] = useState(false);
   const [UserFound, setUserFound] = useState(false);
-  const [userStats, setUserStats] = useState(null)  // New state to handle "No User Found"
+  const [userStats, setUserStats] = useState(null)
+  const [suggestions, setSuggestions] = useState([]);
 
   const [search, { isLoading }] = useSearchMutation();
+  const { data: userListData } = useGetUsersListQuery(gamertag, {
+    skip: false,
+  });
+  
+
+  useEffect(() => {
+    if (userListData && userListData.users) {
+      setSuggestions(userListData.users);
+    } else {
+      setSuggestions([]);
+    }
+  }, [userListData]);
+
 
   const searchGamertag = async (e) => {
     if (e) e.preventDefault();
@@ -38,22 +53,23 @@ const Home = () => {
           distanceDrivenInMiles: res.data.userStats.distanceDrivenInMiles,
           level: res.data.level,
         });
-        setGamertag("");
+        setSuggestions([]); 
       } else if (res.error) {
         const errorMessage = res.error.data?.message || "User not found";
         toast.error(errorMessage);
         setUserFound(false);
         setNoUserFound(true);
+        setSuggestions([]);
         setGamertag("");
       }
     } catch (error) {
       toast.error("There was an error searching for the user. Try again later.");
       console.error("Error searching gamertag:", error);
       setGamertag("");
-      setNoUserFound(true); // Set error state if there's an issue
+      setNoUserFound(true);
+      setSuggestions([]);
     }
   };
-
   return (
     <div>
       <div className="forza-app">
@@ -67,9 +83,17 @@ const Home = () => {
                 value={gamertag}
                 onChange={(e) => setGamertag(e.target.value)}
                 placeholder="Enter Gamertag"
+                list="user-suggestions"
               />
+              <datalist id="user-suggestions">
+                {suggestions.map((user, index) => (
+                  <option key={index} value={user.userName} />
+                ))}
+              </datalist>
+
               <button onClick={searchGamertag} disabled={isLoading}>Search</button>
             </div>
+
            {UserFound && (
             <div className="user-box">
               <h2>{userStats.userName}</h2>

@@ -1,5 +1,5 @@
 import {configureStore} from '@reduxjs/toolkit';
-import {loginAPI, logoutAPI, searchAPI, deleteAPI,signupAPI } from './apis/user';
+import {loginAPI, logoutAPI, searchAPI, deleteAPI,signupAPI, getUsersListAPI } from './apis/user';
 import {getUserStatsAPI,getUserProfileStatsAPI, getCompareStatsAPI} from './apis/stats'
 
 
@@ -15,6 +15,7 @@ export const store = configureStore({
         [getUserStatsAPI.reducerPath]: getUserStatsAPI.reducer,
         [getUserProfileStatsAPI.reducerPath]: getUserProfileStatsAPI.reducer,
         [getCompareStatsAPI.reducerPath]: getCompareStatsAPI.reducer,
+        [getUsersListAPI.reducerPath]: getUsersListAPI.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(
@@ -25,7 +26,8 @@ export const store = configureStore({
             deleteAPI.middleware,
             getUserStatsAPI.middleware,
             getUserProfileStatsAPI.middleware,
-            getCompareStatsAPI.middleware
+            getCompareStatsAPI.middleware,
+            getUsersListAPI.middleware,
         ),
     });
 

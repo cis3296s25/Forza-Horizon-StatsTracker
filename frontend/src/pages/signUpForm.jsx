@@ -70,8 +70,7 @@ const navigate = useNavigate();
       toast.success("Signup successful!");
       navigate("/");
     } else {
-      toast.error(response.error?.data?.message || "Signup failed. Please try again.");
-      navigate("/signup", { state: {} });
+      toast.error(response.error?.data?.message || "Signup failed. Please try again. Invalid Input.");
     }
   } catch (error) {
     toast.error("An unexpected error occurred.");

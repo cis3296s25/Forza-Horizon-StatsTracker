@@ -12,7 +12,7 @@ function StatsPage() {
     const { username } = useParams();
     const navigate = useNavigate();
     const [search, { isLoading }] = useSearchMutation();
-    const [userStats, setUserStats] = useState(null);
+    const [userStats, setUserStats] = useState({});
     const [userFound, setUserFound] = useState(false);
     const [noUserFound, setNoUserFound] = useState(false);
 
@@ -84,20 +84,27 @@ function StatsPage() {
                 <br />
                 <br />
                 <h1>Profile</h1>
+                { userStats && userStats.platform === "xbox" ? (
                     <div className="user-box">
                         <h2>Welcome, {userStats.userName}</h2>
                         <div className="platform-level">
-                            <p className='boxes'><strong>Platform:</strong> {userStats.platform}</p>
-                            <p className='boxes'><strong>Level:</strong> {userStats.level}</p>
+                        <p className="boxes"><strong>Platform:</strong> {userStats.platform}</p>
+                        <p className="boxes"><strong>Game Score:</strong> {userStats.level}</p>
                         </div>
                     </div>
+                    ) : (
+                    <div className="user-box">
+                        <h2>Welcome, {userStats.userName}</h2>
+                        <div className="platform-level">
+                        <p className="boxes"><strong>Platform:</strong> {userStats.platform}</p>
+                        <p className="boxes"><strong>Level:</strong> {userStats.level}</p>
+                        </div>
+                    </div>
+                )}
                 <br />
                 <br />
-
                 <br />
-
                 <br />
-
                 <br />
                 <br />
                 <br />
