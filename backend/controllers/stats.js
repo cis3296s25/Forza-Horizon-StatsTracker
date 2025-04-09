@@ -100,3 +100,29 @@ exports.getCompareStats = async (req, res) => {
         res.status(500).json({ message: "Error comparing stats", error: error.message });
     }
 };
+
+exports.updateUserStats = async (req,res)=>{
+const tokUserName = req.user.userName;
+const {userName, updates} = req.body;
+
+if(userName != tokUserName){
+    return res.status(403).json({message: "Not authorized to edit this user's stats" })
+}
+
+try {
+    const updatedStats = await user_stats.findOneAndUpdate(
+    {userName},
+    {$set: updates},
+    {new: true},
+    );
+
+
+if(!updatedStats){
+    return res.status(404).json({message: "No user stats found"})
+}
+res.status(200).json({message:"Stats updated sucessfully"})
+}
+catch(error){
+res.status(500).json({message:"Error updating stats", error: error.message})
+}
+}
