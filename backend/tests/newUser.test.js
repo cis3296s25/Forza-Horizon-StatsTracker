@@ -4,7 +4,7 @@ const hub_user = require('../models/hub_user');
 const user_profile = require('../models/user_profile');
 
 // Import the controller (adjust path as needed)
-const userController = require('../controllers/userController');
+const userController = require('../controllers/users');
 
 // Mock all dependencies
 jest.mock('bcrypt');
