@@ -13,6 +13,7 @@ const StatsPage = lazy(() => import('./pages/statsPage'));
 const SignupForm = lazy(() => import('./pages/signUpForm'));
 const NotFound = lazy(() => import('./components/notFound'));
 const ComparePage = lazy(() => import('./pages/compareStats'));
+const DeletePage = lazy(() => import('./pages/deleteProfile'));
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -37,6 +38,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/signup-stats" element={<SignupForm />} />
             <Route path="/compare-page" element={<ComparePage />}/>
+            <Route path="/delete" element={<DeletePage />}/>
             <Route
               path="/user/:username"
               element={
