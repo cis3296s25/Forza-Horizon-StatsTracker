@@ -87,12 +87,12 @@ exports.newUser = async (req, res) => {
         return res.status(400).json({ message: "All fields are required" });
     }
 
-    if (!favoriteCar || !mostValuableCar) {
+    if (!favoriteCar || !mostValuableCar || !longestSkillChain) {
         return res.status(400).json({message: "Not a valid response"});
     }
 
     if (victories < 0  || numberofCarsOwned < 0 || garageValue < 0 || timeDriven < 0 ||  totalWinnningsinCR < 0 
-        || longestSkillChain < 0 || distanceDrivenInMiles < 0 || longestJump < 0 || topSpeed < 0 || biggestAir < 0) {
+        || distanceDrivenInMiles < 0 || longestJump < 0 || topSpeed < 0 || biggestAir < 0) {
         return res.status(400).json({message: "Stats cannot be negative"});
     }
 
@@ -267,8 +267,9 @@ exports.deleteUsers = async (req, res) => {
     try{
         const user = await hub_user.findOneAndDelete({userName});
         const userStats= await user_stats.findOneAndDelete({userName});
+        const userLevel = await user_profile.findOneAndDelete({userName});
 
-        if(!user && !userStats){
+        if(!user && !userStats && !userLevel){
             return res.status(404).json({message: "User not found"});
         }
         res.status(200).json({message: "User deleted successfully"});
@@ -279,32 +280,17 @@ exports.deleteUsers = async (req, res) => {
     }
 }
 
-/*
-exports.compareUsers = async(req,res)=>{
-const {userA, userB} = req.query;
-if(!userA || !userB){
-    return res.status(400).json({message: "Both userA and userB must be provided"})
-}
-
-try{
-
-const userAstats = await user_stats.findOne({username: userA});
-const userBstats = await user_stats.findOne({username: userB});
-if(!userAstats || !userBstats){
-    return res.status(400).json({message: "One or both users are not found in our database"});
-}
-
-const userStats = {
-    userA: userAstats,
-    userB: userBstats
-}
-
-res.status(200).json(userStats);
-
-}catch(error){
-    console.error('Error fetching user stats:', error);
-    res.status(500).json({message:"Error searching user stats", error:error.message});
-}
-
-}
-*/
+exports.getUsersList = async (req, res) => {
+    const {prefix} = req.query;
+    try {
+        const users = await hub_user.find({
+            userName: { $regex: `^${prefix}`, $options: 'i' }
+        }).select('userName');
+        
+        return res.status(200).json({users});
+    }
+    catch (error) {
+        console.error("Error fetching users:", error);
+        res.status(500).json({ message: "Internal server error", error: error.message });
+    }
+} 
