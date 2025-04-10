@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Nav from '../components/nav';
 import Footer from '../components/footer';
 import Table from '../components/Table/Table';
-import "../styles/statsPage.css"; 
+import "../styles/leaderboard.css"; 
 import { useGetAllUserStatsQuery } from '../redux/apis/stats'; 
+import LeaderBoardTable from '../components/Table/leaderboardTable';
+
 
 function Leaderboard() {
   const { data, error, isLoading } = useGetAllUserStatsQuery(); 
@@ -46,13 +48,13 @@ function Leaderboard() {
         <br />
         <h1>Leaderboard</h1>
         {sortedStats.length > 0 && (
-          <Table
+          <LeaderBoardTable
             list={sortedStats}
             colNames={['userName', 'victories', 'distanceDrivenInMiles', 'numberofCarsOwned']}
             colNameMap={{
               userName: 'Username',
               victories: 'Victories',
-              distanceDrivenInMiles: 'Total Distance Driven',
+              distanceDrivenInMiles: 'Total Distance Driven (Miles)',
               numberofCarsOwned: '# of Cars Owned',
             }}
           />

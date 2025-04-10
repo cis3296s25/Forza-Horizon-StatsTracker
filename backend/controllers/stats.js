@@ -31,10 +31,13 @@ exports.getAllUserStats = async (req, res) => {
     
         const leaderboard = await Promise.all(
           verifiedUsers.map(async (user) => {
-            const stats = await user_stats.find({ userName: user.userName });
+            const stats = await user_stats.findOne({userName: new RegExp(`^${user.userName}$`, 'i')
+              });
+              
     
-            if (!stats) return null; 
-            console.log("okay", stats.victories);
+            if (!stats) {
+                return null; 
+            }
     
             return {
               userName: user.userName,
