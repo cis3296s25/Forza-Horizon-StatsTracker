@@ -1,6 +1,10 @@
 import React, {useState} from 'react';
 import { useUpdateUserStatsMutation } from '../redux/apis/stats';
-import "../styles/updateStats.css";
+import "../styles/updateStatsPage.css";
+import Nav from '../components/nav';
+import Footer from '../components/footer';
+import { FaQuestionCircle} from "react-icons/fa";
+
 
 
 function UpdateStatsPage({userName, initialStats}){
@@ -25,74 +29,278 @@ try {
     console.error(err);
  }
 }
+return (
+  <div className="updateStatsPage-mainContainer">
+    <Nav />
+    <div className="updateStats-container">
+   <form onSubmit ={handleSubmit}>
 
+      <h2 style={{textAlign: "center", marginBottom: "5px"}}>Enter Your Updated Stats Below</h2>
+      
+      <table style={{width: "100%", borderCollapse: "separate", borderSpacing: "30px"}}>
+        <tbody>
+          {/* Row 1 */}
+          <tr>
+            <td>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Number Of Victories  
+                <span className="platform-tooltip-wrapper">
+                          <FaQuestionCircle className="platform-tooltip-icon" />
+                          <div className="platform-tooltip-content">
+                        
+                          </div>
+                  </span>
+                </label>
+              <input
+                type="number"
+                id="numVictories"
+                name="victories"
+                value={formData.victories || ""}
+                className="updateStats-input" 
+                placeholder='100'
+                onChange ={handleChange}
+                style={{width: "100%", display: "block"}}
+              />
+            </td>
+            <td>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Number of Cars Owned
+                <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                    
+                    </div>
+                </span>
+              </label>
+              <input
+                type="number"
+                id="numCars"
+                 name="numberofCarsOwned"
+                value={formData.numberofCarsOwned || ""}
+                className="updateStats-input"
+                placeholder='100' 
+                onChange ={handleChange}
 
-
-return(
-  <div className='updateStatsPage-mainContainer'>
-
-    <form onSubmit={handleSubmit} className="updateStatsForm">
-      <div className ="form-grid">
-    <label>
-      Top Speed:
-      <input type = "number" name ="topSpeed" value ={formData.topSpeed || ""} placeholder='100' onChange = {handleChange}/>
-    </label>
-    <label>
-        Victories:
-        <input type = "number" name ="victories" value = {formData.victories || ""} placeholder='100' onChange = {handleChange}/>
-    </label>
-    <label>
-        Numbers of Cars Owned:
-               <input type = "number" name ="Number of Cars Owned" value = {formData.numberofCarsOwned || ""} placeholder='100' onChange = {handleChange}/>
-    </label>
-
-     <label>
-       GarageValue
-         <input type = "text" name ="Garage Value" value = {formData.garageValue || ""} placeholder='100000' onChange = {handleChange}/>
-    </label>
-
-     <label>
-        Time Driven
-         <input type = "text" name ="Time Driven" value = {formData.timeDriven || ""} placeholder='40hrs'onChange = {handleChange}/>
-    </label>
-     <label>
-        Most Valuable Car
-         <input type = "text" name ="Most Valuable Car" value = {formData.mostValuableCar || ""} placeholder='2005 Ford GT'onChange = {handleChange}/>
-    </label>
-     <label>
-        Total Winnings
-         <input type = "number" name ="Total Winnings" value = {formData.totalWinningsinCR || ""} placeholder='10000000' onChange = {handleChange}/>
-    </label>
-     <label>
-       Favorite Car
-         <input type = "text" name ="Favorite Car" value = {formData.favoriteCar|| ""} placeholder='2021 BMW M3' onChange = {handleChange}/>
-    </label>
-     <label>
-       Longest Skill Chain
-         <input type = "text" name ="Longest Skill Chain" value = {formData.longestSkillChain || ""} placeholder='05:00' onChange = {handleChange}/>
-    </label>
-     <label>
-        Distance Driven In Miles
-         <input type = "number" name ="Distance Driven in Miles" value = {formData.distanceDrivenInMiles || ""}  placeholder='1000' onChange = {handleChange}/>
-    </label>
-     <label>
-        Longest Jump in Feet
-         <input type = "number" name ="Longest Jump in Feet" value = {formData.longestJump || ""}  placeholder='1000' onChange = {handleChange}/>
-    </label>
-     <label>
-       Biggest Air in Seconds
-         <input type = "text" name ="Biggest Air in Seconds" value = {formData.biggestAir || ""}   placeholder='4'onChange = {handleChange}/>
-    </label>
+                style={{width: "100%", display: "block"}}
+              />
+            </td>
+            <td>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Garage Value
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                      
+                    </div>
+                </span>
+              </label>
+              <input
+                type="text"
+                id="garageVal"
+                 name="garageValue"
+                value={formData.garageValue || ""}
+                className="updateStats-input" 
+                placeholder='10000 '
+                onChange ={handleChange}
+                style={{width: "100%", display: "block"}}
+              />
+            </td>
+          </tr>
+          
+          {/* Row 2 */}
+          <tr>
+            <td>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Time Driven
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                      
+                    </div>
+                </span>
+              </label>
+              <input
+                type="text"
+                name="timeDriven"
+                value={formData.timeDriven||""}
+                className="updateStats-input"
+                placeholder='100 hours'
+                onChange ={handleChange}
+                style={{width: "100%", display: "block"}}
+              />
+            </td>
+            <td>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Most Valuable Car
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                     
+                    </div>
+                </span>
+              </label>
+              <input
+                type="text"
+                name="mostValuableCar"
+                value={formData.mostValuableCar||""}
+                className="updateStats-input"
+                placeholder='Ferrari F40'
+                onChange ={handleChange}
+                style={{width: "100%", display: "block"}}
+              />
+            </td>
+            <td>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Total Winnings
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                      
+                    </div>
+                </span>
+              </label>
+              <input
+                type="number"
+                name = "totalWinningsinCR"
+                value={formData.totalWinningsinCR||""}
+                className="updateStats-input"
+                placeholder='500000'
+                onChange ={handleChange}
+                style={{width: "100%", display: "block"}}
+              />
+            </td>
+          </tr>
+          
+          {/* Row 3 */}
+          <tr>
+            <td>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Favorite Car
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                      
+                    </div>
+                </span>
+              </label>
+              <input
+                type="text"
+                name ="favoriteCar"
+                value={formData.favoriteCar||""}
+                className="updateStats-input"
+                placeholder='Porsche 911 GT3'
+                onChange ={handleChange}
+                style={{width: "100%", display: "block"}}
+              />
+            </td>
+            <td>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Longest Skill Chain
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                   
+                    </div>
+                </span>
+              </label>
+              <input
+                type="text"
+                name='longestSkillChain'
+                value={formData.longestSkillChain||""}
+                className="updateStats-input"
+                placeholder='05:10'
+                  onChange ={handleChange}
+                style={{width: "100%", display: "block"}}
+              />
+            </td>
+            <td>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Distance Driven (Miles)
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                
+                    </div>
+                </span>
+              </label>
+              <input
+                type="number"
+                name = "distanceDrivenInMiles"
+                value={formData.distanceDrivenInMiles || ""}
+                className="updateStats-input"
+                placeholder='1000'
+                  onChange ={handleChange}
+                style={{width: "100%", display: "block"}}
+              />
+            </td>
+          </tr>
+          
+          {/* Row 4 */}
+          <tr>
+            <td>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Longest Jump (Feet)
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                   
+                    </div>
+                </span>
+              </label>
+              <input
+                type="number"
+                name="longestJump"
+                value={formData.longestJump||""}
+                className="updateStats-input"
+                placeholder='500'
+                  onChange ={handleChange}
+                style={{width: "100%", display: "block"}}
+              />
+            </td>
+            <td>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Top Speed (MPH)
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                   
+                    </div>
+                </span>
+              </label>
+              <input
+                type="number"
+                name="topSpeed"
+                value={formData.topSpeed||""}
+                className="updateStats-input"
+                placeholder='250'
+                  onChange ={handleChange}
+                style={{width: "100%", display: "block"}}
+              />
+            </td>
+            <td>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Biggest Air
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                    
+                    </div>
+                </span>
+              </label>
+              <input
+                type="text"
+                name='biggestAir'
+                value={formData.biggestAir||""}
+                className="updateStats-input"
+                placeholder='100 feet'
+                  onChange ={handleChange}
+                style={{width: "100%", display: "block"}}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    
+      <div style={{textAlign: "center", marginTop: "2rem"}}>
+        <button className="submit-button" type = "submit"disabled={isLoading}>
+          {isLoading ? "Updating..." : "Update Your Stats"}
+        </button>
+        {message && (
+          <p className = "form-message">{message}</p>
+        )}
+      </div>
+        </form>
     </div>
-
-
-
-    <button type = "submit" disabled={isLoading}> {isLoading ? "Updating...": "Update Your Stats"}</button>
-    {message && <p>{message}</p>}
-    {error && <p style={{color: 'red'}}>An error occured.</p>}
-    </form>
-    </div>
-   )
+  </div>
+);
    
 }
 export default UpdateStatsPage;
