@@ -1,0 +1,92 @@
+.updateStatsPage-mainContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: url('../assets/forzaImgs/updateStatsImg.jpg') no-repeat center center;
+    background-size: cover;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+  }
+
+  .updateStatsPage-mainContainer::before{
+content:"";
+position: absolute;
+top:0;
+left:0;
+height: 100%;
+width:100%;
+background-color: rgba(0,0,0,0.4);
+z-index: 0;
+ }
+
+ .updateStatsForm{
+    position: relative;
+    z-index:1;
+    background: rgba(255,255,255,0.6);
+    padding:2rem;
+    border-radius:12px;
+    max-width:800px;
+    width:90%;
+    box-shadow:0 0 12px rgba(162, 121, 121, 0.4);
+ }
+
+ .form-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:1.5rem;
+ }
+
+ label{
+    display: flex;
+    flex-direction:column;
+    font-weight:bold;
+    font-size:0.95rem;
+ }
+
+ input{
+    padding:0.5rem;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    margin-top: 0.25rem;
+ }
+
+ button{
+    margin-top: 1.5rem;
+    padding: 0.7rem 1.5rem;
+    font-size:1rem;
+    border:none;
+    background-color: #0078d7;
+    color:white;
+    border-radius: 8px;
+    cursor: pointer;
+ }
+
+ button:disabled{
+    background-color: #999;
+ }
+
+ .form-message{
+    margin-top:1rem;
+    color:green;
+ }
+
+ .form-error{
+    margin-top:1rem;
+    color:red;
+
+ }
+
+ @media(max-width:600px){
+    .form-grid{
+        grid-template-columns: 1fr;
+    }
+
+    .updateStatsForm{
+        padding:1.2rem;
+    }
+ }
