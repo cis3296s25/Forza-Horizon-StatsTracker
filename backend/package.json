@@ -4,8 +4,7 @@
   "description": "Put here a short paragraph describing your project.  Adding an screenshot or a mockup of your application in action would be nice.",
   "main": "server.js",
   "scripts": {
-    "devStart": "nodemon server.js",
-    "test": "jest"
+    "devStart": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -28,9 +27,6 @@
   },
   "devDependencies": {
     "dotenv": "^16.4.7",
-    "jest": "^29.7.0",
-    "mockingoose": "^2.16.2",
-    "nodemon": "^3.1.9",
-    "supertest": "^7.1.0"
+    "nodemon": "^3.1.9"
   }
 }
