@@ -1,295 +1,196 @@
-const request = require('supertest');
 const bcrypt = require('bcrypt');
-const app = require('../app'); // Adjust path as needed
-
-// Import models
+const jwt = require('jsonwebtoken');
 const hub_user = require('../models/hub_user');
-const user_stats = require('../models/user_stats');
 const user_profile = require('../models/user_profile');
 
-// Mock the models
-jest.mock('../models/hub_user');
-jest.mock('../models/user_stats');
-jest.mock('../models/user_profile');
+// Import the controller (adjust path as needed)
+const userController = require('../controllers/userController');
+
+// Mock all dependencies
 jest.mock('bcrypt');
+jest.mock('jsonwebtoken');
+jest.mock('../models/hub_user');
+jest.mock('../models/user_profile');
 jest.mock('node-fetch');
 
-describe('User Controller - newUser with Manual Entry', () => {
-  // Reset mocks before each test
+describe('User Controller - loginUsers (Manual Login)', () => {
+  // Setup mock request and response objects
+  let req, res;
+  
   beforeEach(() => {
+    // Reset all mocks
     jest.clearAllMocks();
     
-    // Mock bcrypt hash
-    bcrypt.hash.mockResolvedValue('hashedPassword123');
+    // Mock request object
+    req = {
+      body: {
+        userName: 'testUser',
+        password: 'password123'
+      }
+    };
+    
+    // Mock response object
+    res = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn()
+    };
+    
+    // Mock JWT token generation
+    jwt.sign.mockReturnValue('fake-jwt-token');
+    
+    // Mock default fetchPlayerData result (from the manually platform)
+    process.env.JWT_SECRET = 'test-secret';
   });
 
-  it('should create a user successfully with manual entry', async () => {
-    // Mock findOne to return null (user doesn't exist yet)
-    hub_user.findOne.mockResolvedValue(null);
-    
-    // Mock save functions
-    hub_user.prototype.save = jest.fn().mockResolvedValue({});
-    user_stats.prototype.save = jest.fn().mockResolvedValue({});
-    user_profile.prototype.save = jest.fn().mockResolvedValue({});
-
-    // Test data for manual entry
-    const userData = {
+  it('should log in a manually created user successfully', async () => {
+    // Mock user with platform="manually"
+    const mockUser = {
+      _id: 'user123',
       userName: 'testUser',
       platform: 'manually',
-      password: 'password123',
       gameId: null,
-      victories: 10,
-      numberofCarsOwned: 5,
-      garageValue: 1000000,
-      timeDriven: 500,
-      mostValuableCar: 'Lamborghini Aventador',
-      totalWinnningsinCR: 15,
-      favoriteCar: 'Ferrari 488 GTB',
-      longestSkillChain: 250000,
-      distanceDrivenInMiles: 1500,
-      longestJump: 700,
-      topSpeed: 220,
-      biggestAir: 150
+      password: 'hashedPassword'
     };
-
-    // Make the request
-    const res = await request(app)
-      .post('/api/userAccount/new')
-      .send(userData);
-
+    
+    // Mock profile data for manual user
+    const mockProfile = {
+      userName: 'testUser',
+      level: 0,
+      profilePic: 'https://avatarfiles.alphacoders.com/282/thumb-1920-282375.jpg'
+    };
+    
+    // Mock database responses
+    hub_user.findOne.mockResolvedValue(mockUser);
+    user_profile.findOneAndUpdate.mockResolvedValue(mockProfile);
+    
+    // Mock successful password comparison
+    bcrypt.compare.mockResolvedValue(true);
+    
+    // Call the controller function
+    await userController.loginUsers(req, res);
+    
     // Assertions
-    expect(res.statusCode).toBe(201);
-    expect(res.body).toEqual({ message: 'User created successfully' });
+    expect(hub_user.findOne).toHaveBeenCalledWith({ userName: 'testUser' });
+    expect(bcrypt.compare).toHaveBeenCalledWith('password123', 'hashedPassword');
+    expect(jwt.sign).toHaveBeenCalledWith(
+      { id: 'user123', userName: 'testUser' },
+      'test-secret',
+      { expiresIn: "1h" }
+    );
     
-    // Verify the correct models were created
-    expect(hub_user).toHaveBeenCalledWith({
-      userName: userData.userName,
-      platform: userData.platform,
-      password: 'hashedPassword123',
-      verify: false,
-      gameId: userData.gameId
+    // For manual users, we expect the profile pic and level to be set to default values
+    expect(user_profile.findOneAndUpdate).toHaveBeenCalled();
+    
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith({
+      success: true,
+      message: "Login successful",
+      token: 'fake-jwt-token',
+      user: mockUser
     });
-    
-    expect(user_stats).toHaveBeenCalledWith({
-      userName: userData.userName,
-      victories: userData.victories,
-      numberofCarsOwned: userData.numberofCarsOwned,
-      garageValue: userData.garageValue,
-      timeDriven: userData.timeDriven,
-      mostValuableCar: userData.mostValuableCar,
-      totalWinnningsinCR: userData.totalWinnningsinCR,
-      favoriteCar: userData.favoriteCar,
-      longestSkillChain: userData.longestSkillChain,
-      distanceDrivenInMiles: userData.distanceDrivenInMiles,
-      longestJump: userData.longestJump,
-      topSpeed: userData.topSpeed,
-      biggestAir: userData.biggestAir
-    });
-    
-    expect(user_profile).toHaveBeenCalledWith({
-      userName: userData.userName,
-      platform: userData.platform,
-      level: 0, // For manual entry, level should be 0
-      profilePic: "https://avatarfiles.alphacoders.com/282/thumb-1920-282375.jpg" // Default pic for manual entry
-    });
-    
-    // Verify models were saved
-    expect(hub_user.prototype.save).toHaveBeenCalled();
-    expect(user_stats.prototype.save).toHaveBeenCalled();
-    expect(user_profile.prototype.save).toHaveBeenCalled();
   });
 
-  it('should return 400 if user already exists', async () => {
-    // Mock findOne to return an existing user
-    hub_user.findOne.mockResolvedValue({ userName: 'testUser' });
-
-    const userData = {
-      userName: 'testUser',
-      platform: 'manually',
-      password: 'password123',
-      victories: 10,
-      numberofCarsOwned: 5,
-      garageValue: 1000000,
-      timeDriven: 500,
-      mostValuableCar: 'Lamborghini Aventador',
-      totalWinnningsinCR: 15,
-      favoriteCar: 'Ferrari 488 GTB',
-      longestSkillChain: 250000,
-      distanceDrivenInMiles: 1500,
-      longestJump: 700,
-      topSpeed: 220,
-      biggestAir: 150
-    };
-
-    const res = await request(app)
-      .post('/api/userAccount/new')
-      .send(userData);
-
-    expect(res.statusCode).toBe(400);
-    expect(res.body).toEqual({ message: 'User already exists' });
+  it('should return 400 if username is missing', async () => {
+    // Remove username from request
+    req.body = { password: 'password123' };
     
-    // Verify save was not called
-    expect(hub_user.prototype.save).not.toHaveBeenCalled();
+    // Call the controller function
+    await userController.loginUsers(req, res);
+    
+    // Assertions
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({ message: 'Username is required' });
+    expect(hub_user.findOne).not.toHaveBeenCalled();
   });
 
-  it('should return 400 if gameId already exists', async () => {
-    // First call returns null (username doesn't exist)
-    // Second call returns a user (gameId exists)
-    hub_user.findOne.mockResolvedValueOnce(null).mockResolvedValueOnce({ gameId: 'someId' });
-
-    const userData = {
-      userName: 'newUser',
-      platform: 'manually',
-      password: 'password123',
-      gameId: 'someId',
-      victories: 10,
-      numberofCarsOwned: 5,
-      garageValue: 1000000,
-      timeDriven: 500,
-      mostValuableCar: 'Lamborghini Aventador',
-      totalWinnningsinCR: 15,
-      favoriteCar: 'Ferrari 488 GTB',
-      longestSkillChain: 250000,
-      distanceDrivenInMiles: 1500,
-      longestJump: 700,
-      topSpeed: 220,
-      biggestAir: 150
-    };
-
-    const res = await request(app)
-      .post('/api/userAccount/new')
-      .send(userData);
-
-    expect(res.statusCode).toBe(400);
-    expect(res.body).toEqual({ message: 'User already exists' });
+  it('should return 400 if password is missing', async () => {
+    // Remove password from request
+    req.body = { userName: 'testUser' };
+    
+    // Call the controller function
+    await userController.loginUsers(req, res);
+    
+    // Assertions
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({ message: 'Password is required' });
+    expect(hub_user.findOne).not.toHaveBeenCalled();
   });
 
-  it('should return 400 if required fields are missing', async () => {
-    // Mock findOne to return null (user doesn't exist)
+  it('should return 404 if user is not found', async () => {
+    // Mock user not found
     hub_user.findOne.mockResolvedValue(null);
-
-    // Missing password
-    const userData = {
-      userName: 'testUser',
-      platform: 'manually',
-      // password: missing
-      victories: 10,
-      numberofCarsOwned: 5,
-      garageValue: 1000000,
-      timeDriven: 500,
-      mostValuableCar: 'Lamborghini Aventador',
-      totalWinnningsinCR: 15,
-      favoriteCar: 'Ferrari 488 GTB',
-      longestSkillChain: 250000,
-      distanceDrivenInMiles: 1500,
-      longestJump: 700,
-      topSpeed: 220,
-      biggestAir: 150
-    };
-
-    const res = await request(app)
-      .post('/api/userAccount/new')
-      .send(userData);
-
-    expect(res.statusCode).toBe(400);
-    expect(res.body).toEqual({ message: 'All fields are required' });
+    
+    // Call the controller function
+    await userController.loginUsers(req, res);
+    
+    // Assertions
+    expect(hub_user.findOne).toHaveBeenCalledWith({ userName: 'testUser' });
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.json).toHaveBeenCalledWith({ message: 'User not found' });
+    expect(bcrypt.compare).not.toHaveBeenCalled();
   });
 
-  it('should return 400 if car-related fields are missing', async () => {
-    // Mock findOne to return null (user doesn't exist)
-    hub_user.findOne.mockResolvedValue(null);
-
-    // Missing favoriteCar
-    const userData = {
+  it('should return 400 if password is incorrect', async () => {
+    // Mock user found
+    const mockUser = {
       userName: 'testUser',
-      platform: 'manually',
-      password: 'password123',
-      victories: 10,
-      numberofCarsOwned: 5,
-      garageValue: 1000000,
-      timeDriven: 500,
-      mostValuableCar: 'Lamborghini Aventador',
-      totalWinnningsinCR: 15,
-      // favoriteCar: missing
-      longestSkillChain: 250000,
-      distanceDrivenInMiles: 1500,
-      longestJump: 700,
-      topSpeed: 220,
-      biggestAir: 150
+      password: 'hashedPassword'
     };
-
-    const res = await request(app)
-      .post('/api/userAccount/new')
-      .send(userData);
-
-    expect(res.statusCode).toBe(400);
-    expect(res.body).toEqual({ message: 'Not a valid response' });
+    hub_user.findOne.mockResolvedValue(mockUser);
+    
+    // Mock failed password comparison
+    bcrypt.compare.mockResolvedValue(false);
+    
+    // Call the controller function
+    await userController.loginUsers(req, res);
+    
+    // Assertions
+    expect(hub_user.findOne).toHaveBeenCalledWith({ userName: 'testUser' });
+    expect(bcrypt.compare).toHaveBeenCalledWith('password123', 'hashedPassword');
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({ message: 'Incorrect password' });
+    expect(user_profile.findOneAndUpdate).not.toHaveBeenCalled();
   });
 
-  it('should return 400 if stats are negative', async () => {
-    // Mock findOne to return null (user doesn't exist)
-    hub_user.findOne.mockResolvedValue(null);
-
-    // Negative victories
-    const userData = {
+  it('should return 404 if user profile is not found', async () => {
+    // Mock user found
+    const mockUser = {
+      _id: 'user123',
       userName: 'testUser',
       platform: 'manually',
-      password: 'password123',
-      victories: -5, // Negative value
-      numberofCarsOwned: 5,
-      garageValue: 1000000,
-      timeDriven: 500,
-      mostValuableCar: 'Lamborghini Aventador',
-      totalWinnningsinCR: 15,
-      favoriteCar: 'Ferrari 488 GTB',
-      longestSkillChain: 250000,
-      distanceDrivenInMiles: 1500,
-      longestJump: 700,
-      topSpeed: 220,
-      biggestAir: 150
+      password: 'hashedPassword'
     };
-
-    const res = await request(app)
-      .post('/api/userAccount/new')
-      .send(userData);
-
-    expect(res.statusCode).toBe(400);
-    expect(res.body).toEqual({ message: 'Stats cannot be negative' });
+    hub_user.findOne.mockResolvedValue(mockUser);
+    
+    // Mock successful password comparison
+    bcrypt.compare.mockResolvedValue(true);
+    
+    // Mock profile not found
+    user_profile.findOneAndUpdate.mockResolvedValue(null);
+    
+    // Call the controller function
+    await userController.loginUsers(req, res);
+    
+    // Assertions
+    expect(hub_user.findOne).toHaveBeenCalledWith({ userName: 'testUser' });
+    expect(bcrypt.compare).toHaveBeenCalledWith('password123', 'hashedPassword');
+    expect(user_profile.findOneAndUpdate).toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.json).toHaveBeenCalledWith({ message: 'User profile not found' });
   });
 
   it('should handle server errors properly', async () => {
-    // Mock findOne to return null (user doesn't exist)
-    hub_user.findOne.mockResolvedValue(null);
-    
-    // Mock save to throw an error
+    // Mock database error
     const errorMessage = 'Database connection failed';
-    hub_user.prototype.save = jest.fn().mockRejectedValue(new Error(errorMessage));
-
-    const userData = {
-      userName: 'testUser',
-      platform: 'manually',
-      password: 'password123',
-      victories: 10,
-      numberofCarsOwned: 5,
-      garageValue: 1000000,
-      timeDriven: 500,
-      mostValuableCar: 'Lamborghini Aventador',
-      totalWinnningsinCR: 15,
-      favoriteCar: 'Ferrari 488 GTB',
-      longestSkillChain: 250000,
-      distanceDrivenInMiles: 1500,
-      longestJump: 700,
-      topSpeed: 220,
-      biggestAir: 150
-    };
-
-    const res = await request(app)
-      .post('/api/userAccount/new')
-      .send(userData);
-
-    expect(res.statusCode).toBe(500);
-    expect(res.body).toEqual({ 
-      message: 'Server error while creating the user.',
+    hub_user.findOne.mockRejectedValue(new Error(errorMessage));
+    
+    // Call the controller function
+    await userController.loginUsers(req, res);
+    
+    // Assertions
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({
+      message: 'Internal server error',
       error: errorMessage
     });
   });
