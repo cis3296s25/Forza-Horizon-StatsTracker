@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import { useSignupMutation } from '../redux/apis/user';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { FaQuestionCircle } from "react-icons/fa";
 
 const SignupForm = () => {
   const location = useLocation();
@@ -81,7 +82,7 @@ const navigate = useNavigate();
 return (
   <div className="signup-mainContainer">
     <Nav />
-    <div className="signup-container">
+    <div className="signup-container" style={{color: "white"}}>
       <h2 style={{textAlign: "center", marginBottom: "5px"}}>Driver Statistics</h2>
       
       <table style={{width: "100%", borderCollapse: "separate", borderSpacing: "30px"}}>
@@ -89,7 +90,14 @@ return (
           {/* Row 1 */}
           <tr>
             <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Number Of Victories</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Number Of Victories  
+                <span className="platform-tooltip-wrapper">
+                          <FaQuestionCircle className="platform-tooltip-icon" />
+                          <div className="platform-tooltip-content">
+                            <p>This stats can be found under general third row, first column</p>
+                          </div>
+                  </span>
+                </label>
               <input
                 type="number"
                 id="numVictories"
@@ -101,7 +109,14 @@ return (
               />
             </td>
             <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Number of Cars Owned</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Number of Cars Owned
+                <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                      <p>This stats can be found under general first row, fourth column</p>
+                    </div>
+                </span>
+              </label>
               <input
                 type="number"
                 id="numCars"
@@ -113,7 +128,14 @@ return (
               />
             </td>
             <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Garage Value</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Garage Value
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                      <p>This stats can be found under general third row, fifth column</p>
+                    </div>
+                </span>
+              </label>
               <input
                 type="text"
                 id="garageVal"
@@ -129,7 +151,14 @@ return (
           {/* Row 2 */}
           <tr>
             <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Time Driven</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Time Driven
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                      <p>This stats can be found under general first row, first column</p>
+                    </div>
+                </span>
+              </label>
               <input
                 type="text"
                 value={timeDriven}
@@ -140,7 +169,14 @@ return (
               />
             </td>
             <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Most Valuable Car</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Most Valuable Car
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                      <p>This stats can be found under general first row, fifth column</p>
+                    </div>
+                </span>
+              </label>
               <input
                 type="text"
                 value={mostValuableCar}
@@ -151,7 +187,14 @@ return (
               />
             </td>
             <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Total Winnings (CR)</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Total Winnings
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                      <p>This stats can be found under general second row, second column</p>
+                    </div>
+                </span>
+              </label>
               <input
                 type="number"
                 value={totalWinnningsinCR}
@@ -166,7 +209,14 @@ return (
           {/* Row 3 */}
           <tr>
             <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Favorite Car</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Favorite Car
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                      <p>This stats can be found under general second row, fourth column</p>
+                    </div>
+                </span>
+              </label>
               <input
                 type="text"
                 value={favoriteCar}
@@ -177,18 +227,32 @@ return (
               />
             </td>
             <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Longest Skill Chain</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Longest Skill Chain
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                      <p>This stats can be found next to the discovery tab which is Records second row, second column</p>
+                    </div>
+                </span>
+              </label>
               <input
                 type="text"
                 value={longestSkillChain}
                 className="signup-input"
-                placeholder='500,000 points'
+                placeholder='05:10'
                 onChange={(e) => setLongestSkillChain(e.target.value)}
                 style={{width: "100%", display: "block"}}
               />
             </td>
             <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Distance Driven (Miles)</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Distance Driven (Miles)
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                    <p>This stats can be found next to the discovery tab which is Records second row, third column</p>
+                    </div>
+                </span>
+              </label>
               <input
                 type="number"
                 value={distanceDrivenInMiles}
@@ -203,7 +267,14 @@ return (
           {/* Row 4 */}
           <tr>
             <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Longest Jump (Feet)</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Longest Jump (Feet)
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                    <p>This stats can be found next to the discovery tab which is Records second row, fourth column</p>
+                    </div>
+                </span>
+              </label>
               <input
                 type="number"
                 value={longestJump}
@@ -214,7 +285,14 @@ return (
               />
             </td>
             <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Top Speed (MPH)</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Top Speed (MPH)
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                    <p>This stats can be found next to the discovery tab which is Records third row, second column</p>
+                    </div>
+                </span>
+              </label>
               <input
                 type="number"
                 value={topSpeed}
@@ -225,7 +303,14 @@ return (
               />
             </td>
             <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Biggest Air</label>
+              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Biggest Air
+              <span className="platform-tooltip-wrapper">
+                    <FaQuestionCircle className="platform-tooltip-icon" />
+                    <div className="platform-tooltip-content">
+                    <p>This stats can be found next to the discovery tab which is Records third row, third column</p>
+                    </div>
+                </span>
+              </label>
               <input
                 type="text"
                 value={biggestAir}

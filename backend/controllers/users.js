@@ -87,12 +87,12 @@ exports.newUser = async (req, res) => {
         return res.status(400).json({ message: "All fields are required" });
     }
 
-    if (!favoriteCar || !mostValuableCar) {
+    if (!favoriteCar || !mostValuableCar || !longestSkillChain) {
         return res.status(400).json({message: "Not a valid response"});
     }
 
     if (victories < 0  || numberofCarsOwned < 0 || garageValue < 0 || timeDriven < 0 ||  totalWinnningsinCR < 0 
-        || longestSkillChain < 0 || distanceDrivenInMiles < 0 || longestJump < 0 || topSpeed < 0 || biggestAir < 0) {
+        || distanceDrivenInMiles < 0 || longestJump < 0 || topSpeed < 0 || biggestAir < 0) {
         return res.status(400).json({message: "Stats cannot be negative"});
     }
 
@@ -267,8 +267,9 @@ exports.deleteUsers = async (req, res) => {
     try{
         const user = await hub_user.findOneAndDelete({userName});
         const userStats= await user_stats.findOneAndDelete({userName});
+        const userLevel = await user_profile.findOneAndDelete({userName});
 
-        if(!user && !userStats){
+        if(!user && !userStats && !userLevel){
             return res.status(404).json({message: "User not found"});
         }
         res.status(200).json({message: "User deleted successfully"});
@@ -292,4 +293,4 @@ exports.getUsersList = async (req, res) => {
         console.error("Error fetching users:", error);
         res.status(500).json({ message: "Internal server error", error: error.message });
     }
-}
+} 
