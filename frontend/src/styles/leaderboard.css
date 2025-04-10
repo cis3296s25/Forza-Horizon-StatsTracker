@@ -1,0 +1,33 @@
+.leaderboard-mainContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+    width:100vw;
+    align-items: center;
+    color: white;
+    background:url('../assets/forzaImgs/leaderboardBackground.jpg') no-repeat center center ;
+    background-size: cover;
+     position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+       z-index: 9999;
+      cursor: default;
+      display: flex;
+    
+  }
+
+  th {
+    padding: 18 px 0;
+
+  }
+
+  /* for each row 
+  margin-bottom: 2px;
+  background-color: #a6a6a6
+
+   */
+
+  

@@ -25,6 +25,37 @@ exports.getUserStats = async (req, res) => {
     }
 };
 
+exports.getAllUserStats = async (req, res) => {
+    try {
+        const verifiedUsers = await hub_user.find({ verify: true });
+    
+        const leaderboard = await Promise.all(
+          verifiedUsers.map(async (user) => {
+            const stats = await user_stats.find({ userName: user.userName });
+    
+            if (!stats) return null; 
+            console.log("okay", stats.victories);
+    
+            return {
+              userName: user.userName,
+              victories: stats.victories,
+              distanceDrivenInMiles: stats.distanceDrivenInMiles,
+              numberofCarsOwned: stats.numberofCarsOwned,
+            };
+          })
+        );
+    
+        
+        const filteredLeaderboard = leaderboard.filter(entry => entry !== null);
+    
+        res.status(200).json(filteredLeaderboard);
+      } catch (err) {
+        console.error('Error fetching leaderboard:', err);
+        res.status(500).json({ error: 'Server error' });
+      }
+
+}
+
 
 
 
