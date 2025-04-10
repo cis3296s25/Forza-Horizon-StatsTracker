@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { newUser, loginUsers, logoutUsers, searchUsers, deleteUsers, getUsersList } = require('../controllers/users');
+const { newUser, loginUsers, logoutUsers, searchUsers, deleteUsers, getUsersList} = require('../controllers/users');
 
 // Define routes with controller functions
 router.post("/newUser", newUser);
