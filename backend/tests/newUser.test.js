@@ -9,16 +9,10 @@ const hub_user = require('../models/hub_user');
 const user_stats = require('../models/user_stats');
 const user_profile = require('../models/user_profile');
 
-// Mock external dependencies that should not connect to real services
+// Mock bcrypt for password hashing
 jest.mock('bcrypt');
-jest.mock('node-fetch');
 
-// Mock environment variables
-process.env.STEAM_API_KEY = 'mock-steam-key';
-process.env.XBOX_API_KEY = 'mock-xbox-key';
-process.env.JWT_SECRET = 'test-jwt-secret';
-
-describe('User Controller - newUser', () => {
+describe('User Controller - Manual User Creation', () => {
   let mongoServer;
 
   // Set up the MongoDB Memory Server before tests
@@ -42,31 +36,12 @@ describe('User Controller - newUser', () => {
     
     // Mock bcrypt hash
     bcrypt.hash.mockResolvedValue('hashedPassword123');
-    
-    // Mock node-fetch for external APIs
-    const fetch = require('node-fetch');
-    fetch.mockImplementation(() => 
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({
-          response: {
-            games: [{ appid: 1551360 }],
-            player_level: 10,
-            players: [{ avatar: 'avatar-url' }]
-          },
-          people: [{ 
-            displayPicRaw: 'xbox-avatar', 
-            gamerScore: 5000 
-          }]
-        })
-      })
-    );
   });
 
-  it('should create a new user successfully with valid data', async () => {
-    // Setup valid user data
+  it('should create a new manual user successfully with valid data', async () => {
+    // Setup valid user data for manual platform
     const userData = {
-      userName: 'testUser',
+      userName: 'testManualUser',
       platform: 'manually',
       password: 'securePassword123',
       victories: 10,
@@ -76,7 +51,7 @@ describe('User Controller - newUser', () => {
       mostValuableCar: 'Ferrari',
       totalWinnningsinCR: 25000,
       favoriteCar: 'BMW',
-      longestSkillChain: 50,
+      longestSkillChain: '50',
       distanceDrivenInMiles: 1500,
       longestJump: 80,
       topSpeed: 200,
@@ -92,20 +67,39 @@ describe('User Controller - newUser', () => {
     expect(res.statusCode).toBe(201);
     expect(res.body).toEqual({ message: 'User created successfully' });
     
-    // Verify data was saved to database
-    const savedUser = await hub_user.findOne({ userName: 'testUser' });
+    // Verify user data was saved correctly
+    const savedUser = await hub_user.findOne({ userName: 'testManualUser' });
     expect(savedUser).not.toBeNull();
     expect(savedUser.platform).toBe('manually');
+    expect(savedUser.password).toBe('hashedPassword123');
+    expect(savedUser.verify).toBe(false);
+    expect(savedUser.gameId).toBeUndefined();
     
-    const savedStats = await user_stats.findOne({ userName: 'testUser' });
+    // Verify stats were saved correctly
+    const savedStats = await user_stats.findOne({ userName: 'testManualUser' });
     expect(savedStats).not.toBeNull();
     expect(savedStats.victories).toBe(10);
+    expect(savedStats.numberofCarsOwned).toBe(5);
+    expect(savedStats.garageValue).toBe(500000);
+    expect(savedStats.timeDriven).toBe(120);
+    expect(savedStats.mostValuableCar).toBe('Ferrari');
+    expect(savedStats.totalWinnningsinCR).toBe(25000);
+    expect(savedStats.favoriteCar).toBe('BMW');
+    expect(savedStats.longestSkillChain).toBe('50');
+    expect(savedStats.distanceDrivenInMiles).toBe(1500);
+    expect(savedStats.longestJump).toBe(80);
+    expect(savedStats.topSpeed).toBe(200);
+    expect(savedStats.biggestAir).toBe(30);
     
-    const savedProfile = await user_profile.findOne({ userName: 'testUser' });
+    // Verify profile was created with default avatar
+    const savedProfile = await user_profile.findOne({ userName: 'testManualUser' });
     expect(savedProfile).not.toBeNull();
+    expect(savedProfile.level).toBe(0);
+    expect(savedProfile.profilePic).toBe("https://avatarfiles.alphacoders.com/282/thumb-1920-282375.jpg");
+    expect(savedProfile.platform).toBe('manually');
   });
 
-  it('should return 400 when user already exists', async () => {
+  it('should return 400 when manual user already exists', async () => {
     // Create a user first
     const existingUser = new hub_user({
       userName: 'existingUser',
@@ -127,7 +121,7 @@ describe('User Controller - newUser', () => {
       mostValuableCar: 'Lamborghini',
       totalWinnningsinCR: 10000,
       favoriteCar: 'Audi',
-      longestSkillChain: 30,
+      longestSkillChain: '30',
       distanceDrivenInMiles: 800,
       longestJump: 40,
       topSpeed: 180,
@@ -143,12 +137,12 @@ describe('User Controller - newUser', () => {
     expect(res.statusCode).toBe(400);
     expect(res.body).toEqual({ message: 'User already exists' });
     
-    // Verify no new entries were created
+    // Verify no new entries were added
     const userCount = await hub_user.countDocuments();
     expect(userCount).toBe(1);
   });
 
-  it('should return 400 when required fields are missing', async () => {
+  it('should return 400 when required fields are missing for manual user', async () => {
     // Missing required fields
     const incompleteData = {
       userName: 'testUser',
@@ -170,7 +164,40 @@ describe('User Controller - newUser', () => {
     expect(userCount).toBe(0);
   });
 
-  it('should return 400 when stats are negative', async () => {
+  it('should return 400 when car stats are missing for manual user', async () => {
+    // Missing required car stats
+    const missingCarStats = {
+      userName: 'testUser',
+      platform: 'manually',
+      password: 'password123',
+      victories: 5,
+      numberofCarsOwned: 10,
+      garageValue: 100000,
+      timeDriven: 50,
+      // Missing mostValuableCar and favoriteCar
+      totalWinnningsinCR: 10000,
+      // Missing longestSkillChain
+      distanceDrivenInMiles: 800,
+      longestJump: 40,
+      topSpeed: 180,
+      biggestAir: 20
+    };
+
+    // Make the request
+    const res = await request(app)
+      .post('/api/userAccount/create')
+      .send(missingCarStats);
+
+    // Assertions
+    expect(res.statusCode).toBe(400);
+    expect(res.body).toEqual({ message: 'Not a valid response' });
+    
+    // Verify no user was created
+    const userCount = await hub_user.countDocuments();
+    expect(userCount).toBe(0);
+  });
+
+  it('should return 400 when stats are negative for manual user', async () => {
     // Data with negative stats
     const negativeStatsData = {
       userName: 'testUser',
@@ -183,7 +210,7 @@ describe('User Controller - newUser', () => {
       mostValuableCar: 'Lamborghini',
       totalWinnningsinCR: 10000,
       favoriteCar: 'Audi',
-      longestSkillChain: 30,
+      longestSkillChain: '30',
       distanceDrivenInMiles: 800,
       longestJump: 40,
       topSpeed: 180,
@@ -204,42 +231,42 @@ describe('User Controller - newUser', () => {
     expect(userCount).toBe(0);
   });
 
-  it('should return 400 when platform ID is required but not provided', async () => {
-    // Steam platform without gameId
-    const steamWithoutId = {
+  it('should handle server errors properly for manual user creation', async () => {
+    // Setup valid user data
+    const userData = {
       userName: 'testUser',
-      platform: 'steam', // Steam platform requires gameId
-      password: 'password123',
-      victories: 5,
-      numberofCarsOwned: 10,
-      garageValue: 100000,
-      timeDriven: 50,
-      mostValuableCar: 'Lamborghini',
-      totalWinnningsinCR: 10000,
-      favoriteCar: 'Audi',
-      longestSkillChain: 30,
-      distanceDrivenInMiles: 800,
-      longestJump: 40,
-      topSpeed: 180,
-      biggestAir: 20
+      platform: 'manually',
+      password: 'securePassword123',
+      victories: 10,
+      numberofCarsOwned: 5,
+      garageValue: 500000,
+      timeDriven: 120,
+      mostValuableCar: 'Ferrari',
+      totalWinnningsinCR: 25000,
+      favoriteCar: 'BMW',
+      longestSkillChain: '50',
+      distanceDrivenInMiles: 1500,
+      longestJump: 80,
+      topSpeed: 200,
+      biggestAir: 30
     };
+
+    // Mock a database error by making bcrypt.hash throw an error
+    const errorMessage = 'Hashing failed';
+    bcrypt.hash.mockRejectedValue(new Error(errorMessage));
 
     // Make the request
     const res = await request(app)
       .post('/api/userAccount/create')
-      .send(steamWithoutId);
+      .send(userData);
 
     // Assertions
-    expect(res.statusCode).toBe(400);
-    expect(res.body.message).toContain('Platform ID is required for steam');
+    expect(res.statusCode).toBe(500);
+    expect(res.body.message).toBe('Server error while creating the user.');
+    expect(res.body.error).toBe(errorMessage);
     
     // Verify no user was created
     const userCount = await hub_user.countDocuments();
     expect(userCount).toBe(0);
   });
-
-  it('should create a new Steam user with valid gameId', async () => {
-    // Valid Steam user
-    const steamUserData = {
-      userName: 'steamUser',
-      platf
+});
