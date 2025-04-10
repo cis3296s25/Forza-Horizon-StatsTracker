@@ -86,3 +86,43 @@
     background-color: #555;
  }
  
+ .user-box {
+   position: absolute;
+   width: 400px;
+   top:100;
+   height: auto;
+   padding: 0px 30px;
+   margin-top: 50px;
+   background-color: rgba(36, 36, 36, 0.500);
+   color: rgba(255, 255, 255, 0.795);
+   border-radius: 10px;
+   box-shadow: 0 4px 12px rgba(36, 36, 36, 1);
+   text-align: center;
+ }
+ 
+ .user-box h2 {
+   font-size: 3rem;
+   font-weight: 900;
+   margin: 0;
+ }
+ 
+ .user-box p {
+   font-size: 1.4rem;
+   font-weight: 500;
+ }
+ 
+ .boxes {
+   width: auto;
+   height: 40px;
+   background-color: rgba(68, 68, 68, 1);
+   color: white;
+   text-align: center;
+   border-radius: 5px;
+   padding: 8px;
+ }
+ 
+.platform-level {
+   display: flex;
+   justify-content: space-between;
+   gap: 10px; 
+ }

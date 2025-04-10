@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const {getUserStats} = require("../controllers/stats")
+const {getUserStats,getProfileStats,getCompareStats} = require("../controllers/stats");
+const verifyToken = require("../middlewares/verifyToken");
 
-router.get("/stats", getUserStats);
+router.get("/stats",verifyToken,getUserStats);
+router.get("/profile-stats",verifyToken, getProfileStats);
+router.get('/compareStats', getCompareStats);
 
 
 module.exports = router;

@@ -1,52 +1,139 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';  // Import useNavigate for redirection
 import Table from '../components/Table/Table';
 import Nav from '../components/navLog';
 import Footer from '../components/footer';
 import "../styles/statsPage.css";
+import { useGetUserStatsQuery } from '../redux/apis/stats'; 
+import { useSearchMutation } from '../redux/apis/user';
+import toast from 'react-hot-toast';
 
 function StatsPage() {
-    const {username } = useParams(); // Hardcoding the gamertag here
-    const [stats, setStats] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const { username } = useParams();
+    const navigate = useNavigate();
+    const [search, { isLoading }] = useSearchMutation();
+    const [userStats, setUserStats] = useState(null);
+    const [userFound, setUserFound] = useState(false);
+    const [noUserFound, setNoUserFound] = useState(false);
+
+    const { data, error, isLoading: statsLoading } = useGetUserStatsQuery(username);
+    console.log("Data from API:", data); // Log the data received from the API
+
+    // Trigger searchGamertag automatically when the username is available
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_SERVER}/api/userStats/stats?userName=${username}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch stats for user');
-                }
-                return response.json();
-            })
-            .then(data => {
-                setStats([data.stats]); // Wrap the stats object in an array
-                setIsLoading(false);
-            })
-            .catch(error => {
-                setError(error);
-                setIsLoading(false);
-            });
+        if (username) {
+            searchGamertag();  // Call the search function automatically when username is present
+        }
     }, [username]);
+
+    // Function to search for a user and update the state
+    const searchGamertag = async () => {
+        const res = await search({ userName: username });
+
+        if (res.data) {
+            toast.success(res.data.message || "User found");
+            setUserFound(true);
+            setNoUserFound(false); // Reset the no user found state
+            const platforms = res.data.platform.charAt(0).toUpperCase() + res.data.platform.slice(1).toLowerCase();
+            setUserStats({
+                userName: res.data.userName,
+                platform: platforms,
+                level: res.data.level,
+            });
+        } else if (res.error) {
+            const errorMessage = res.error.data?.message || "User not found";
+            toast.error(errorMessage);
+            setUserFound(false);
+            setNoUserFound(true);
+        }
+    };
+
+    useEffect(() => {
+        if (error && error.status === 403) {
+            toast.error("Good try to hack in to other peoples page but, Please log in.");
+            localStorage.removeItem('jwtToken');
+            navigate(`/profile`);
+        }
+    }, [error, navigate]);
+
+    if (statsLoading || isLoading) {
+        return (
+            <div className="statsPage-mainContainer">
+                <Nav />
+                <div>Loading stats...</div>
+                <Footer />
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="statsPage-mainContainer">
+                <Nav />
+                <div>Error: {error.message}</div>
+                <Footer />
+            </div>
+        );
+    }
 
     return (
         <div className="statsPage-mainContainer">
-        <Nav />
-        {<div>
-            <br/>
-            <br/>
-            <br/>
-            <h1>Stats</h1>
-            {isLoading ? (
-                <p>Loading stats...</p>
-            ) : error ? (
-                <p>{error.message}</p> // Display error message
-            ) : (
-                <Table list={stats} colNames={['victories', 'numberofCarsOwned','garageValue']}
-                colNameMap={{victories: 'Victories', numberofCarsOwned: 'Number of Cars Owned', garageValue: ' Garage Value'}} />
-            )}
-        </div>}
-        <Footer />
-      </div>
+            <Nav />
+            <div>
+                <br />
+                <br />
+                <br />
+                <h1>Profile</h1>
+                    <div className="user-box">
+                        <h2>Welcome, {userStats.userName}</h2>
+                        <div className="platform-level">
+                            <p className='boxes'><strong>Platform:</strong> {userStats.platform}</p>
+                            <p className='boxes'><strong>Level:</strong> {userStats.level}</p>
+                        </div>
+                    </div>
+                <br />
+                <br />
+
+                <br />
+
+                <br />
+
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+
+                <h1>Stats</h1>
+                {data && data.stats && (
+                    <Table
+                        list={[data?.stats]} // Wrap the stats object in an array if needed
+                        colNames={[
+                            'victories', 'numberofCarsOwned', 'garageValue', 'timeDriven', 'mostValuableCar', 'totalWinnningsinCR', 
+                            'favoriteCar', 'longestSkillChain', 'distanceDrivenInMiles', 'longestJump', 'topSpeed', 'biggestAir'
+                        ]}
+                        colNameMap={{
+                            victories: 'Victories',
+                            numberofCarsOwned: 'Number of Cars Owned',
+                            garageValue: ' Garage Value',
+                            timeDriven: 'Time Driven',
+                            mostValuableCar: 'Most Valuable Car',
+                            totalWinnningsinCR: 'Total Winnings in CR',
+                            favoriteCar: 'Favorite Car',
+                            longestSkillChain: 'Longest Skill Chain',
+                            distanceDrivenInMiles: 'Distance Driven in Miles',
+                            longestJump: 'Longest Jump',
+                            topSpeed: 'Top Speed',
+                            biggestAir: 'Biggest Air',
+                        }}
+                    />
+                )}
+            </div>
+            <Footer />
+        </div>
     );
 }
 

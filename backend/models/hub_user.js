@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
       required: true,
     },
 
-    gameid:{
+    gameId:{
       type: String,
       default: null,
       required: false

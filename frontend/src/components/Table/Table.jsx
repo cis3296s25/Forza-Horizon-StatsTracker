@@ -57,34 +57,6 @@ function Table({ list, colNames, colNameMap = {}, pageNum = 0, pageSize = 10 }) 
 
 
 
-    // if (newSortDir) {
-    //     tempSortedList.sort((a, b) => {
-    //         if (a[col] < b[col]) {
-    //             return -1;
-    //         }
-    //         if (a[col] > b[col]) {
-    //             return 1;
-    //         }
-    //         return 0;
-    //     });
-    // } else {
-    //     tempSortedList.sort((a, b) => {
-    //         if (a[col] < b[col]) {
-    //             return 1;
-    //         }
-    //         if (a[col] > b[col]) {
-    //             return -1;
-    //         }
-    //         return 0;
-    //     });
-    // }
-
-
-    //     setAscending(newSortDir); // keeps track of the current sort direction
-    //     setSortedList(tempSortedList); // updates the sorted list
-    // };
-
-
     const currentPage = sortedList.slice(pageSize * page, pageSize * page + pageSize);
 
 
@@ -97,7 +69,6 @@ function Table({ list, colNames, colNameMap = {}, pageNum = 0, pageSize = 10 }) 
                             {colNames.map((col, index) => (
                                 <th key={index} onClick={() => sortByColumn(col)}>
                                     {colNameMap[col] || col.toUpperCase()}
-                                    {/* <img src="icons/blackSort.png" alt="sort icon" /> */}
                                 </th>
                             ))}
                         </tr>
