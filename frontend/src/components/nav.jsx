@@ -34,7 +34,7 @@ const NavBar = () => {
               </Link>
             </li>
             <li>
-              <a href="#">
+              <a href="/leaderboard">
                 <img src={Leaderboard} alt="Leaderboards" className="nav-icon" />
                 Leaderboards
               </a>
