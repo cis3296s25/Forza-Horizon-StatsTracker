@@ -41,6 +41,12 @@ function UpdateStatsPage() {
     <div className="updateStatsPage-mainContainer">
       <NavLog />
       <div className="updateStats-container">
+        <button
+        type="button"
+        className='back-button'
+        style={{textAlign: "center", marginBottom: "1rem"}}
+        onClick={()=>navigate(-1)}
+         >Back</button>
         <form onSubmit={handleSubmit}>
           <h2 style={{ textAlign: "center", marginBottom: "5px" }}>
             Enter Your Updated Stats Below
