@@ -1,32 +1,37 @@
-import React, { useState } from 'react';
+import React from 'react';
 import "../styles/deleteProfile.css";
 import Nav from '../components/nav';
 import Footer from '../components/footer';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useDeleteUserMutation } from '../redux/apis/user';
 
 const Delete = () => {
   const navigate = useNavigate();
-  const deleteApi = useDeleteUserMutation();
-  const { gamertag } = location.state || {};
+  const location = useLocation();
+  const { userName } = location.state || {};
+  const [deleteUser] = useDeleteUserMutation();
+
   const deleteFunction = async (e) => {
     if (e) e.preventDefault();
-
-    //Delete user from DB
-    try {
-      const res = await deleteApi({
-        userName: gamertag
-      });
+    if (!userName) {
+      toast.error("No user found to delete.");
+      navigate("/");
+      return;
     }
-    catch {
+
+    try {
+      await deleteUser({ userName });
+      toast.success("Profile deleted successfully.");
+      navigate("/");
+    } catch (err) {
       toast.error("There was an error deleting profile. Please try again.");
     }
-    navigate("/#", { state: {} });
-  }
-  const cancelDelete = async () => {
-    navigate("/#", { state: {} });
-  }
+  };
+
+  const cancelDelete = () => {
+    navigate(`/user/${userName}`);
+  };
 
   return (
     <div className="deleteProfileContainer">

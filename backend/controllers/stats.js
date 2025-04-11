@@ -139,6 +139,8 @@ exports.updateUserStats = async (req,res)=>{
 const tokUserName = req.user.userName;
 const {userName, updates} = req.body;
 
+console.log(updates)
+
 if(userName != tokUserName){
     return res.status(403).json({message: "Not authorized to edit this user's stats" })
 }
