@@ -125,15 +125,15 @@ function StatsPage() {
                         colNameMap={{
                             victories: 'Victories',
                             numberofCarsOwned: 'Number of Cars Owned',
-                            garageValue: ' Garage Value',
+                            garageValue: ' Garage Value (in CR)',
                             timeDriven: 'Time Driven',
                             mostValuableCar: 'Most Valuable Car',
-                            totalWinnningsinCR: 'Total Winnings in CR',
+                            totalWinnningsinCR: 'Total Winnings (in CR)',
                             favoriteCar: 'Favorite Car',
                             longestSkillChain: 'Longest Skill Chain',
                             distanceDrivenInMiles: 'Distance Driven in Miles',
                             longestJump: 'Longest Jump',
-                            topSpeed: 'Top Speed',
+                            topSpeed: 'Top Speed (MPH)',
                             biggestAir: 'Biggest Air',
                         }}
                     />
