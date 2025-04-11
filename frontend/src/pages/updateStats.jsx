@@ -2,13 +2,17 @@ import React, {useState} from 'react';
 import { useUpdateUserStatsMutation } from '../redux/apis/stats';
 import "../styles/updateStatsPage.css";
 import NavLog from '../components/navLog';
-import Footer from '../components/footer';
 import { FaQuestionCircle} from "react-icons/fa";
+import {useLocation} from "react-router-dom";
 
 
 
-function UpdateStatsPage({userName, initialStats}){
-const[formData, setFormData] = useState(initialStats || {});
+function UpdateStatsPage(){
+
+const location = useLocation();
+const userName = location.state?.userName;
+
+const[formData, setFormData] = useState({});
 const[message, setMessage] = useState("");
 const[updateUserStats, { isLoading, error}] = useUpdateUserStatsMutation();
 
@@ -18,17 +22,24 @@ const {name,value} = e.target;
 setFormData((prev) =>({...prev, [name]: value}));
 }
 
+
 const handleSubmit = async (e) =>{
     e.preventDefault();
 try {
-    const updateData = {...formData,userName};
+    const updateData = {
+      userName,
+      updates:formData
+    };
     const res = await updateUserStats(updateData).unwrap();
     setMessage("Stats updated sucessfully");
+    
 }catch (err){
     setMessage("Failed to update stats.");
     console.error(err);
  }
 }
+
+
 return (
   <div className="updateStatsPage-mainContainer">
     <NavLog />
