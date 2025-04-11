@@ -4,8 +4,7 @@ import "../styles/nav.css";
 import Logo from '../assets/forzaImgs/forzaLogo.png';
 import Profile from '../assets/forzaImgs/profileLogo.png'; 
 import Leaderboard from '../assets/forzaImgs/leaderboardLogo.png';
-import Car from '../assets/forzaImgs/carLogo.png';
-import Map from '../assets/forzaImgs/mapLogo.png';
+import Compare from "../assets/forzaImgs/compareIcon.png";
 
 const NavBar = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -40,7 +39,7 @@ const NavBar = () => {
               </a>
             </li>
             <li>
-                <img src={Map} alt="Map" className="nav-icon" />
+                <img src={Compare} alt="Map" className="nav-icon" />
                 <Link to ="/compare-page">
                   Compare Stats
                 </Link>
