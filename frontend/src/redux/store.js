@@ -1,6 +1,9 @@
 import {configureStore} from '@reduxjs/toolkit';
+
 import {loginAPI, logoutAPI, searchAPI, deleteAPI,signupAPI } from './apis/user';
-import {getUserStatsAPI,getUserProfileStatsAPI, getCompareStatsAPI} from './apis/stats'
+import {getUserStatsAPI,getUserProfileStatsAPI, getCompareStatsAPI,  updateUserStatsAPI} from './apis/stats'
+
+
 
 
 export const server = import.meta.env.VITE_SERVER;
@@ -15,6 +18,12 @@ export const store = configureStore({
         [getUserStatsAPI.reducerPath]: getUserStatsAPI.reducer,
         [getUserProfileStatsAPI.reducerPath]: getUserProfileStatsAPI.reducer,
         [getCompareStatsAPI.reducerPath]: getCompareStatsAPI.reducer,
+
+        [updateUserStatsAPI.reducerPath]: updateUserStatsAPI.reducer
+
+        [getUsersListAPI.reducerPath]: getUsersListAPI.reducer,
+        [getAllUserStatsAPI.reducerPath]: getAllUserStatsAPI.reducer,
+
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(
@@ -25,7 +34,13 @@ export const store = configureStore({
             deleteAPI.middleware,
             getUserStatsAPI.middleware,
             getUserProfileStatsAPI.middleware,
-            getCompareStatsAPI.middleware
+            getCompareStatsAPI.middleware,
+
+            updateUserStatsAPI.middleware
+
+            getUsersListAPI.middleware,
+            getAllUserStatsAPI.middleware
+
         ),
     });
 

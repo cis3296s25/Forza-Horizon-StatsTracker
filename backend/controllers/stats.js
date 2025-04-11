@@ -25,6 +25,40 @@ exports.getUserStats = async (req, res) => {
     }
 };
 
+exports.getAllUserStats = async (req, res) => {
+    try {
+        const verifiedUsers = await hub_user.find({ verify: true });
+    
+        const leaderboard = await Promise.all(
+          verifiedUsers.map(async (user) => {
+            const stats = await user_stats.findOne({userName: new RegExp(`^${user.userName}$`, 'i')
+              });
+              
+    
+            if (!stats) {
+                return null; 
+            }
+    
+            return {
+              userName: user.userName,
+              victories: stats.victories,
+              distanceDrivenInMiles: stats.distanceDrivenInMiles,
+              numberofCarsOwned: stats.numberofCarsOwned,
+            };
+          })
+        );
+    
+        
+        const filteredLeaderboard = leaderboard.filter(entry => entry !== null);
+    
+        res.status(200).json(filteredLeaderboard);
+      } catch (err) {
+        console.error('Error fetching leaderboard:', err);
+        res.status(500).json({ error: 'Server error' });
+      }
+
+}
+
 
 
 
@@ -100,3 +134,29 @@ exports.getCompareStats = async (req, res) => {
         res.status(500).json({ message: "Error comparing stats", error: error.message });
     }
 };
+
+exports.updateUserStats = async (req,res)=>{
+const tokUserName = req.user.userName;
+const {userName, updates} = req.body;
+
+if(userName != tokUserName){
+    return res.status(403).json({message: "Not authorized to edit this user's stats" })
+}
+
+try {
+    const updatedStats = await user_stats.findOneAndUpdate(
+    {userName},
+    {$set: updates},
+    {new: true},
+    );
+
+
+if(!updatedStats){
+    return res.status(404).json({message: "No user stats found"})
+}
+res.status(200).json({message:"Stats updated sucessfully"})
+}
+catch(error){
+res.status(500).json({message:"Error updating stats", error: error.message})
+ }
+}

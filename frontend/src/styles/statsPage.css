@@ -23,6 +23,7 @@
     text-align: center;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     color: black;
+    background-color: white;
  }
  
  
@@ -86,13 +87,14 @@
     background-color: #555;
  }
  
- .user-box {
+ .user-box-stats{
    position: absolute;
    width: 400px;
-   top:100;
+   top: 110px;
+   left: 50px;  
    height: auto;
    padding: 0px 30px;
-   margin-top: 50px;
+   margin-top: 90px;
    background-color: rgba(36, 36, 36, 0.500);
    color: rgba(255, 255, 255, 0.795);
    border-radius: 10px;
@@ -126,3 +128,70 @@
    justify-content: space-between;
    gap: 10px; 
  }
+
+ .action-buttons {
+   display: flex;
+   justify-content: space-between;
+   
+   margin-top: 20px;
+   gap: 90px;
+ }
+ 
+ .edit-button {
+   background-color: rgba(68, 68, 68, 1);
+   color: white;
+   border: none;
+   border-radius: 8px;
+   padding: 10px 20px;
+   font-size: 1rem;
+   font-weight: 600;
+   cursor: pointer;
+   flex: 1;
+   transition: background-color 0.2s ease;
+ }
+ 
+ .edit-button:hover {
+   background-color: #555;
+ }
+ 
+ 
+ .edit-button.delete:hover {
+   background-color: #555;
+ }
+ 
+ .stats-vertical-container {
+   position: absolute;
+   top: 150px;
+   right: 200px;
+   width: 400px;
+   
+ }
+
+ .tablestyle table {
+   width: 100%;
+   border-collapse: collapse;
+   table-layout: fixed;
+ }
+ 
+ .tablestyle thead,
+ .tablestyle tfoot {
+   display: table;
+   width: 100%;
+   table-layout: fixed;
+ }
+ 
+ .scrollable {
+   display: block;
+   max-height: 300px;
+   overflow-y: auto;
+   overflow-x: hidden;
+   width: 100%;
+ }
+ 
+ .scrollable tr {
+   display: table;
+   width: 100%;
+   table-layout: fixed;
+ }
+ 
+ 
