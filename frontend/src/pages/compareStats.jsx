@@ -137,8 +137,8 @@ const[triggerCompareStats, {data,error,isLoading}] = useLazyGetCompareStatsQuery
                 colNames={['victories', 'garageValue', 'topSpeed']}
                 colNameMap={{
                   victories: '# of victories',
-                  garageValue: 'Garage Value',
-                  topSpeed: 'Top Speed'
+                  garageValue: 'Garage Value (in CR)',
+                  topSpeed: 'Top Speed (MPH)'
                 }}
                 players={playerNames}
                 stats={userStats}

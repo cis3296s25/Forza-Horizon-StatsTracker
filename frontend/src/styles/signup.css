@@ -76,19 +76,13 @@
     left: 110%;
     transform: translateY(-50%);
     z-index: 10;
-    width: 300px; /* Wider for more text */
+    width: 400px; /* Wider for more text */
     background-color: #333;
     color: #fff;
     padding: 12px;
     border-radius: 8px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
     white-space: normal;
-  }
-  
-  .platform-tooltip-content img {
-    width: 100%;
-    margin-top: 10px;
-    border-radius: 6px;
   }
   
   .platform-tooltip-wrapper:hover .platform-tooltip-content {
