@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { useUpdateUserStatsMutation } from '../redux/apis/stats';
 import "../styles/updateStatsPage.css";
-import Nav from '../components/nav';
+import NavLog from '../components/navLog';
 import Footer from '../components/footer';
 import { FaQuestionCircle} from "react-icons/fa";
 
@@ -31,7 +31,7 @@ try {
 }
 return (
   <div className="updateStatsPage-mainContainer">
-    <Nav />
+    <NavLog />
     <div className="updateStats-container">
    <form onSubmit ={handleSubmit}>
 
@@ -111,7 +111,6 @@ return (
               <span className="platform-tooltip-wrapper">
                     <FaQuestionCircle className="platform-tooltip-icon" />
                     <div className="platform-tooltip-content">
-                      
                     </div>
                 </span>
               </label>
