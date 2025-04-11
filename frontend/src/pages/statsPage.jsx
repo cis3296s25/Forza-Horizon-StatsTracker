@@ -83,9 +83,9 @@ function StatsPage() {
                 <br />
                 <br />
                 <br />
-                <h1>Profile</h1>
+                {/* <h1>Profile</h1> */}
                 { userStats && userStats.platform === "xbox" ? (
-                    <div className="user-box">
+                    <div className="user-box-stats">
                         <h2>Welcome, {userStats.userName}</h2>
                         <div className="platform-level">
                         <p className="boxes"><strong>Platform:</strong> {userStats.platform}</p>
@@ -93,12 +93,18 @@ function StatsPage() {
                         </div>
                     </div>
                     ) : (
-                    <div className="user-box">
+                    <div className="user-box-stats">
                         <h2>Welcome, {userStats.userName}</h2>
                         <div className="platform-level">
                         <p className="boxes"><strong>Platform:</strong> {userStats.platform}</p>
                         <p className="boxes"><strong>Level:</strong> {userStats.level}</p>
-                        </div>
+                    </div>
+
+                    <div className="action-buttons">
+                        <button className="edit-button">Edit Stats</button>
+                        <button className="edit-button delete">Delete Account</button>
+                    </div>
+
                     </div>
                 )}
                 <br />
@@ -114,30 +120,32 @@ function StatsPage() {
                 <br />
                 <br />
 
-                <h1>Stats</h1>
-                {data && data.stats && (
-                    <Table
-                        list={[data?.stats]} // Wrap the stats object in an array if needed
-                        colNames={[
-                            'victories', 'numberofCarsOwned', 'garageValue', 'timeDriven', 'mostValuableCar', 'totalWinnningsinCR', 
-                            'favoriteCar', 'longestSkillChain', 'distanceDrivenInMiles', 'longestJump', 'topSpeed', 'biggestAir'
-                        ]}
-                        colNameMap={{
-                            victories: 'Victories',
-                            numberofCarsOwned: 'Number of Cars Owned',
-                            garageValue: ' Garage Value (in CR)',
-                            timeDriven: 'Time Driven',
-                            mostValuableCar: 'Most Valuable Car',
-                            totalWinnningsinCR: 'Total Winnings (in CR)',
-                            favoriteCar: 'Favorite Car',
-                            longestSkillChain: 'Longest Skill Chain',
-                            distanceDrivenInMiles: 'Distance Driven in Miles',
-                            longestJump: 'Longest Jump',
-                            topSpeed: 'Top Speed (MPH)',
-                            biggestAir: 'Biggest Air',
-                        }}
-                    />
-                )}
+                <div className="stats-vertical-container">
+                    <h1>Stats</h1>
+                    {data && data.stats && (
+                        <Table
+                            list={[data?.stats]} // Wrap the stats object in an array if needed
+                            colNames={[
+                                'victories', 'numberofCarsOwned', 'garageValue', 'timeDriven', 'mostValuableCar', 'totalWinnningsinCR', 
+                                'favoriteCar', 'longestSkillChain', 'distanceDrivenInMiles', 'longestJump', 'topSpeed', 'biggestAir'
+                            ]}
+                            colNameMap={{
+                                victories: 'Victories',
+                                numberofCarsOwned: 'Number of Cars Owned',
+                                garageValue: ' Garage Value',
+                                timeDriven: 'Time Driven',
+                                mostValuableCar: 'Most Valuable Car',
+                                totalWinnningsinCR: 'Total Winnings in CR',
+                                favoriteCar: 'Favorite Car',
+                                longestSkillChain: 'Longest Skill Chain',
+                                distanceDrivenInMiles: 'Distance Driven in Miles',
+                                longestJump: 'Longest Jump',
+                                topSpeed: 'Top Speed',
+                                biggestAir: 'Biggest Air',
+                            }}
+                        />
+                    )}
+                </div>
             </div>
             <Footer />
         </div>
