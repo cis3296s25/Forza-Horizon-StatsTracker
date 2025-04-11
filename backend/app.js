@@ -1,11 +1,8 @@
-// app.js
-const express = require("express");
-const cors = require("cors");
-const dotenv = require("dotenv");
-dotenv.config();
-
-const userRouter = require("./routes/users");
-const statsRouter = require("./routes/stats");
+/*Bringing in libraries*/
+const dotenv = require('dotenv');
+dotenv.config()
+const express = require('express');
+const cors = require('cors');
 
 const app = express();
 
@@ -22,7 +19,7 @@ app.use(
 
 app.use(express.json());
 
-// Middleware to log requests
+// Middleware to parse incoming JSON data
 app.use((req, res, next) => {
   res.on("finish", () => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} ${res.statusCode}`);
@@ -31,13 +28,15 @@ app.use((req, res, next) => {
   next();
 });
 
-// Health check route
+// Test route for API health check
 app.get("/", (req, res) => {
   res.send("API is working with /api/v1");
 });
 
-// Routes
-app.use("/api/userAccount", userRouter);
+const userRouter = require('./routes/users');
+const statsRouter = require('./routes/stats'); 
+
+app.use("/api/userAccount", userRouter); 
 app.use("/api/userStats", statsRouter);
 
 module.exports = app;

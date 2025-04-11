@@ -99,7 +99,11 @@ const Home = () => {
               <h2>{userStats.userName}</h2>
               <div className="platform-level">
                   <p className='boxes'><strong>Platform:</strong>{userStats.platform}</p>
-                  <p className='boxes'><strong>Level:</strong>{userStats.level}</p>
+                  {userStats.platform === "Xbox" && (<p className='boxes' style={{fontSize:"20px"}}><strong>Game Score:</strong>{userStats.level}</p>
+                  )}
+                  {userStats.platform === "Steam" && (<p className='boxes'><strong>Level:</strong>{userStats.level}</p>
+                  )}
+                  {userStats.platform === "Manually" && (<p className='boxes'><strong>Level:</strong>{userStats.level}</p>)}
                 </div>
               <div className="time-cars">
                 <div className="time-car-box">

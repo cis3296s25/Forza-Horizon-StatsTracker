@@ -281,16 +281,16 @@ exports.deleteUsers = async (req, res) => {
 }
 
 exports.getUsersList = async (req, res) => {
-    const {prefix} = req.query;
+    const { prefix = '' } = req.query; // Default to empty string if prefix is not provided
     try {
         const users = await hub_user.find({
             userName: { $regex: `^${prefix}`, $options: 'i' }
         }).select('userName');
         
-        return res.status(200).json({users});
+        return res.status(200).json({ users });
     }
     catch (error) {
         console.error("Error fetching users:", error);
         res.status(500).json({ message: "Internal server error", error: error.message });
     }
-} 
+}

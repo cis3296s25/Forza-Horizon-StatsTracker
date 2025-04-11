@@ -4,8 +4,6 @@ import "../styles/nav.css";
 import Logo from '../assets/forzaImgs/forzaLogo.png';
 import Profile from '../assets/forzaImgs/profileLogo.png'; 
 import Leaderboard from '../assets/forzaImgs/leaderboardLogo.png';
-import Car from '../assets/forzaImgs/carLogo.png';
-import Map from '../assets/forzaImgs/mapLogo.png';
 import Compare from '../assets/forzaImgs/compareIcon.png';
 import { useLogoutMutation } from '../redux/apis/user';  // Logout API from Redux toolkit
 import toast from 'react-hot-toast';
@@ -58,19 +56,13 @@ const NavBarLog = () => {
               </Link>
             </li>
             <li>
-              <a href="#">
+              <a href="/leaderboard">
                 <img src={Leaderboard} alt="Leaderboards" className="nav-icon" />
                 Leaderboards
               </a>
             </li>
             <li>
-              <a href="#">
-                <img src={Car} alt="Cars" className="nav-icon" />
-                Cars
-              </a>
-            </li>
-            <li>
-                <img src={Compare } alt="Map" className="nav-icon" />
+                <img src={Compare} alt="Map" className="nav-icon" />
                 <Link to ="/compare-page">
                   Compare Stats
                 </Link>
