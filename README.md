@@ -10,7 +10,9 @@ Forza Horizon 5 StatHub is a web application designed to allow users to view and
 
 - **Compare Stats**: Signed-in user will be able to compare their stats with another user
 
-- **View Community Leaderboard (Coming Soon)**: Users will be able to view a community leaderboard to see where they rank amongst other registered users
+- **View Leaderboard**: Users will be able to view a leaderboard of verified users to see where they rank amongst other users
+
+- **Update Stats**: Registered users can update their existing stats to reflect their latest in-game progress.
 
 ## Conceptual Design
 - **Backend**: Node.js, express 
@@ -21,7 +23,7 @@ Forza Horizon 5 StatHub is a web application designed to allow users to view and
 
 - **Database**: MongoDB  
 
-- **APIs**: Steam APIs, Xbox API
+- **APIs**: Steam API, Xbox API
 
 - **Verification**: Microsoft Auth, Auth2.O
 
@@ -101,8 +103,12 @@ If you are a user who wants to test the web application, but do not own the Forz
 
 Project Board Link: https://github.com/orgs/cis3296s25/projects/65
 
-## Example User Gamertag to Compare Stats to 
-Gamertag1: Natsh
-Gamertag2: Tester1
-Password for Tester1: 1234
+## Example Accounts for Testing and Comparison
+
+| Gamertag  | Password | Purpose                   |
+|-----------|----------|---------------------------|
+| Tester1   | 1234     | Use for testing as a verified user
+| Natsh     |    | Use this gamertag to compare your stats to
+
+
 

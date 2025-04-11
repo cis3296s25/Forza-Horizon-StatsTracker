@@ -89,3 +89,8 @@ button:hover {
 td:first-child {
   font-weight: bold;
 }
+
+.load-leaderboard {
+  margin-top: 20rem;
+  text-align: center;
+}

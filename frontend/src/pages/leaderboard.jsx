@@ -23,7 +23,7 @@ function Leaderboard() {
     return (
       <div className="leaderboard-mainContainer">
         <Nav />
-        <div>Loading leaderboard...</div>
+        <div className="load-leaderboard">Loading leaderboard...</div>
         <Footer />
       </div>
     );
