@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+
 export const getUserStatsAPI = createApi({
   reducerPath: "getUserStatsApi",
   baseQuery: fetchBaseQuery({
@@ -83,7 +84,37 @@ export const getCompareStatsAPI = createApi({
   }),
 });
 
+
+export const updateUserStatsAPI = createApi({
+  reducerPath: "updateUserApi",
+  // base URL for the API
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${import.meta.env.VITE_SERVER}/api/userStats/`,
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem('jwtToken'); // Get token from localStorage
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`); // Set Authorization header
+      }
+      return headers;
+    },    
+  }),
+  endpoints: (builder) => ({
+  updateUserStats: builder.mutation({
+    query: (body) => ({
+      url: "updateStats",
+      method: "PUT",
+      body,
+    }),
+  }),
+}),
+});
+
+
 export const { useGetUserStatsQuery } = getUserStatsAPI;
 export const { useGetUserProfileStatsQuery } = getUserProfileStatsAPI;
 export const { useGetCompareStatsQuery,useLazyGetCompareStatsQuery } = getCompareStatsAPI;
+
+export const { useUpdateUserStatsMutation } = updateUserStatsAPI;
+
 export const { useGetAllUserStatsQuery } = getAllUserStatsAPI;
+

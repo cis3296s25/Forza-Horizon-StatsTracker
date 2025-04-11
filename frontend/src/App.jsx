@@ -5,6 +5,7 @@ import LoadingScreen from './pages/loadingScreen';
 import './App.css';
 import RouteProtection from './components/routeProtection';
 
+
 // Lazy load the components
 const Home = lazy(() => import('./pages/home'));
 const Profile = lazy(() => import('./pages/profile'));
@@ -13,7 +14,11 @@ const StatsPage = lazy(() => import('./pages/statsPage'));
 const SignupForm = lazy(() => import('./pages/signUpForm'));
 const NotFound = lazy(() => import('./components/notFound'));
 const ComparePage = lazy(() => import('./pages/compareStats'));
+
+const UpdateStatsPage = lazy(() => import('./pages/updateStats'));
+
 const LeaderboardPage = lazy(() => import('./pages/leaderboard'));
+
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -38,7 +43,11 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/signup-stats" element={<SignupForm />} />
             <Route path="/compare-page" element={<ComparePage />}/>
+
+             <Route path="/update-stats-page" element={<UpdateStatsPage />}/>
+
             <Route path="/leaderboard" element={<LeaderboardPage />} />
+
             <Route
               path="/user/:username"
               element={
