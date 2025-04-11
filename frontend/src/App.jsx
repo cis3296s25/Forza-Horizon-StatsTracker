@@ -38,7 +38,8 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/signup-stats" element={<SignupForm />} />
             <Route path="/compare-page" element={<ComparePage />}/>
-            <Route path="/delete" element={<DeletePage />}/>
+            <Route path="/delete" element={<RouteProtection element={<DeletePage />} />}/>
+            
             <Route
               path="/user/:username"
               element={
