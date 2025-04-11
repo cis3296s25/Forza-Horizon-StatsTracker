@@ -46,7 +46,7 @@ return (
                 <span className="platform-tooltip-wrapper">
                           <FaQuestionCircle className="platform-tooltip-icon" />
                           <div className="platform-tooltip-content">
-                        
+                        <p>Number of in-game victories</p>
                           </div>
                   </span>
                 </label>
@@ -66,7 +66,7 @@ return (
                 <span className="platform-tooltip-wrapper">
                     <FaQuestionCircle className="platform-tooltip-icon" />
                     <div className="platform-tooltip-content">
-                    
+                     <p>Number of cars in you garage</p>
                     </div>
                 </span>
               </label>
@@ -87,7 +87,7 @@ return (
               <span className="platform-tooltip-wrapper">
                     <FaQuestionCircle className="platform-tooltip-icon" />
                     <div className="platform-tooltip-content">
-                      
+                       <p>Total value of your garage</p>
                     </div>
                 </span>
               </label>
@@ -111,6 +111,7 @@ return (
               <span className="platform-tooltip-wrapper">
                     <FaQuestionCircle className="platform-tooltip-icon" />
                     <div className="platform-tooltip-content">
+                       <p>Total time driven in game</p>
                     </div>
                 </span>
               </label>
@@ -129,7 +130,7 @@ return (
               <span className="platform-tooltip-wrapper">
                     <FaQuestionCircle className="platform-tooltip-icon" />
                     <div className="platform-tooltip-content">
-                     
+                      <p>Most valuable car in your garage</p>
                     </div>
                 </span>
               </label>
@@ -148,7 +149,7 @@ return (
               <span className="platform-tooltip-wrapper">
                     <FaQuestionCircle className="platform-tooltip-icon" />
                     <div className="platform-tooltip-content">
-                      
+                       <p>Total in-game winnings</p>
                     </div>
                 </span>
               </label>
@@ -171,7 +172,7 @@ return (
               <span className="platform-tooltip-wrapper">
                     <FaQuestionCircle className="platform-tooltip-icon" />
                     <div className="platform-tooltip-content">
-                      
+                       <p>Favorite car in the game</p>
                     </div>
                 </span>
               </label>
@@ -190,7 +191,7 @@ return (
               <span className="platform-tooltip-wrapper">
                     <FaQuestionCircle className="platform-tooltip-icon" />
                     <div className="platform-tooltip-content">
-                   
+                   "Longest skill chain in minutes followed by seconds"
                     </div>
                 </span>
               </label>
@@ -209,7 +210,7 @@ return (
               <span className="platform-tooltip-wrapper">
                     <FaQuestionCircle className="platform-tooltip-icon" />
                     <div className="platform-tooltip-content">
-                
+                    <p>Total distance driven in miles</p>
                     </div>
                 </span>
               </label>
@@ -232,7 +233,7 @@ return (
               <span className="platform-tooltip-wrapper">
                     <FaQuestionCircle className="platform-tooltip-icon" />
                     <div className="platform-tooltip-content">
-                   
+                    <p>Longest jump in feet</p>
                     </div>
                 </span>
               </label>
@@ -251,7 +252,7 @@ return (
               <span className="platform-tooltip-wrapper">
                     <FaQuestionCircle className="platform-tooltip-icon" />
                     <div className="platform-tooltip-content">
-                   
+                    <p>Top Speed in Miles</p>
                     </div>
                 </span>
               </label>
@@ -270,7 +271,7 @@ return (
               <span className="platform-tooltip-wrapper">
                     <FaQuestionCircle className="platform-tooltip-icon" />
                     <div className="platform-tooltip-content">
-                    
+                     <p>Longest time in the air in seconds</p>
                     </div>
                 </span>
               </label>

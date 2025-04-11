@@ -43,8 +43,6 @@ function App() {
             <Route path="/signup-stats" element={<SignupForm />} />
             <Route path="/compare-page" element={<ComparePage />}/>
             <Route path="/leaderboard" element={<LeaderboardPage />} />
-             <Route path="/update-stats-page" element={<UpdateStatsPage />}/>
-            <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route
               path="/user/:username"
               element={
