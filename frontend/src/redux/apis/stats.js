@@ -25,6 +25,23 @@ export const getUserStatsAPI = createApi({
   }),
 });
 
+export const getAllUserStatsAPI = createApi({
+  reducerPath: "getAllUserStatsApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${import.meta.env.VITE_SERVER}/api/userStats/`, 
+  }),
+  endpoints: (builder) => ({
+    getAllUserStats: builder.query({
+      query: () => ({
+        url: "allUserStats", 
+        method: "GET",
+      }),
+    }),
+  }),
+});
+
+
+  
 
 export const getUserProfileStatsAPI = createApi({
   reducerPath: 'getUserProfileStatsApi',
@@ -96,4 +113,8 @@ export const updateUserStatsAPI = createApi({
 export const { useGetUserStatsQuery } = getUserStatsAPI;
 export const { useGetUserProfileStatsQuery } = getUserProfileStatsAPI;
 export const { useGetCompareStatsQuery,useLazyGetCompareStatsQuery } = getCompareStatsAPI;
+
 export const { useUpdateUserStatsMutation } = updateUserStatsAPI;
+
+export const { useGetAllUserStatsQuery } = getAllUserStatsAPI;
+

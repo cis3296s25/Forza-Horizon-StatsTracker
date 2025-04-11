@@ -23,6 +23,7 @@
     text-align: center;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     color: black;
+    background-color: white;
  }
  
  
@@ -85,4 +86,112 @@
  button:hover {
     background-color: #555;
  }
+ 
+ .user-box-stats{
+   position: absolute;
+   width: 400px;
+   top: 110px;
+   left: 50px;  
+   height: auto;
+   padding: 0px 30px;
+   margin-top: 90px;
+   background-color: rgba(36, 36, 36, 0.500);
+   color: rgba(255, 255, 255, 0.795);
+   border-radius: 10px;
+   box-shadow: 0 4px 12px rgba(36, 36, 36, 1);
+   text-align: center;
+ }
+ 
+ .user-box h2 {
+   font-size: 3rem;
+   font-weight: 900;
+   margin: 0;
+ }
+ 
+ .user-box p {
+   font-size: 1.4rem;
+   font-weight: 500;
+ }
+ 
+ .boxes {
+   width: auto;
+   height: 40px;
+   background-color: rgba(68, 68, 68, 1);
+   color: white;
+   text-align: center;
+   border-radius: 5px;
+   padding: 8px;
+ }
+ 
+.platform-level {
+   display: flex;
+   justify-content: space-between;
+   gap: 10px; 
+ }
+
+ .action-buttons {
+   display: flex;
+   justify-content: space-between;
+   
+   margin-top: 20px;
+   gap: 90px;
+ }
+ 
+ .edit-button {
+   background-color: rgba(68, 68, 68, 1);
+   color: white;
+   border: none;
+   border-radius: 8px;
+   padding: 10px 20px;
+   font-size: 1rem;
+   font-weight: 600;
+   cursor: pointer;
+   flex: 1;
+   transition: background-color 0.2s ease;
+ }
+ 
+ .edit-button:hover {
+   background-color: #555;
+ }
+ 
+ 
+ .edit-button.delete:hover {
+   background-color: #555;
+ }
+ 
+ .stats-vertical-container {
+   position: absolute;
+   top: 150px;
+   right: 200px;
+   width: 400px;
+   
+ }
+
+ .tablestyle table {
+   width: 100%;
+   border-collapse: collapse;
+   table-layout: fixed;
+ }
+ 
+ .tablestyle thead,
+ .tablestyle tfoot {
+   display: table;
+   width: 100%;
+   table-layout: fixed;
+ }
+ 
+ .scrollable {
+   display: block;
+   max-height: 300px;
+   overflow-y: auto;
+   overflow-x: hidden;
+   width: 100%;
+ }
+ 
+ .scrollable tr {
+   display: table;
+   width: 100%;
+   table-layout: fixed;
+ }
+ 
  
