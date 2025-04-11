@@ -29,7 +29,7 @@ function StatsPage() {
     };
     const handleDelete = async () => {
         try {
-            navigate('/update-stats-page', { state: { userName: userStats.userName } });
+            navigate('/delete', { state: { userName: userStats.userName } });
         } catch (error) {
           toast.error("There was an error logging out. Try again later.");
           console.error("Logout error:", error);

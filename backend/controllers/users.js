@@ -263,7 +263,11 @@ exports.searchUsers = async (req, res) => {
 
 // will need to updated this once we have the stats ready
 exports.deleteUsers = async (req, res) => {
-    const {userName} = req.body;
+    const { userName } = req.body;
+    if (!userName) {
+        return res.status(400).json({ message: "User name is required" });
+    }
+
     try{
         const user = await hub_user.findOneAndDelete({userName});
         const userStats= await user_stats.findOneAndDelete({userName});
