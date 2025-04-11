@@ -80,9 +80,10 @@ export const deleteAPI = createApi({
   }),
   endpoints: (builder) => ({
     deleteUser: builder.mutation({
-      query: () => ({
+      query: (body) => ({
         url: "delete",
         method: "DELETE",
+        body,
       }),
     }),
   }),
