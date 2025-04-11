@@ -66,25 +66,30 @@ function Table({ list, colNames, colNameMap = {}, pageNum = 0, pageSize = 10 }) 
                 <table cellPadding="0" cellSpacing="0">
                     <thead>
                         <tr>
-                            {colNames.map((col, index) => (
+                            {/* {colNames.map((col, index) => (
                                 <th key={index} onClick={() => sortByColumn(col)}>
                                     {colNameMap[col] || col.toUpperCase()}
                                 </th>
-                            ))}
+                            ))} */}
+
+                            <th>Stat</th>
+                            <th>Value</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {currentPage.map((row, index) => (
+                    <tbody className="scrollable">
+                        {colNames.map((col, index) => (
                             <tr key={index}>
-                                {colNames.map((col, index) => (
+                                {/* {colNames.map((col, index) => (
                                     <td key={index}>{row[col]}</td>
-                                ))}
+                                ))} */}
+                                <th>{String(colNameMap[col] || col)}</th>
+                                <td>{String(sortedList[0][col])}</td>
                             </tr>
                         ))}
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colSpan={colNames.length}>
+                            <td colSpan="2">
                                 <button className="backBtn" onClick={onBack}>
                                     Back
                                 </button>
