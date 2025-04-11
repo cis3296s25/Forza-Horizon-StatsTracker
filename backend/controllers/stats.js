@@ -124,5 +124,5 @@ res.status(200).json({message:"Stats updated sucessfully"})
 }
 catch(error){
 res.status(500).json({message:"Error updating stats", error: error.message})
-}
+ }
 }
