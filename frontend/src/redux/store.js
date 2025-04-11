@@ -1,7 +1,7 @@
 import {configureStore} from '@reduxjs/toolkit';
 
-import {loginAPI, logoutAPI, searchAPI, deleteAPI,signupAPI } from './apis/user';
-import {getUserStatsAPI,getUserProfileStatsAPI, getCompareStatsAPI,  updateUserStatsAPI} from './apis/stats'
+import {loginAPI, logoutAPI, searchAPI, deleteAPI,signupAPI,getUsersListAPI } from './apis/user';
+import {getUserStatsAPI,getUserProfileStatsAPI, getCompareStatsAPI,  updateUserStatsAPI,getAllUserStatsAPI} from './apis/stats'
 
 
 
@@ -18,9 +18,7 @@ export const store = configureStore({
         [getUserStatsAPI.reducerPath]: getUserStatsAPI.reducer,
         [getUserProfileStatsAPI.reducerPath]: getUserProfileStatsAPI.reducer,
         [getCompareStatsAPI.reducerPath]: getCompareStatsAPI.reducer,
-
-        [updateUserStatsAPI.reducerPath]: updateUserStatsAPI.reducer
-
+        [updateUserStatsAPI.reducerPath]: updateUserStatsAPI.reducer,
         [getUsersListAPI.reducerPath]: getUsersListAPI.reducer,
         [getAllUserStatsAPI.reducerPath]: getAllUserStatsAPI.reducer,
 
@@ -35,9 +33,7 @@ export const store = configureStore({
             getUserStatsAPI.middleware,
             getUserProfileStatsAPI.middleware,
             getCompareStatsAPI.middleware,
-
-            updateUserStatsAPI.middleware
-
+            updateUserStatsAPI.middleware,
             getUsersListAPI.middleware,
             getAllUserStatsAPI.middleware
 

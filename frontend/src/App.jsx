@@ -14,9 +14,8 @@ const StatsPage = lazy(() => import('./pages/statsPage'));
 const SignupForm = lazy(() => import('./pages/signUpForm'));
 const NotFound = lazy(() => import('./components/notFound'));
 const ComparePage = lazy(() => import('./pages/compareStats'));
-
+const DeletePage = lazy(() => import('./pages/deleteProfile'));
 const UpdateStatsPage = lazy(() => import('./pages/updateStats'));
-
 const LeaderboardPage = lazy(() => import('./pages/leaderboard'));
 
 
@@ -43,18 +42,17 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/signup-stats" element={<SignupForm />} />
             <Route path="/compare-page" element={<ComparePage />}/>
-
-             <Route path="/update-stats-page" element={<UpdateStatsPage />}/>
-
             <Route path="/leaderboard" element={<LeaderboardPage />} />
-
+             <Route path="/update-stats-page" element={<UpdateStatsPage />}/>
+            <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route
               path="/user/:username"
               element={
            <RouteProtection element={<StatsPage />} />
             }
             />
-
+            <Route path="/update-stats-page" element= { <RouteProtection element={<UpdateStatsPage />} />}/>
+            <Route path="/delete" element={<RouteProtection element={<DeletePage />} />}/>
             <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
           </Routes>
         </Suspense>
