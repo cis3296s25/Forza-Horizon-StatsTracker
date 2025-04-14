@@ -4,6 +4,7 @@
     left: 0;
     height: 100%;
     width: 100%;
+    background: url('../assets/forzaImgs/mcQueen.jpg') no-repeat center center;
     background-color: white;
     background-size: cover;
     display: flex;
@@ -20,4 +21,5 @@
     justify-content: center;
     height: 100vh;
     padding-top: 70px;
+    color:aliceblue
   }
