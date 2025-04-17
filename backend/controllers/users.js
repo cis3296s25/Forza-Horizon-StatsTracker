@@ -6,7 +6,6 @@ const user_profile = require('../models/user_profile');
 const jwt = require("jsonwebtoken");
 
 const crypto = require("crypto");
-const User = require("../models/User");
 const PasswordReset = require("../models/PasswordReset");
 const { sendResetEmail } = require("../mailer");
 
@@ -75,7 +74,7 @@ const fetchPlayerData = async (platform, gameId) => {
 const requestReset = async (req, res) => {
   try {
     const { email } = req.body;
-    const user = await User.findOne({ email });
+    const user = await hub_user.findOne({ email });
     if (!user) return res.status(404).json({ message: "Email not found" });
 
     const rawToken = crypto.randomBytes(32).toString("hex");
