@@ -12,7 +12,7 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState("");
   const [gameId, setGameId] = useState("");
-  const [emailAddress, setEmailAddress] = useState('');
+  const [email, setEmail] = useState('');
 
   const navigate = useNavigate();
       const handleNext = (e) => {
@@ -29,7 +29,7 @@ const Signup = () => {
       }
     
         navigate('/signup-stats', {
-          state: { gamertag, emailAddress, password, selectedPlatform, gameId },
+          state: { gamertag, email, password, selectedPlatform, gameId },
         });
       };
 
@@ -48,8 +48,8 @@ const Signup = () => {
           type="text" 
           placeholder="ENTER EMAIL ADDRESS" 
           className="signup-input" 
-          value={emailAddress} 
-          onChange={(e) => setEmailAddress(e.target.value)} 
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)} 
         />
         <input 
           type="password" 

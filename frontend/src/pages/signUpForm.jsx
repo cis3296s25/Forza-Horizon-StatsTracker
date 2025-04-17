@@ -10,7 +10,7 @@ import { FaQuestionCircle } from "react-icons/fa";
 
 const SignupForm = () => {
   const location = useLocation();
-  const { gamertag, password, selectedPlatform, gameId } = location.state || {};
+  const { gamertag, email, password, selectedPlatform, gameId } = location.state || {};
   
   const [victories, setVictories] = useState('');
   const [numberofCarsOwned, setNumberOfCarsOwned] = useState('');
