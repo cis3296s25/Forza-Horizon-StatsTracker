@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import "../styles/nav.css";
-import Logo from '../assets/forzaImgs/forzaLogo.png';
+import Logo from "../assets/forzaImgs/forzaLogo.png";
 import Profile from '../assets/forzaImgs/profileLogo.png'; 
 import Leaderboard from '../assets/forzaImgs/leaderboardLogo.png';
 import Compare from "../assets/forzaImgs/compareIcon.png";
+import Register from "../assets/forzaImgs/register.jpg";
 
 const NavBar = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -45,6 +46,7 @@ const NavBar = () => {
                 </Link>
             </li>
             <li>
+              <img src={Register} alt="Map" className="nav-icon" />
               <Link to ="/signup">
                 SignUp
               </Link>
