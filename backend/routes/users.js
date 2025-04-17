@@ -8,10 +8,8 @@ router.post("/login", loginUsers);
 router.post("/logout", logoutUsers);
 router.post("/search", searchUsers);
 router.post("/request-reset", requestReset);
-//router.post("/update", updateUsers);
 router.delete("/delete", deleteUsers);
 router.get("/list", getUsersList);
-
 
 
 module.exports = router;

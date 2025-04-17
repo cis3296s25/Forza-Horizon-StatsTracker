@@ -71,7 +71,7 @@ const fetchPlayerData = async (platform, gameId) => {
 
 
 
-const requestReset = async (req, res) => {
+exports.requestReset = async (req, res) => {
   try {
     const { email } = req.body;
     const user = await hub_user.findOne({ email });
@@ -332,13 +332,4 @@ exports.getUsersList = async (req, res) => {
     }
 }
 
-module.exports = {
-    newUser,
-    loginUsers,
-    logoutUsers,
-    searchUsers,
-    deleteUsers,
-    getUsersList,
-    requestReset,
-  };
   
