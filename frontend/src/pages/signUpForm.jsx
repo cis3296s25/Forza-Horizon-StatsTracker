@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import "../styles/signupForm.css";
+import "../styles/signupform.css";
 import Nav from '../components/nav';
 import Footer from '../components/footer';
 import { useLocation, useNavigate } from 'react-router-dom';
