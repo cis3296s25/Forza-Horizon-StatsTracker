@@ -45,6 +45,7 @@ const navigate = useNavigate();
   try {
     const userStats = {
       userName: gamertag,
+      email,
       victories: parseInt(victories),
       numberofCarsOwned: parseInt(numberofCarsOwned),
       garageValue,
