@@ -10,7 +10,7 @@ const ForgotPassword = () => {
   const handleResetRequest = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("/api/request-reset", {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/api/userAccount/request-reset`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

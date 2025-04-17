@@ -8,6 +8,7 @@ router.post("/login", loginUsers);
 router.post("/logout", logoutUsers);
 router.post("/search", searchUsers);
 router.post("/request-reset", requestReset);
+router.post("/request-password", requestPassword);
 router.delete("/delete", deleteUsers);
 router.get("/list", getUsersList);
 
