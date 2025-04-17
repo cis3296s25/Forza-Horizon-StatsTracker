@@ -7,6 +7,7 @@ import "../styles/statsPage.css";
 import { useGetUserStatsQuery } from '../redux/apis/stats'; 
 import { useSearchMutation } from '../redux/apis/user';
 import toast from 'react-hot-toast';
+import defaultProfile from "../assets/default_profile.jpg"; 
 
 function StatsPage() {
     const { username } = useParams();
@@ -56,6 +57,7 @@ function StatsPage() {
                 userName: res.data.userName,
                 platform: platforms,
                 level: res.data.level,
+                avatar: res.data.avatar || defaultProfile,
             });
         } else if (res.error) {
             const errorMessage = res.error.data?.message || "User not found";
@@ -103,6 +105,7 @@ function StatsPage() {
                 {/* <h1>Profile</h1> */}
                 {userStats && (
                     <div className="user-box-stats">
+                        <img src={userStats.avatar} alt="Avatar" className="avatar-profile" />
                         <h2>Welcome, {userStats.userName}</h2>
                         <div className="platform-level">
                             <p className="boxes"><strong>Platform:</strong> {userStats.platform}</p>
