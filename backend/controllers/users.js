@@ -5,6 +5,11 @@ const fetch = require('node-fetch');
 const user_profile = require('../models/user_profile');
 const jwt = require("jsonwebtoken");
 
+const crypto = require("crypto");
+const User = require("../models/User");
+const PasswordReset = require("../models/PasswordReset");
+const { sendResetEmail } = require("../mailer");
+
 const generateToken = (user) => {
     return jwt.sign(
       { id: user._id, userName: user.userName },
@@ -65,9 +70,38 @@ const fetchPlayerData = async (platform, gameId) => {
     return { level, profilePic };
 };
 
+
+
+const requestReset = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "Email not found" });
+
+    const rawToken = crypto.randomBytes(32).toString("hex");
+    const tokenHash = crypto.createHash("sha256").update(rawToken).digest("hex");
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+
+    await PasswordReset.create({
+      userId: user._id,
+      tokenHash,
+      expiresAt,
+    });
+
+    const resetLink = `http://localhost:3000/reset-password?token=${rawToken}`;
+    await sendResetEmail(user.email, resetLink);
+
+    res.json({ message: "Password reset link sent to your email!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+
 exports.newUser = async (req, res) => {
 
-    const { userName, platform, password, gameId, victories, numberofCarsOwned, garageValue, timeDriven, mostValuableCar,
+    const { userName, email, platform, password, gameId, victories, numberofCarsOwned, garageValue, timeDriven, mostValuableCar,
         totalWinnningsinCR, favoriteCar, longestSkillChain, distanceDrivenInMiles, longestJump, topSpeed, biggestAir} = req.body;
 
     let verify = false;
@@ -137,7 +171,7 @@ exports.newUser = async (req, res) => {
 
         const { level, profilePic } = await fetchPlayerData(platform, gameId);
 
-        const newUser = new hub_user({ userName, platform, password: hashedPassword, verify, gameId});
+        const newUser = new hub_user({ userName, email, platform, password: hashedPassword, verify, gameId});
 
         const newUserStats = new user_stats({ userName, victories, numberofCarsOwned, garageValue,timeDriven, mostValuableCar,
             totalWinnningsinCR, favoriteCar, longestSkillChain, distanceDrivenInMiles, longestJump, topSpeed, biggestAir });
@@ -298,3 +332,14 @@ exports.getUsersList = async (req, res) => {
         res.status(500).json({ message: "Internal server error", error: error.message });
     }
 }
+
+module.exports = {
+    newUser,
+    loginUsers,
+    logoutUsers,
+    searchUsers,
+    deleteUsers,
+    getUsersList,
+    requestReset,
+  };
+  
