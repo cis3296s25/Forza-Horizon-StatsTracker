@@ -87,7 +87,7 @@ exports.requestReset = async (req, res) => {
       expiresAt,
     });
 
-    const resetLink = `https://forza-horizon-frontend.onrender.com/reset-password?token=${rawToken}`;
+    const resetLink = `${process.env.SERVER}/reset-password?token=${rawToken}`;
     await sendResetEmail(user.email, resetLink);
 
     res.json({ message: "Password reset link sent to your email!" });
@@ -119,7 +119,7 @@ exports.resetPassword = async (req, res) => {
     }
     let hashedPassword = await bcrypt.hash(password,10);
     user.password = hashedPassword;
-    
+
     await user.save();
 
     resetRecord.used = true;
