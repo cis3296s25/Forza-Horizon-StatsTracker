@@ -56,7 +56,7 @@ const fetchPlayerData = async (platform, gameId) => {
         }
         if(platform == "manually"){
                 level = 0;
-                profilePic = "https://avatarfiles.alphacoders.com/282/thumb-1920-282375.jpg";
+                profilePic = "https://i.pinimg.com/736x/df/3e/38/df3e38f193873247033dfd1dbecd57ea.jpg";
         }
     } catch (error) {
         console.log(`Error fetching player data for ${platform}:`, error);

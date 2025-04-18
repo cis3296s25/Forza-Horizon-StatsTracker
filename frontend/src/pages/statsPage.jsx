@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Profiler, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';  // Import useNavigate for redirection
 import Table from '../components/Table/Table';
 import Nav from '../components/navLog';
@@ -7,7 +7,6 @@ import "../styles/statsPage.css";
 import { useGetUserStatsQuery } from '../redux/apis/stats'; 
 import { useSearchMutation } from '../redux/apis/user';
 import toast from 'react-hot-toast';
-import defaultProfile from "../assets/default_profile.jpg"; 
 
 function StatsPage() {
     const { username } = useParams();
@@ -49,6 +48,7 @@ function StatsPage() {
         const res = await search({ userName: username });
 
         if (res.data) {
+            console.log(res.data);
             toast.success(res.data.message || "User found");
             setUserFound(true);
             setNoUserFound(false); // Reset the no user found state
@@ -57,7 +57,7 @@ function StatsPage() {
                 userName: res.data.userName,
                 platform: platforms,
                 level: res.data.level,
-                avatar: res.data.avatar || defaultProfile,
+                profilePic: res.data.profilePic,
             });
         } else if (res.error) {
             const errorMessage = res.error.data?.message || "User not found";
@@ -105,7 +105,8 @@ function StatsPage() {
                 {/* <h1>Profile</h1> */}
                 {userStats && (
                     <div className="user-box-stats">
-                        <img src={userStats.avatar} alt="Avatar" className="avatar-profile" />
+            
+                        <img src={userStats.profilePic} alt="Avatar" className="avatar-profile" />
                         <h2>Welcome, {userStats.userName}</h2>
                         <div className="platform-level">
                             <p className="boxes"><strong>Platform:</strong> {userStats.platform}</p>
@@ -115,6 +116,7 @@ function StatsPage() {
                   )}
                   {userStats.platform === "Manually" && (<p className='boxes'><strong>Level:</strong>{userStats.level}</p>)}
                         </div>
+                        
                         <div className="action-buttons">
                             <button className="edit-button" onClick={handleStats}>Edit Stats</button>
                             <button className="edit-button delete" onClick={handleDelete}>Delete Account</button>
