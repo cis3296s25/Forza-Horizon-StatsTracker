@@ -87,7 +87,7 @@ exports.requestReset = async (req, res) => {
       expiresAt,
     });
 
-    const resetLink = `${process.env.SERVER}/reset-password?token=${rawToken}`;
+    const resetLink = `https://forza-horizon-frontend.onrender.com/reset-password?token=${rawToken}`;
     await sendResetEmail(user.email, resetLink);
 
     res.json({ message: "Password reset link sent to your email!" });
@@ -113,7 +113,7 @@ exports.resetPassword = async (req, res) => {
 
     const user = await hub_user.findById(resetRecord.userId);
     console.log(user.userName);
-    
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
