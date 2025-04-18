@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {Profiler, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';  // Import useNavigate for redirection
 import Table from '../components/Table/Table';
 import Nav from '../components/navLog';
@@ -52,6 +52,7 @@ function StatsPage() {
                 userName: res.data.userName,
                 platform: platforms,
                 level: res.data.level,
+                profilePic: res.data.profilePic // Use default avatar if not provided
             });
         } else if (res.error) {
             setUserFound(false);
@@ -97,6 +98,7 @@ function StatsPage() {
                 {/* <h1>Profile</h1> */}
                 {userStats && (
                     <div className="user-box-stats">
+                        <img src={userStats.profilePic} alt="Avatar" className="avatar-profile" />
                         <h2>Welcome, {userStats.userName}</h2>
                         <div className="platform-level">
                             <p className="boxes"><strong>Platform:</strong> {userStats.platform}</p>
