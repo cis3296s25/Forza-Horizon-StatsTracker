@@ -5,6 +5,10 @@ const fetch = require('node-fetch');
 const user_profile = require('../models/user_profile');
 const jwt = require("jsonwebtoken");
 
+const crypto = require("crypto");
+const PasswordReset = require("../models/PasswordReset");
+const { sendResetEmail } = require("../mailer");
+
 const generateToken = (user) => {
     return jwt.sign(
       { id: user._id, userName: user.userName },
@@ -65,9 +69,73 @@ const fetchPlayerData = async (platform, gameId) => {
     return { level, profilePic };
 };
 
+
+
+exports.requestReset = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await hub_user.findOne({ email });
+    if (!user) return res.status(404).json({ message: "Email not found" });
+
+    const rawToken = crypto.randomBytes(32).toString("hex");
+    const tokenHash = crypto.createHash("sha256").update(rawToken).digest("hex");
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+
+    await PasswordReset.create({
+      userId: user._id,
+      tokenHash,
+      expiresAt,
+    });
+
+    const resetLink = `${process.env.SERVER}/reset-password?token=${rawToken}`;
+    await sendResetEmail(user.email, resetLink);
+
+    res.json({ message: "Password reset link sent to your email!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  try {
+    const { token, password, confirmPassword } = req.body;
+    if (password !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match" });
+    }
+
+    const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+    const resetRecord = await PasswordReset.findOne({ tokenHash, used: false });
+
+    if (!resetRecord || resetRecord.expiresAt < Date.now()) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    const user = await hub_user.findById(resetRecord.userId);
+    console.log(user.userName);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    let hashedPassword = await bcrypt.hash(password,10);
+    user.password = hashedPassword;
+
+    await user.save();
+
+    resetRecord.used = true;
+    await resetRecord.save();
+
+    res.json({ message: "Password has been reset." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+
 exports.newUser = async (req, res) => {
 
-    const { userName, platform, password, gameId, victories, numberofCarsOwned, garageValue, timeDriven, mostValuableCar,
+    const { userName, email, platform, password, gameId, victories, numberofCarsOwned, garageValue, timeDriven, mostValuableCar,
         totalWinnningsinCR, favoriteCar, longestSkillChain, distanceDrivenInMiles, longestJump, topSpeed, biggestAir} = req.body;
 
     let verify = false;
@@ -137,7 +205,7 @@ exports.newUser = async (req, res) => {
 
         const { level, profilePic } = await fetchPlayerData(platform, gameId);
 
-        const newUser = new hub_user({ userName, platform, password: hashedPassword, verify, gameId});
+        const newUser = new hub_user({ userName, email, platform, password: hashedPassword, verify, gameId});
 
         const newUserStats = new user_stats({ userName, victories, numberofCarsOwned, garageValue,timeDriven, mostValuableCar,
             totalWinnningsinCR, favoriteCar, longestSkillChain, distanceDrivenInMiles, longestJump, topSpeed, biggestAir });
@@ -298,3 +366,5 @@ exports.getUsersList = async (req, res) => {
         res.status(500).json({ message: "Internal server error", error: error.message });
     }
 }
+
+  

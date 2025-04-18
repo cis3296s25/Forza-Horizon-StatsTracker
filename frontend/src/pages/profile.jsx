@@ -49,6 +49,7 @@ import { useNavigate } from 'react-router-dom';
 
           <input type="password" placeholder="Enter Password" className="login-input" value = {password}
           onChange={(e) => setPassword(e.target.value)} required />
+          <button className = "forgetPassowrd-button" onClick={() => navigate("/forgot-password")}>Forgot Password</button>
           <button className="login-button" onClick={loginFunction} disabled={isLoading}> {isLoading ? "Signing In..." : "SIGN IN"}</button>
         </div>
         <Footer />
