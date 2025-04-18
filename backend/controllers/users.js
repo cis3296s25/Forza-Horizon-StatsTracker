@@ -4,6 +4,13 @@ const user_stats = require('../models/user_stats');
 const fetch = require('node-fetch');
 const user_profile = require('../models/user_profile');
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
+const PasswordReset = require("../models/PasswordReset");
+const { sendResetEmail } = require("../mailer");
+const multer = require("multer");
+const storage = multer.memoryStorage(); // Store in memory
+const upload = multer({ storage });
+ 
 
 const generateToken = (user) => {
     return jwt.sign(
@@ -65,9 +72,72 @@ const fetchPlayerData = async (platform, gameId) => {
     return { level, profilePic };
 };
 
-exports.newUser = async (req, res) => {
+exports.requestReset = async (req, res) => {
+    try {
+      const { email } = req.body;
+      const user = await hub_user.findOne({ email });
+      if (!user) return res.status(404).json({ message: "Email not found" });
+  
+      const rawToken = crypto.randomBytes(32).toString("hex");
+      const tokenHash = crypto.createHash("sha256").update(rawToken).digest("hex");
+      const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+  
+      await PasswordReset.create({
+        userId: user._id,
+        tokenHash,
+        expiresAt,
+      });
+  
+      const resetLink = `${process.env.SERVER}/reset-password?token=${rawToken}`;
+      await sendResetEmail(user.email, resetLink);
+  
+      res.json({ message: "Password reset link sent to your email!" });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Something went wrong." });
+    }
+  };
 
-    const { userName, platform, password, gameId, victories, numberofCarsOwned, garageValue, timeDriven, mostValuableCar,
+  exports.resetPassword = async (req, res) => {
+    try {
+      const { token, password, confirmPassword } = req.body;
+      if (password !== confirmPassword) {
+        return res.status(400).json({ message: "Passwords do not match" });
+      }
+  
+      const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+      const resetRecord = await PasswordReset.findOne({ tokenHash, used: false });
+  
+      if (!resetRecord || resetRecord.expiresAt < Date.now()) {
+        return res.status(400).json({ message: "Invalid or expired token" });
+      }
+  
+      const user = await hub_user.findById(resetRecord.userId);
+      console.log(user.userName);
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      let hashedPassword = await bcrypt.hash(password,10);
+    user.password = hashedPassword;
+      await user.save();
+  
+      resetRecord.used = true;
+      await resetRecord.save();
+  
+      res.json({ message: "Password has been reset." });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Something went wrong." });
+    }
+  };
+
+  
+
+/*exports.newUser = async (req, res) => {
+
+    const { userName,email, platform, password, gameId, victories, numberofCarsOwned, garageValue, timeDriven, mostValuableCar,
         totalWinnningsinCR, favoriteCar, longestSkillChain, distanceDrivenInMiles, longestJump, topSpeed, biggestAir} = req.body;
 
     let verify = false;
@@ -121,9 +191,9 @@ exports.newUser = async (req, res) => {
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
-                    'x-authorization': `${process.env.XBOX_API_KEY}`,
-                    accept: '*/*',
-                },
+                    'x-authorization': `${process.env.XBOX_API_KEY}`,*/
+                  // accept: '*/*',
+             /*   },
             });
 
             if (!response.ok) {
@@ -131,13 +201,12 @@ exports.newUser = async (req, res) => {
             }
             verify = true;
         }
-        /*Hashing user password for userbase storage*/ 
         let hashedPassword = await bcrypt.hash(password,10);
         // Save the new user in the database
 
         const { level, profilePic } = await fetchPlayerData(platform, gameId);
 
-        const newUser = new hub_user({ userName, platform, password: hashedPassword, verify, gameId});
+        const newUser = new hub_user({ userName, email,platform, password: hashedPassword, verify, gameId});
 
         const newUserStats = new user_stats({ userName, victories, numberofCarsOwned, garageValue,timeDriven, mostValuableCar,
             totalWinnningsinCR, favoriteCar, longestSkillChain, distanceDrivenInMiles, longestJump, topSpeed, biggestAir });
@@ -151,7 +220,36 @@ exports.newUser = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: 'Server error while creating the user.', error: err.message });
     }
-};
+};*/
+
+exports.newUser = async (req, res) => {
+    const { userName, platform, password, gameId,email } = req.body;
+    const images = req.files;
+  
+    console.log("Received fields:", req.body);
+    console.log("Received files:", images?.length || 0);
+  
+    if (!userName || !platform || !password || !email) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+  
+    if (!images || images.length !== 2) {
+      return res.status(400).json({ message: "Two images are required" });
+    }
+  
+    try {
+      // Example: logging image buffer sizes
+      images.forEach((img, idx) => {
+        console.log(`Image ${idx + 1}: ${img.originalname} (${img.mimetype}) - ${img.buffer.length} bytes`);
+      });
+  
+      // Your logic here: create user, save stats, etc. (without image saving)
+      return res.status(201).json({ message: "User created successfully (images received in memory)" });
+    } catch (error) {
+      console.error("Signup error:", error);
+      return res.status(500).json({ message: "Server error", error: error.message });
+    }
+  };
 
 // Backend Login Handler
 exports.loginUsers = async (req, res) => {

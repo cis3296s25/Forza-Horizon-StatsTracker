@@ -16,6 +16,7 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState("");
   const [gameId, setGameId] = useState("");
+  const [email, setEmail] = useState('');
 
   const navigate = useNavigate();
       const handleNext = (e) => {
@@ -32,7 +33,7 @@ const Signup = () => {
       }
     
         navigate('/signup-stats', {
-          state: { gamertag, password, selectedPlatform, gameId },
+          state: { gamertag, password, email,selectedPlatform, gameId },
         });
       };
 
@@ -51,6 +52,16 @@ const Signup = () => {
             required 
           />
           <img src={gamerId} alt="Account Logo" className="account-logo" />
+        </div>
+        <div className='input-wrapper'>
+        <input 
+           type="text" 
+           placeholder="ENTER EMAIL ADDRESS" 
+           className="signup-input" 
+           value={email} 
+           onChange={(e) => setEmail(e.target.value)} 
+         />
+          <img src={emails} alt="Account Logo" className="account-logo" />
         </div>
         <div className='input-wrapper'>
           <input 

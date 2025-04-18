@@ -14,16 +14,16 @@ const ResetPassword = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  /*useEffect(() => {
+  useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const resetToken = queryParams.get("token");
     if (resetToken) {
       setToken(resetToken);
     } else {
       toast.error("Invalid or missing reset token.");
-      navigate("/"); // or redirect somewhere safe
+      navigate("/profile"); // or redirect somewhere safe
     }
-  }, [location, navigate]);*/
+  }, [location, navigate]);
 
   const handleReset = async (e) => {
     e.preventDefault();
@@ -34,7 +34,7 @@ const ResetPassword = () => {
     }
 
     try {
-      const res = await fetch("/api/reset-password", {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/api/userAccount/reset-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token, password, confirmPassword }),

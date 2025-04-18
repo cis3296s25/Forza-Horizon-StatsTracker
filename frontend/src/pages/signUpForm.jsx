@@ -13,7 +13,7 @@ const SignupForm = () => {
   const fileInputRef = useRef(null);
   const [signup, { isLoading }] = useSignupMutation();
 
-  const { gamertag, password, selectedPlatform, gameId } = location.state || {};
+  const { gamertag, password,email, selectedPlatform, gameId } = location.state || {};
 
   const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
@@ -67,6 +67,7 @@ const SignupForm = () => {
     formData.append("password", password);
     formData.append("platform", selectedPlatform);
     if (gameId) formData.append("gameId", gameId);
+    formData.append("email", email);
 
     images.forEach((image) => {
       formData.append("images", image);
