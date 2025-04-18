@@ -12,6 +12,8 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState("");
   const [gameId, setGameId] = useState("");
+  const [email, setEmail] = useState('');
+
   const navigate = useNavigate();
       const handleNext = (e) => {
         e.preventDefault();
@@ -27,7 +29,7 @@ const Signup = () => {
       }
     
         navigate('/signup-stats', {
-          state: { gamertag, password, selectedPlatform, gameId },
+          state: { gamertag, email, password, selectedPlatform, gameId },
         });
       };
 
@@ -41,6 +43,13 @@ const Signup = () => {
           className="signup-input" 
           value={gamertag} 
           onChange={(e) => setGamertag(e.target.value)} 
+        />
+        <input 
+          type="text" 
+          placeholder="ENTER EMAIL ADDRESS" 
+          className="signup-input" 
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)} 
         />
         <input 
           type="password" 

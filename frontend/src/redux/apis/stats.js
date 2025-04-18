@@ -13,17 +13,21 @@ export const getUserStatsAPI = createApi({
       return headers;
     }, 
   }),
+  tagTypes: ['UserStats'],
   endpoints: (builder) => ({
     getUserStats: builder.query({
       query: (userName) => ({
-        //url: `stats?userName=${userName}`,
-        url:`stats`,
+        url: `stats`,
         method: "GET",
-        params: {userName},
+        params: { userName },
       }),
+      providesTags: (result, error, userName) => [
+        { type: 'UserStats', id: userName },
+      ],
     }),
   }),
 });
+
 
 export const getAllUserStatsAPI = createApi({
   reducerPath: "getAllUserStatsApi",
@@ -98,6 +102,7 @@ export const updateUserStatsAPI = createApi({
       return headers;
     },    
   }),
+  tagTypes: ['UserStats'],
   endpoints: (builder) => ({
   updateUserStats: builder.mutation({
     query: (body) => ({
@@ -105,6 +110,7 @@ export const updateUserStatsAPI = createApi({
       method: "PUT",
       body,
     }),
+    invalidatesTags: (result, error, arg) => [{ type: 'UserStats', id: arg.userName }],
   }),
 }),
 });
@@ -113,8 +119,6 @@ export const updateUserStatsAPI = createApi({
 export const { useGetUserStatsQuery } = getUserStatsAPI;
 export const { useGetUserProfileStatsQuery } = getUserProfileStatsAPI;
 export const { useGetCompareStatsQuery,useLazyGetCompareStatsQuery } = getCompareStatsAPI;
-
 export const { useUpdateUserStatsMutation } = updateUserStatsAPI;
-
 export const { useGetAllUserStatsQuery } = getAllUserStatsAPI;
 

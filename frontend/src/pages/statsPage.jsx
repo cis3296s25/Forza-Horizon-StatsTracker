@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Profiler, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';  // Import useNavigate for redirection
 import Table from '../components/Table/Table';
 import Nav from '../components/navLog';
@@ -19,6 +19,23 @@ function StatsPage() {
     const { data, error, isLoading: statsLoading } = useGetUserStatsQuery(username);
     console.log("Data from API:", data); // Log the data received from the API
 
+    const handleStats = async () => {
+        try {
+            navigate('/update-stats-page', { state: { userName: userStats.userName } });
+        } catch (error) {
+          toast.error("There was an error logging out. Try again later.");
+          console.error("Logout error:", error);
+        }
+    };
+    const handleDelete = async () => {
+        try {
+            navigate('/delete', { state: { userName: userStats.userName } });
+        } catch (error) {
+          toast.error("There was an error logging out. Try again later.");
+          console.error("Logout error:", error);
+        }
+    };
+
     // Trigger searchGamertag automatically when the username is available
     useEffect(() => {
         if (username) {
@@ -31,6 +48,7 @@ function StatsPage() {
         const res = await search({ userName: username });
 
         if (res.data) {
+            console.log(res.data);
             toast.success(res.data.message || "User found");
             setUserFound(true);
             setNoUserFound(false); // Reset the no user found state
@@ -39,6 +57,7 @@ function StatsPage() {
                 userName: res.data.userName,
                 platform: platforms,
                 level: res.data.level,
+                profilePic: res.data.profilePic,
             });
         } else if (res.error) {
             const errorMessage = res.error.data?.message || "User not found";
@@ -84,27 +103,24 @@ function StatsPage() {
                 <br />
                 <br />
                 {/* <h1>Profile</h1> */}
-                { userStats && userStats.platform === "xbox" ? (
+                {userStats && (
                     <div className="user-box-stats">
+            
+                        <img src={userStats.profilePic} alt="Avatar" className="avatar-profile" />
                         <h2>Welcome, {userStats.userName}</h2>
                         <div className="platform-level">
-                        <p className="boxes"><strong>Platform:</strong> {userStats.platform}</p>
-                        <p className="boxes"><strong>Game Score:</strong> {userStats.level}</p>
+                            <p className="boxes"><strong>Platform:</strong> {userStats.platform}</p>
+                            {userStats.platform === "Xbox" && (<p className='boxes' style={{fontSize:"20px"}}><strong>Game Score:</strong>{userStats.level}</p>
+                  )}
+                  {userStats.platform === "Steam" && (<p className='boxes'><strong>Level:</strong>{userStats.level}</p>
+                  )}
+                  {userStats.platform === "Manually" && (<p className='boxes'><strong>Level:</strong>{userStats.level}</p>)}
                         </div>
-                    </div>
-                    ) : (
-                    <div className="user-box-stats">
-                        <h2>Welcome, {userStats.userName}</h2>
-                        <div className="platform-level">
-                        <p className="boxes"><strong>Platform:</strong> {userStats.platform}</p>
-                        <p className="boxes"><strong>Level:</strong> {userStats.level}</p>
-                    </div>
-
-                    <div className="action-buttons">
-                        <button className="edit-button">Edit Stats</button>
-                        <button className="edit-button delete">Delete Account</button>
-                    </div>
-
+                        
+                        <div className="action-buttons">
+                            <button className="edit-button" onClick={handleStats}>Edit Stats</button>
+                            <button className="edit-button delete" onClick={handleDelete}>Delete Account</button>
+                        </div>
                     </div>
                 )}
                 <br />

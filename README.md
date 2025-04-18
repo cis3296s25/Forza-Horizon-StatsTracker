@@ -1,7 +1,7 @@
 # Forza Horizon Stats Tracker
 
 ## Overview
-Forza Horizon 5 StatHub is a web application designed to allow users to view and compare their Forza Horizon 5 in-game stats with other players around the world. Stats will be gathered via users self-reporting their in-game stats into the web application. The stats that will be gathered will include: time played, credits earned, number of victories, time in first places, etc. Through this website, users will be able to view a global leaderboard where they can analyze the top players’ stats or compare their own stats with another identified user.
+Forza Horizon 5 StatHub is a web application designed to allow users to view and compare their Forza Horizon 5 in-game stats with other players around the Forza Horizon 5 gaming community. Stats will be gathered via users self-reporting their in-game stats into the web application. The stats that will be gathered will include: time played, credits earned, number of victories, etc. Through this website, users will be able to view a community leaderboard where they can analyze the top players’ stats or compare their own stats with another verified user.
 
 ![homepage](./homepage.png)
 
@@ -10,7 +10,9 @@ Forza Horizon 5 StatHub is a web application designed to allow users to view and
 
 - **Compare Stats**: Signed-in user will be able to compare their stats with another user
 
-- **View Community Leaderboard (Coming Soon)**: Users will be able to view a community leaderboard to see where they rank amongst other registered users
+- **View Leaderboard**: Users will be able to view a leaderboard of verified users to see where they rank amongst other users
+
+- **Update Stats**: Registered users can update their existing stats to reflect their latest in-game progress.
 
 ## Conceptual Design
 - **Backend**: Node.js, express 
@@ -21,7 +23,7 @@ Forza Horizon 5 StatHub is a web application designed to allow users to view and
 
 - **Database**: MongoDB  
 
-- **APIs**: Steam APIs, Xbox API
+- **APIs**: Steam API, Xbox API, ChatGPT API
 
 - **Verification**: Microsoft Auth, Auth2.O
 
@@ -29,12 +31,33 @@ Forza Horizon 5 StatHub is a web application designed to allow users to view and
 
 - **Render**: Will be hosted on render.
 
+## Modifications to Project for Personal Use
+
+### How to get MongoDB URL:
+
+1. To get your own MongoDB URL, create a MongoDB account if you don't have one with the following link: https://www.mongodb.com/cloud/atlas/register. 
+2. Then, navigate to this link https://www.freecodecamp.org/news/get-mongodb-url-to-connect-to-a-nodejs-application/ and follow the steps given to acquire your own MongoDB URL. 
+3. Copy the MongoDB URL and paste it into the .env file in the backend folder.
+
+### How to get Steam API: 
+1. To get your own Steam API key, you will first need to create a Steam account if you do not have one already at https://store.steampowered.com/join. 
+2. Afterwards, you will need to navigate to https://steamcommunity.com/dev/apikey and register for an API key here. 
+3. When prompted for a domain name, you can enter the domain of your web applicaton or you can just input anything for the domain name in order to acquire the API key. 
+4. After pressing the register button, you should see your Steam API key and you can copy and paste that into your .env file located in the backend folder.
+
+### How to get Xbox API:
+1. To get your own Xbox API key, you will need to create a Microsoft account if you do not have one already at https://account.microsoft.com/account.
+2. Then, you will need to go to https://xbl.io/ and click "Login with Xbox Live." 
+3. After logging in with your Microsoft account, navigate to the "Personal API keys" section and press "Create+" to get a new Xbox API key. 
+4. Lastly, copy the Xbox API key that you created, and paste it into your .env file located in the backend folder.  
+
 ## Live Website
 Visit the live website: https://forza-horizon-statstracker.onrender.com/
 
 
 
 ## Installation & Running Locally 
+Make sure you have to 
 To run the project locally, clone the repository and install dependencies:
 ``` bash 
 # Clone the repository 
@@ -101,8 +124,12 @@ If you are a user who wants to test the web application, but do not own the Forz
 
 Project Board Link: https://github.com/orgs/cis3296s25/projects/65
 
-## Example User Gamertag to Compare Stats to 
-Gamertag1: Natsh
-Gamertag2: Tester1
-Password for Tester1: 1234
+## Example Accounts for Testing and Comparison
+
+| Gamertag  | Password | Purpose                   |
+|-----------|----------|---------------------------|
+| Tester1   | 1234     | Use for testing as a verified user
+| Natsh     |    | Use this gamertag to compare your stats to
+
+
 
