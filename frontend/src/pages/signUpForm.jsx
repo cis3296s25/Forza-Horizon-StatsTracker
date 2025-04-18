@@ -13,7 +13,7 @@ const SignupForm = () => {
   const fileInputRef = useRef(null);
   const [signup, { isLoading }] = useSignupMutation();
 
-  const { gamertag, password, selectedPlatform, gameId,emailAddress } = location.state || {};
+  const { gamertag, password, selectedPlatform, gameId } = location.state || {};
 
   const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
@@ -63,31 +63,28 @@ const SignupForm = () => {
     }
 
     const formData = new FormData();
-  formData.append("userName", gamertag);
-  formData.append("password", password);
-  formData.append("platform", selectedPlatform);
-  formData.append("gameId", gameId || "");
-  formData.append("emailAddress", emailAddress || "");
+    formData.append("userName", gamertag);
+    formData.append("password", password);
+    formData.append("platform", selectedPlatform);
+    if (gameId) formData.append("gameId", gameId);
 
-  images.forEach((image) => {
-    formData.append("images", image); // match backend key
-  });
+    images.forEach((image) => {
+      formData.append("images", image);
+    });
+    try {
+      const response = await signup(formData);
 
-  try {
-    const response = await signup(formData).unwrap();
-    if(response) {
-      toast.success("Images uploaded successfully!");
-      resetImages(); // Reset images after successful upload
-      navigate("/profile"); // Redirect to success page or another route
-    } else {
-      toast.error("Failed to upload images. Please try again.");
+      if ("data" in response) {
+        toast.success("User signed up successfully!");
+        navigate("/profile");
+      } else {
+        toast.error(response.error?.data?.message || "Signup failed.");
+      }
+    } catch (error) {
+      toast.error("Unexpected error during signup.");
+      console.error(error);
     }
-  } catch (error) {
-    console.error(error);
-    toast.error(error?.data?.message || "Signup failed.");
-  }
   };
-
   return (
     <div className="signup-mainContainer">
       <Nav />

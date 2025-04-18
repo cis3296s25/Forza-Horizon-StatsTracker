@@ -4,6 +4,10 @@
     --forza-yellow: #f9a825;
     --forza-dark: #111111;
     --forza-text: #ffffff;
+    --stroke-width: calc(1em / 8);
+    --font-size: 50px;
+    --font-weight: 700;
+    --letter-spacing: calc(1em / 8);
 }
 
 body {
@@ -51,18 +55,19 @@ body {
 }
 
 .hero-section h1 {
-  font-size: 3rem;
-  font-weight: 900;
   margin-bottom: 1rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  margin-left: -400px;
+  margin-left: -500px;
   margin-top: -200px;
-
-  color: #5CBBFA; 
-  background-image: linear-gradient(90deg, #5CBBFA 35%, #09DB80 50%, #A509ED 50%); 
-  background-clip: text; 
-  -webkit-background-clip: text; 
-  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-image: linear-gradient(to right, #09f1b8, #00a2ff, #ff00d2, #f9a825);
+  color: var(--color-background);
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
+  letter-spacing: var(--letter-spacing);
+  padding: calc(--stroke-width / 2);
+  -webkit-text-stroke-color: transparent;
+  -webkit-text-stroke-width: var(--stroke-width);
   
 }
 
