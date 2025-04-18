@@ -87,10 +87,44 @@ exports.requestReset = async (req, res) => {
       expiresAt,
     });
 
-    const resetLink = `http://localhost:3000/reset-password?token=${rawToken}`;
+    const resetLink = `${process.env.SERVER}/reset-password?token=${rawToken}`;
     await sendResetEmail(user.email, resetLink);
 
     res.json({ message: "Password reset link sent to your email!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  try {
+    const { token, password, confirmPassword } = req.body;
+    if (password !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match" });
+    }
+
+    const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+    const resetRecord = await PasswordReset.findOne({ tokenHash, used: false });
+
+    if (!resetRecord || resetRecord.expiresAt < Date.now()) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    const user = await hub_user.findById(resetRecord.userId);
+    console.log(user.userName);
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.password = password;
+    await user.save();
+
+    resetRecord.used = true;
+    await resetRecord.save();
+
+    res.json({ message: "Password has been reset." });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Something went wrong." });
