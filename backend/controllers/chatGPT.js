@@ -69,6 +69,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
+
 // Debug middleware to log request details
 app.use((req, res, next) => {
   // Only log for specific routes
