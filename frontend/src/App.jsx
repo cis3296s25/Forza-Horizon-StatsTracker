@@ -17,6 +17,8 @@ const ComparePage = lazy(() => import('./pages/compareStats'));
 const DeletePage = lazy(() => import('./pages/deleteProfile'));
 const UpdateStatsPage = lazy(() => import('./pages/updateStats'));
 const LeaderboardPage = lazy(() => import('./pages/leaderboard'));
+const ForgotPassword = lazy(() => import('./pages/forgotPassword'));
+const ResetPassword = lazy(() => import('./pages/resetPassword'));
 
 
 function App() {
@@ -52,6 +54,9 @@ function App() {
             <Route path="/update-stats-page" element= { <RouteProtection element={<UpdateStatsPage />} />}/>
             <Route path="/delete" element={<RouteProtection element={<DeletePage />} />}/>
             <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+
           </Routes>
         </Suspense>
       )}
