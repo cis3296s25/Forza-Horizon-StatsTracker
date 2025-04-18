@@ -117,8 +117,9 @@ exports.resetPassword = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
-    user.password = password;
+    let hashedPassword = await bcrypt.hash(password,10);
+    user.password = hashedPassword;
+    
     await user.save();
 
     resetRecord.used = true;
