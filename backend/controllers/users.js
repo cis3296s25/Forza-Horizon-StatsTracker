@@ -360,6 +360,10 @@ exports.newUser = async (req, res) => {
             }
             verify = true;
         }
+
+        if(platform == "manually"){
+            verify = true;
+        }
         
         // Hash password
         let hashedPassword = await bcrypt.hash(password, 10);
