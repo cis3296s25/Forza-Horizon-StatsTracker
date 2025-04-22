@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Nav from '../components/nav';
 import Footer from '../components/footer';
-import Table from '../components/Table/Table';
 import "../styles/leaderboard.css"; 
 import { useGetAllUserStatsQuery } from '../redux/apis/stats'; 
 import LeaderBoardTable from '../components/Table/leaderboardTable';
@@ -33,11 +32,14 @@ function Leaderboard() {
     return (
       <div className="leaderboard-mainContainer">
         <Nav />
-        <div>Error loading leaderboard: {error.message}</div>
+        <div className="load-leaderboard">Error loading leaderboard: {error.message}</div>
         <Footer />
       </div>
     );
   }
+
+  const top3 = sortedStats.slice(0, 3);
+
 
   return (
     <div className="leaderboard-mainContainer">
@@ -52,7 +54,7 @@ function Leaderboard() {
             list={sortedStats}
             colNames={['userName', 'victories', 'distanceDrivenInMiles', 'numberofCarsOwned']}
             colNameMap={{
-              userName: 'Username',
+              userName: 'GamerTag',
               victories: 'Victories',
               distanceDrivenInMiles: 'Total Distance Driven (Miles)',
               numberofCarsOwned: '# of Cars Owned',
@@ -60,6 +62,19 @@ function Leaderboard() {
           />
         )}
       </div>
+      <div className="leaderboard-podium">
+        {top3.length > 0 ? (
+          top3.map((player, idx) => (
+            <div key={idx} className={`podium-position position-${idx + 1}`}>
+              <h2>{player.userName}</h2> {/* Only displaying userName */}
+            </div>
+          ))
+        ) : (
+          <h2>No players available</h2>
+        )}
+      </div>
+
+
       <Footer />
     </div>
   );

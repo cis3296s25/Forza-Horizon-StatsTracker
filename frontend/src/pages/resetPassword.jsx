@@ -4,6 +4,8 @@ import "../styles/resetPassword.css";
 import Nav from '../components/nav';
 import Footer from '../components/footer';
 import toast from 'react-hot-toast';
+import lockImg from '../assets/forzaImgs/lock.png';
+
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
@@ -19,7 +21,7 @@ const ResetPassword = () => {
       setToken(resetToken);
     } else {
       toast.error("Invalid or missing reset token.");
-      navigate("/"); // or redirect somewhere safe
+      navigate("/profile"); // or redirect somewhere safe
     }
   }, [location, navigate]);
 
@@ -56,6 +58,8 @@ const ResetPassword = () => {
     <div className="reset-mainContainer">
   <Nav />
   <div className="reset-container">
+    <h2>Reset Your Password</h2>
+  <div className="input-wrapper">
     <input
       type="password"
       placeholder="Enter New Password"
@@ -64,6 +68,9 @@ const ResetPassword = () => {
       onChange={(e) => setPassword(e.target.value)}
       required
     />
+     <img src={lockImg} alt="Account Logo" className="account-logo" />
+</div>
+<div className="input-wrapper">
     <input
       type="password"
       placeholder="Confirm New Password"
@@ -72,6 +79,8 @@ const ResetPassword = () => {
       onChange={(e) => setConfirmPassword(e.target.value)}
       required
     />
+     <img src={lockImg} alt="Account Logo" className="account-logo" />
+</div>
     <button className="reset-button" onClick={handleReset}>
       Reset Password
     </button>

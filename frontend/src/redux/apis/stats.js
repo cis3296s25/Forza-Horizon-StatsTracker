@@ -91,29 +91,29 @@ export const getCompareStatsAPI = createApi({
 
 export const updateUserStatsAPI = createApi({
   reducerPath: "updateUserApi",
-  // base URL for the API
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_SERVER}/api/userStats/`,
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem('jwtToken'); // Get token from localStorage
+      const token = localStorage.getItem('jwtToken');
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`); // Set Authorization header
+        headers.set('Authorization', `Bearer ${token}`);
       }
       return headers;
-    },    
+    },
   }),
   tagTypes: ['UserStats'],
   endpoints: (builder) => ({
-  updateUserStats: builder.mutation({
-    query: (body) => ({
-      url: "updateStats",
-      method: "PUT",
-      body,
+    updateUserStats: builder.mutation({
+      query: (formData) => ({
+        url: "updateStats",
+        method: "PUT",
+        body: formData,
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: 'UserStats', id: arg?.userName }],
     }),
-    invalidatesTags: (result, error, arg) => [{ type: 'UserStats', id: arg.userName }],
   }),
-}),
 });
+
 
 
 export const { useGetUserStatsQuery } = getUserStatsAPI;

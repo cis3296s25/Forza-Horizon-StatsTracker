@@ -1,339 +1,193 @@
-import React, { useState, useEffect } from 'react'; // Import useEffect here
-import "../styles/signup.css";
+import React, { useState, useEffect, useRef } from 'react';
+import "../styles/signupform.css";
 import Nav from '../components/nav';
 import Footer from '../components/footer';
-import { useLocation } from 'react-router-dom';
-import { useSignupMutation } from '../redux/apis/user';
-import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FaQuestionCircle } from "react-icons/fa";
+import toast from 'react-hot-toast';
+import { useSignupMutation } from '../redux/apis/user';
 
 const SignupForm = () => {
   const location = useLocation();
-  const { gamertag, email, password, selectedPlatform, gameId } = location.state || {};
-  
-  const [victories, setVictories] = useState('');
-  const [numberofCarsOwned, setNumberOfCarsOwned] = useState('');
-  const [garageValue, setGarageValue] = useState('');
-  
+  const navigate = useNavigate();
+  const fileInputRef = useRef(null);
+  const [signup, { isLoading }] = useSignupMutation();
 
-  const [timeDriven, setTimeDriven] = useState('');
-  const [mostValuableCar, setMostValuableCar] = useState('');
-  const [totalWinnningsinCR, setTotalWinningsinCR] = useState('');
-  const [favoriteCar, setFavoriteCar] = useState('');
-  const [longestSkillChain, setLongestSkillChain] = useState('');
-  const [distanceDrivenInMiles, setDistanceDrivenInMiles] = useState('');
-  const [longestJump, setLongestJump] = useState('');
-  const [topSpeed, setTopSpeed] = useState('');
-  const [biggestAir, setBiggestAir] = useState('');
+  const { gamertag, password,email, selectedPlatform, gameId } = location.state || {};
 
-const [signup, { isLoading }] = useSignupMutation();
-const navigate = useNavigate();
+  const [images, setImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
 
   useEffect(() => {
     if (!gamertag || !password || !selectedPlatform) {
-      toast.error("Good Try but your attempt failed");
-      navigate("/signup", { state: {} });
+      toast.error("Good try, but your attempt failed.");
+      navigate("/signup");
     }
   }, [gamertag, password, selectedPlatform, navigate]);
-  
-  const handleSubmit = async () => {
-    if (!victories || !numberofCarsOwned || !garageValue) {
-      return toast.error("All fields must be filled out.");
-  }
 
-  try {
-    const userStats = {
-      userName: gamertag,
-      email,
-      victories: parseInt(victories),
-      numberofCarsOwned: parseInt(numberofCarsOwned),
-      garageValue,
-      timeDriven,
-      mostValuableCar,
-      totalWinnningsinCR: totalWinnningsinCR ? parseInt(totalWinnningsinCR) : undefined,
-      favoriteCar,
-      longestSkillChain,
-      distanceDrivenInMiles: distanceDrivenInMiles ? parseInt(distanceDrivenInMiles) : undefined,
-      longestJump: longestJump ? parseInt(longestJump) : undefined,
-      topSpeed: topSpeed ? parseInt(topSpeed) : undefined,
-      biggestAir
-    };
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    const validFiles = files.slice(0, 2 - images.length); // limit to 2
 
-    const response = await signup({
-      userName: gamertag,
-      password,
-      platform: selectedPlatform,
-      gameId: gameId || null,
-      ...userStats
+    if (validFiles.length === 0) return;
+
+    validFiles.forEach((file) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreviews((prev) => [...prev, reader.result]);
+      };
+      reader.readAsDataURL(file);
     });
 
-    if ("data" in response) {
-      toast.success("Signup successful!");
-      navigate("/");
-    } else {
-      toast.error(response.error?.data?.message || "Signup failed. Please try again. Invalid Input.");
-    }
-  } catch (error) {
-    toast.error("An unexpected error occurred.");
-    navigate("/signup", { state: {} });
-  }
-};
+    setImages((prev) => [...prev, ...validFiles]);
+  };
 
-return (
-  <div className="signup-mainContainer">
-    <Nav />
-    <div className="signup-container" style={{color: "white"}}>
-      <h2 style={{textAlign: "center", marginBottom: "5px"}}>Driver Statistics</h2>
-      
-      <table style={{width: "100%", borderCollapse: "separate", borderSpacing: "30px"}}>
-        <tbody>
-          {/* Row 1 */}
-          <tr>
-            <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Number Of Victories  
-                <span className="platform-tooltip-wrapper">
-                          <FaQuestionCircle className="platform-tooltip-icon" />
-                          <div className="platform-tooltip-content">
-                            <p>This stats can be found under general third row, first column</p>
-                          </div>
-                  </span>
-                </label>
-              <input
-                type="number"
-                id="numVictories"
-                value={victories}
-                className="signup-input" 
-                placeholder='100'
-                onChange={(e) => setVictories(e.target.value)}
-                style={{width: "100%", display: "block"}}
-              />
-            </td>
-            <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Number of Cars Owned
-                <span className="platform-tooltip-wrapper">
-                    <FaQuestionCircle className="platform-tooltip-icon" />
-                    <div className="platform-tooltip-content">
-                      <p>This stats can be found under general first row, fourth column</p>
-                    </div>
-                </span>
-              </label>
-              <input
-                type="number"
-                id="numCars"
-                value={numberofCarsOwned}
-                className="signup-input"
-                placeholder='100' 
-                onChange={(e) => setNumberOfCarsOwned(e.target.value)}
-                style={{width: "100%", display: "block"}}
-              />
-            </td>
-            <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Garage Value
-              <span className="platform-tooltip-wrapper">
-                    <FaQuestionCircle className="platform-tooltip-icon" />
-                    <div className="platform-tooltip-content">
-                      <p>This stats can be found under general third row, fifth column</p>
-                    </div>
-                </span>
-              </label>
-              <input
-                type="text"
-                id="garageVal"
-                value={garageValue}
-                className="signup-input" 
-                placeholder='10,000 Cr'
-                onChange={(e) => setGarageValue(e.target.value)}
-                style={{width: "100%", display: "block"}}
-              />
-            </td>
-          </tr>
-          
-          {/* Row 2 */}
-          <tr>
-            <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Time Driven
-              <span className="platform-tooltip-wrapper">
-                    <FaQuestionCircle className="platform-tooltip-icon" />
-                    <div className="platform-tooltip-content">
-                      <p>This stats can be found under general first row, first column</p>
-                    </div>
-                </span>
-              </label>
-              <input
-                type="text"
-                value={timeDriven}
-                className="signup-input"
-                placeholder='100 hours'
-                onChange={(e) => setTimeDriven(e.target.value)}
-                style={{width: "100%", display: "block"}}
-              />
-            </td>
-            <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Most Valuable Car
-              <span className="platform-tooltip-wrapper">
-                    <FaQuestionCircle className="platform-tooltip-icon" />
-                    <div className="platform-tooltip-content">
-                      <p>This stats can be found under general first row, fifth column</p>
-                    </div>
-                </span>
-              </label>
-              <input
-                type="text"
-                value={mostValuableCar}
-                className="signup-input"
-                placeholder='Ferrari F40'
-                onChange={(e) => setMostValuableCar(e.target.value)}
-                style={{width: "100%", display: "block"}}
-              />
-            </td>
-            <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Total Winnings
-              <span className="platform-tooltip-wrapper">
-                    <FaQuestionCircle className="platform-tooltip-icon" />
-                    <div className="platform-tooltip-content">
-                      <p>This stats can be found under general second row, second column</p>
-                    </div>
-                </span>
-              </label>
-              <input
-                type="number"
-                value={totalWinnningsinCR}
-                className="signup-input"
-                placeholder='500000'
-                onChange={(e) => setTotalWinningsinCR(e.target.value)}
-                style={{width: "100%", display: "block"}}
-              />
-            </td>
-          </tr>
-          
-          {/* Row 3 */}
-          <tr>
-            <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Favorite Car
-              <span className="platform-tooltip-wrapper">
-                    <FaQuestionCircle className="platform-tooltip-icon" />
-                    <div className="platform-tooltip-content">
-                      <p>This stats can be found under general second row, fourth column</p>
-                    </div>
-                </span>
-              </label>
-              <input
-                type="text"
-                value={favoriteCar}
-                className="signup-input"
-                placeholder='Porsche 911 GT3'
-                onChange={(e) => setFavoriteCar(e.target.value)}
-                style={{width: "100%", display: "block"}}
-              />
-            </td>
-            <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Longest Skill Chain
-              <span className="platform-tooltip-wrapper">
-                    <FaQuestionCircle className="platform-tooltip-icon" />
-                    <div className="platform-tooltip-content">
-                      <p>This stats can be found next to the discovery tab which is Records second row, second column</p>
-                    </div>
-                </span>
-              </label>
-              <input
-                type="text"
-                value={longestSkillChain}
-                className="signup-input"
-                placeholder='05:10'
-                onChange={(e) => setLongestSkillChain(e.target.value)}
-                style={{width: "100%", display: "block"}}
-              />
-            </td>
-            <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Distance Driven (Miles)
-              <span className="platform-tooltip-wrapper">
-                    <FaQuestionCircle className="platform-tooltip-icon" />
-                    <div className="platform-tooltip-content">
-                    <p>This stats can be found next to the discovery tab which is Records second row, third column</p>
-                    </div>
-                </span>
-              </label>
-              <input
-                type="number"
-                value={distanceDrivenInMiles}
-                className="signup-input"
-                placeholder='1000'
-                onChange={(e) => setDistanceDrivenInMiles(e.target.value)}
-                style={{width: "100%", display: "block"}}
-              />
-            </td>
-          </tr>
-          
-          {/* Row 4 */}
-          <tr>
-            <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Longest Jump (Feet)
-              <span className="platform-tooltip-wrapper">
-                    <FaQuestionCircle className="platform-tooltip-icon" />
-                    <div className="platform-tooltip-content">
-                    <p>This stats can be found next to the discovery tab which is Records second row, fourth column</p>
-                    </div>
-                </span>
-              </label>
-              <input
-                type="number"
-                value={longestJump}
-                className="signup-input"
-                placeholder='500'
-                onChange={(e) => setLongestJump(e.target.value)}
-                style={{width: "100%", display: "block"}}
-              />
-            </td>
-            <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Top Speed (MPH)
-              <span className="platform-tooltip-wrapper">
-                    <FaQuestionCircle className="platform-tooltip-icon" />
-                    <div className="platform-tooltip-content">
-                    <p>This stats can be found next to the discovery tab which is Records third row, second column</p>
-                    </div>
-                </span>
-              </label>
-              <input
-                type="number"
-                value={topSpeed}
-                className="signup-input"
-                placeholder='250'
-                onChange={(e) => setTopSpeed(e.target.value)}
-                style={{width: "100%", display: "block"}}
-              />
-            </td>
-            <td>
-              <label style={{fontWeight:"700", display: "block", textAlign: "center", marginBottom: "8px"}}>Biggest Air
-              <span className="platform-tooltip-wrapper">
-                    <FaQuestionCircle className="platform-tooltip-icon" />
-                    <div className="platform-tooltip-content">
-                    <p>This stats can be found next to the discovery tab which is Records third row, third column</p>
-                    </div>
-                </span>
-              </label>
-              <input
-                type="text"
-                value={biggestAir}
-                className="signup-input"
-                placeholder='100 feet'
-                onChange={(e) => setBiggestAir(e.target.value)}
-                style={{width: "100%", display: "block"}}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      
-      <div style={{textAlign: "center", marginTop: "20px"}}>
-        <button className="signup-button" onClick={handleSubmit} disabled={isLoading}>
-          {isLoading ? "Signing Up..." : "Submit"}
-        </button>
+  const removeImage = (index) => {
+    const newImages = images.filter((_, i) => i !== index);
+    const newPreviews = imagePreviews.filter((_, i) => i !== index);
+    setImages(newImages);
+    setImagePreviews(newPreviews);
+  };
+
+  const resetImages = () => {
+    setImages([]);
+    setImagePreviews([]);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // reset file input
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (images.length !== 2) {
+      return toast.error("Please upload exactly 2 images.");
+    }
+
+    const formData = new FormData();
+    formData.append("userName", gamertag);
+    formData.append("password", password);
+    formData.append("platform", selectedPlatform);
+    if (gameId) formData.append("gameId", gameId);
+    formData.append("email", email);
+
+    images.forEach((image) => {
+      formData.append("images", image);
+    });
+    try {
+      const response = await signup(formData);
+
+      if ("data" in response) {
+        toast.success("User signed up successfully!");
+        navigate("/profile");
+      } else {
+        toast.error(response.error?.data?.message || "Signup failed.");
+      }
+    } catch (error) {
+      toast.error("Unexpected error during signup.");
+      console.error(error);
+    }
+  };
+  return (
+    <div className="signup-mainContainer">
+      <Nav />
+      <div className="signUpForm-Container">
+        <h2 style={{ textAlign: "center"}}>Upload Driver Stats Screenshots
+          <span className="platform-tooltip-wrapper">
+            <FaQuestionCircle className="platform-tooltip-icon" />
+            <div className="platform-tooltip-content" style={{fontSize: "14px"}}>
+              <p>Upload 2 screenshots of your driver stats.</p>
+              <p>First login to the Game</p>
+              <p>Then go to the stats page.</p>
+              <p>Take screenshots of General tab stats.</p>
+              <p>Then Take a sceenshot of Records tab next to the Discovery tab stats</p>
+              <p>Make sure the images are clear and legible.</p>
+              <p>Click on the images to remove them.</p>
+              <p>Click "Submit" when you're ready.</p>
+              <p>Click "Reset" to clear your selections.</p>
+            </div>
+          </span>
+        </h2>
+
+        <div style={{ textAlign: "center"}}>
+        <label
+          htmlFor="image-upload"
+          style={{
+            display: "inline-block",
+            padding: "0px 12px",
+            backgroundColor: "#4CAF50",
+            color: "white",
+            borderRadius: "8px",
+            cursor: "pointer",
+            transition: "background-color 0.3s ease",
+          }}
+          onMouseEnter={(e) => e.target.style.backgroundColor = "#45a049"}
+          onMouseLeave={(e) => e.target.style.backgroundColor = "#4CAF50"}
+        >
+          📁 Choose Images
+        </label>
+        <input
+          id="image-upload"
+          type="file"
+          accept="image/*"
+          multiple
+          style={{ display: "none" }}
+          onChange={handleImageChange}
+          ref={fileInputRef}
+        />
       </div>
+
+
+        {/* Image Preview */}
+        {imagePreviews.length > 0 && (
+          <div className="image-box" style={{ display: "flex", justifyContent: "center", gap: "20px", flexWrap: "wrap", marginBottom: "20px", marginTop: "30px" }}>
+            {imagePreviews.map((preview, idx) => (
+              <div key={idx} style={{ position: "relative" }}>
+                <img
+                  src={preview}
+                  alt={`Upload Preview ${idx + 1}`}
+                  style={{ width: "200px", height: "auto", borderRadius: "8px", boxShadow: "0 0 10px #000" }}
+                />
+                <button
+                  onClick={() => removeImage(idx)}
+                  style={{
+                    position: "absolute",
+                    top: "-10px",
+                    right: "-10px",
+                    backgroundColor: "red",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "50%",
+                    width: "25px",
+                    height: "25px",
+                    cursor: "pointer",
+                  }}
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+        <div style={{ textAlign: "center", marginTop: "20px", display:"flex" }}>
+        <button
+          className="signup-button"
+          onClick={handleSubmit}
+          disabled={images.length < 2 || isLoading}
+        >
+          {isLoading ? "Submitting..." : "Submit"}
+        </button>
+          <button
+            className="signup-button"
+            style={{ marginLeft: "10px" }}
+            onClick={resetImages}
+            disabled={images.length === 0}
+          >
+            Reset
+          </button>
+        </div>
+      </div>
+      <Footer />
     </div>
-    <Footer />
-  </div>
-);
-}
+  );
+};
 
 export default SignupForm;

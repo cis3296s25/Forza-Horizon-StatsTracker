@@ -34,6 +34,11 @@ const userSchema = new mongoose.Schema({
       default: null,
       required: false
      },
+     email: {
+      type: String,
+      required: true,
+      unique: true
+    },
    }
 )
 module.exports = mongoose.model('hub_user', userSchema)

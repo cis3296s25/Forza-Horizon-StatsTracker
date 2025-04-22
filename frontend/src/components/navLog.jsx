@@ -5,7 +5,7 @@ import Logo from '../assets/forzaImgs/forzaLogo.png';
 import Profile from '../assets/forzaImgs/profileLogo.png'; 
 import Leaderboard from '../assets/forzaImgs/leaderboardLogo.png';
 import Compare from '../assets/forzaImgs/compareIcon.png';
-import { useLogoutMutation } from '../redux/apis/user';  // Logout API from Redux toolkit
+import { useLogoutMutation } from '../redux/apis/user';
 import toast from 'react-hot-toast';
 
 const NavBarLog = () => {
@@ -68,7 +68,7 @@ const NavBarLog = () => {
                 </Link>
             </li>
             <li>
-                <button onClick={handleLogout} disabled={isLoading}>
+                <button className="logout-button" onClick={handleLogout} disabled={isLoading}>
                 {isLoading ? 'Logging Out...' : 'LOGOUT'}
                 </button>
             </li>
