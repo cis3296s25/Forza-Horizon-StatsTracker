@@ -8,9 +8,29 @@ const crypto = require("crypto");
 const PasswordReset = require("../models/PasswordReset");
 const { sendResetEmail } = require("../mailer");
 const multer = require("multer");
-const storage = multer.memoryStorage(); // Store in memory
-const upload = multer({ storage });
- 
+const { OpenAI } = require('openai');
+const path = require('path');
+
+// Configure multer for in-memory storage (no local saving)
+const storage = multer.memoryStorage(); // This ensures files are kept in memory only
+const upload = multer({ 
+  storage, 
+  limits: {
+    fileSize: process.env.MAX_FILE_SIZE || 4194304 // 4MB in bytes
+  },
+  fileFilter: (req, file, cb) => {
+    // Accept images only
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+      return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+  }
+});
+
+// Initialize GPT
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
 
 const generateToken = (user) => {
     return jwt.sign(
@@ -20,6 +40,125 @@ const generateToken = (user) => {
     );
 };
 
+// Images are processed in memory \
+async function processStatsImages(files, expectedUserName) {
+  const statResults = [];
+  
+  for (const file of files) {
+    try {
+      console.log(`Processing file: ${file.originalname}`);
+      
+      const base64Image = file.buffer.toString('base64');
+      const fileExtension = path.extname(file.originalname).substring(1);
+      
+      // Call OpenAI's API to analyze the image
+      const response = await openai.chat.completions.create({
+        model: "gpt-4-turbo", // Using GPT-4 Turbo
+        messages: [
+          {
+            role: "system",
+            content: "You are a specialized AI designed to extract Forza Horizon 5 statistics from screenshots. IMPORTANT: The playerName field is critical - make sure to accurately detect and extract the gamertag/username shown in the stats page. Return the data in JSON format with the following structure: { playerName, playerLevel, carsOwned, totalCredits, victories, garageValue, timeDriven, mostValuableCar, favoriteCar, longestSkillChain, distanceDriven, longestJump, topSpeed, biggestAir } Extract only what you can see, use null for missing values. If you cannot confidently identify the player name, set playerName to null."
+          },
+          {
+            role: "user",
+            content: [
+              { type: "text", text: "Extract all Forza Horizon 5 stats from this image. Pay special attention to the player's gamertag/username displayed in the stats page." },
+              {
+                type: "image_url",
+                image_url: {
+                  url: `data:image/${fileExtension};base64,${base64Image}`
+                }
+              }
+            ]
+          }
+        ],
+        max_tokens: 2000
+      });
+      
+      // Parse the response to extract JSON
+      const content = response.choices[0].message.content;
+      let statsData;
+      
+      try {
+        // Try to parse JSON directly from the response
+        statsData = JSON.parse(content);
+      } catch (e) {
+        // If direct parsing fails, try to extract JSON using regex
+        const jsonMatch = content.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          statsData = JSON.parse(jsonMatch[0]);
+        } else {
+          throw new Error('Failed to parse JSON from API response');
+        }
+      }
+      
+      console.log(`Extracted stats from file ${file.originalname}:`, statsData);
+      statResults.push(statsData);
+      
+    } catch (error) {
+      console.error(`Error processing file ${file.originalname}:`, error);
+      throw new Error(`GPT-4 Turbo processing failed: ${error.message}`);
+    }
+  }
+  
+  // Combine stats from multiple images
+  return mergeStats(statResults);
+}
+
+// Helper function to merge stats from multiple images
+function mergeStats(statResults) {
+  if (statResults.length === 0) return {};
+  if (statResults.length === 1) return statResults[0];
+  
+  const combinedStats = {};
+  const statKeys = [
+    'playerName', 
+    'playerLevel', 
+    'carsOwned', 
+    'totalCredits',
+    'victories',
+    'garageValue',
+    'timeDriven',
+    'mostValuableCar',
+    'favoriteCar',
+    'longestSkillChain',
+    'distanceDriven',
+    'longestJump',
+    'topSpeed',
+    'biggestAir'
+  ];
+  
+  for (const key of statKeys) {
+    // Find first non-null value for each stat
+    for (const result of statResults) {
+      if (result[key] !== null && result[key] !== undefined) {
+        combinedStats[key] = result[key];
+        break;
+      }
+    }
+  }
+  
+  return combinedStats;
+}
+
+// Format extracted stats for database storage
+function formatStatsForDatabase(extractedStats) {
+  return {
+    victories: Number(extractedStats.victories || 0),
+    numberofCarsOwned: Number(extractedStats.carsOwned || 0),
+    garageValue: String(extractedStats.garageValue || "0"),
+    timeDriven: String(extractedStats.timeDriven || "0"),
+    mostValuableCar: String(extractedStats.mostValuableCar || "None"),
+    totalWinnningsinCR: Number(extractedStats.totalCredits || 0),
+    favoriteCar: String(extractedStats.favoriteCar || "None"),
+    longestSkillChain: String(extractedStats.longestSkillChain || "0"),
+    distanceDrivenInMiles: String(extractedStats.distanceDriven || 0),
+    longestJump: String(extractedStats.longestJump || 0),
+    topSpeed: String(extractedStats.topSpeed || 0),
+    biggestAir: String(extractedStats.biggestAir || "0")
+  };
+}
+
 // helper function to fetch player data for Steam or Xbox
 const fetchPlayerData = async (platform, gameId) => {
     let level = 0;
@@ -28,7 +167,7 @@ const fetchPlayerData = async (platform, gameId) => {
     try {
         if (platform === "steam" && gameId) {
             // Fetch Steam level
-            const profileUrlLevel = `https://api.steampowered.com/IPlayerService/GetSteamLevel/v1/?key=${process.env.STEAM_API_KEY}&steamid=${gameId}`;
+            const profileUrlLevel = `https://api.steampowered.com/IPlayerService/GetSteamLevel/v1/?key=${process.env.STEAM_API_Key}&steamid=${gameId}`;
             const result_level = await fetch(profileUrlLevel);
             const data_level = await result_level.json();
             if (data_level?.response?.player_level !== undefined) {
@@ -96,9 +235,9 @@ exports.requestReset = async (req, res) => {
       console.error(err);
       res.status(500).json({ message: "Something went wrong." });
     }
-  };
+};
 
-  exports.resetPassword = async (req, res) => {
+exports.resetPassword = async (req, res) => {
     try {
       const { token, password, confirmPassword } = req.body;
       if (password !== confirmPassword) {
@@ -120,7 +259,7 @@ exports.requestReset = async (req, res) => {
       }
   
       let hashedPassword = await bcrypt.hash(password,10);
-    user.password = hashedPassword;
+      user.password = hashedPassword;
       await user.save();
   
       resetRecord.used = true;
@@ -131,47 +270,66 @@ exports.requestReset = async (req, res) => {
       console.error(err);
       res.status(500).json({ message: "Something went wrong." });
     }
-  };
+};
 
-  
-
-/*exports.newUser = async (req, res) => {
-
-    const { userName,email, platform, password, gameId, victories, numberofCarsOwned, garageValue, timeDriven, mostValuableCar,
-        totalWinnningsinCR, favoriteCar, longestSkillChain, distanceDrivenInMiles, longestJump, topSpeed, biggestAir} = req.body;
-
-    let verify = false;
-    console.log(req.body);
-
-    try{
-        const account = await hub_user.findOne({ userName });
-        if (account) {
-            return res.status(400).json({ message: "User already exists" });
+// Modified newUser function for React frontend
+// Designed to work with React forms that upload images
+// Images are only processed in memory and never saved to disk
+exports.newUser = async (req, res) => {
+    try {
+        console.log("Processing signup request...");
+        
+        // Extract basic user info from request body
+        const { userName, email, platform, password, gameId } = req.body;
+        const images = req.files;
+        
+        console.log("Received fields:", { userName, email, platform });
+        console.log("Received files:", images ? images.length : 0);
+        
+        // Check for required fields
+        if (!userName || !platform || !password || !email) {
+            return res.status(400).json({ message: "All fields are required" });
         }
-        const idCheck = await hub_user.findOne({ gameId });
-        if (idCheck && idCheck.gameId != null) {
-            return res.status(400).json({ message: "User already exists" });
-        }        
-
-    if (!userName || !platform || !password) {
-        return res.status(400).json({ message: "All fields are required" });
-    }
-
-    if (!favoriteCar || !mostValuableCar || !longestSkillChain) {
-        return res.status(400).json({message: "Not a valid response"});
-    }
-
-    if (victories < 0  || numberofCarsOwned < 0 || garageValue < 0 || timeDriven < 0 ||  totalWinnningsinCR < 0 
-        || distanceDrivenInMiles < 0 || longestJump < 0 || topSpeed < 0 || biggestAir < 0) {
-        return res.status(400).json({message: "Stats cannot be negative"});
-    }
-
-    if ((platform === "steam" || platform === "xbox") && !gameId) {
-        console.log("error");
-        return res.status(400).json({
-            message: `Platform ID is required for ${platform}. Please provide your Steam/Xbox ID.`,
+        
+        // Check for image uploads
+        if (!images || images.length !== 2) {
+            return res.status(400).json({ message: "Please upload exactly 2 stats screenshots" });
+        }
+        
+        // Check if user already exists
+        const existingUser = await hub_user.findOne({ userName });
+        if (existingUser) {
+            return res.status(400).json({ message: "Username already taken" });
+        }
+        
+        // Log image information (without saving to disk)
+        images.forEach((img, idx) => {
+            console.log(`Image ${idx + 1}: ${img.originalname} (${img.mimetype}) - ${img.buffer.length} bytes`);
         });
-    }
+        
+        // Process images with OpenAI to extract stats
+        console.log("Starting GPT-4 Turbo processing for signup...");
+        const extractedStats = await processStatsImages(images, userName);
+        console.log("GPT-4 Turbo processing completed with stats:", extractedStats);
+        
+        // Verify the extracted player name matches the username
+        if (extractedStats.playerName && 
+            extractedStats.playerName.toLowerCase() !== userName.toLowerCase()) {
+            return res.status(400).json({ 
+                success: false,
+                message: 'The gamertag in your screenshots does not match your chosen username. Please use your actual in-game username.' 
+            });
+        }
+        
+        // Verify platform ID if needed
+        let verify = false;
+        if ((platform === "steam" || platform === "xbox") && !gameId) {
+            return res.status(400).json({
+                message: `Platform ID is required for ${platform}. Please provide your Steam/Xbox ID.`
+            });
+        }
+        
+        // Additional validation for Steam
         if (platform === "steam" && gameId) {
             const url = `https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${process.env.STEAM_API_KEY}&steamid=${gameId}&format=json`;
             const response = await fetch(url);
@@ -181,19 +339,20 @@ exports.requestReset = async (req, res) => {
                 verify = true;
             } else {
                 return res.status(400).json({
-                    message: "Unable to verify the game. Make sure your Steam profile is public.",
+                    message: "Unable to verify the game. Make sure your Steam profile is public."
                 });
             }
         }
-
+        
+        // Additional validation for Xbox
         if (platform === "xbox" && gameId) {
             const url = `https://xbl.io/api/v2/achievements/player/${gameId}/2030093255`;
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
-                    'x-authorization': `${process.env.XBOX_API_KEY}`,*/
-                  // accept: '*/*',
-             /*   },
+                    'x-authorization': `${process.env.XBOX_API_KEY}`,
+                    accept: '*/*',
+                },
             });
 
             if (!response.ok) {
@@ -201,55 +360,194 @@ exports.requestReset = async (req, res) => {
             }
             verify = true;
         }
-        let hashedPassword = await bcrypt.hash(password,10);
-        // Save the new user in the database
-
+        
+        // Hash password
+        let hashedPassword = await bcrypt.hash(password, 10);
+        
+        // Get player data from platform
         const { level, profilePic } = await fetchPlayerData(platform, gameId);
-
-        const newUser = new hub_user({ userName, email,platform, password: hashedPassword, verify, gameId});
-
-        const newUserStats = new user_stats({ userName, victories, numberofCarsOwned, garageValue,timeDriven, mostValuableCar,
-            totalWinnningsinCR, favoriteCar, longestSkillChain, distanceDrivenInMiles, longestJump, topSpeed, biggestAir });
-        const newUserProfile = new user_profile({userName,platform,level,profilePic});
+        
+        // Format stats for DB
+        const formattedStats = formatStatsForDatabase(extractedStats);
+        
+        // Create new user
+        const newUser = new hub_user({ 
+            userName, 
+            email, 
+            platform, 
+            password: hashedPassword, 
+            verify, 
+            gameId 
+        });
+        
+        // Create new user stats
+        const newUserStats = new user_stats({
+            userName,
+            ...formattedStats
+        });
+        
+        // Create user profile with level from extracted stats or platform
+        const newUserProfile = new user_profile({
+            userName,
+            platform,
+            level: extractedStats.playerLevel || level,
+            profilePic
+        });
+        
+        // Save everything to database
         await newUser.save();
         await newUserStats.save();
         await newUserProfile.save();
-
-
-        res.status(201).json({ message: "User created successfully" });
-    } catch (err) {
-        res.status(500).json({ message: 'Server error while creating the user.', error: err.message });
-    }
-};*/
-
-exports.newUser = async (req, res) => {
-    const { userName, platform, password, gameId,email } = req.body;
-    const images = req.files;
-  
-    console.log("Received fields:", req.body);
-    console.log("Received files:", images?.length || 0);
-  
-    if (!userName || !platform || !password || !email) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
-  
-    if (!images || images.length !== 2) {
-      return res.status(400).json({ message: "Two images are required" });
-    }
-  
-    try {
-      // Example: logging image buffer sizes
-      images.forEach((img, idx) => {
-        console.log(`Image ${idx + 1}: ${img.originalname} (${img.mimetype}) - ${img.buffer.length} bytes`);
-      });
-  
-      // Your logic here: create user, save stats, etc. (without image saving)
-      return res.status(201).json({ message: "User created successfully (images received in memory)" });
+        
+        // Generate JWT token
+        const token = generateToken(newUser);
+        
+        // Return success response
+        res.status(201).json({
+            success: true,
+            message: "User created successfully",
+            token,
+            userName: newUser.userName
+        });
+        
     } catch (error) {
-      console.error("Signup error:", error);
-      return res.status(500).json({ message: "Server error", error: error.message });
+        console.error('Error processing signup:', error);
+        res.status(500).json({
+            success: false,
+            message: error.message,
+            error: {
+                name: error.name,
+                stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+            }
+        });
     }
-  };
+};
+
+// Function to handle updating stats with GPT-4 Turbo image processing
+exports.updateUserStats = async (req, res) => {
+    try {
+        console.log("Processing stats update request...");
+        
+        // Extract user info from request body
+        const { userName } = req.body;
+        const images = req.files;
+        
+        console.log("Received fields:", { userName });
+        console.log("Received files:", images ? images.length : 0);
+        
+        // Check for required fields
+        if (!userName) {
+            return res.status(400).json({ message: "Username is required" });
+        }
+        
+        // Check if user exists
+        const existingUser = await hub_user.findOne({ userName });
+        if (!existingUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        
+        // Verify user permissions (only allow users to update their own stats)
+        // Temporarily commented out for debugging
+        // if (req.user && req.user.userName !== userName) {
+        //     return res.status(403).json({ message: "You can only update your own stats" });
+        // }
+        
+        // Check for image uploads
+        if (!images || images.length !== 2) {
+            return res.status(400).json({ message: "Please upload exactly 2 stats screenshots" });
+        }
+        
+        // Log image information (without saving to disk)
+        images.forEach((img, idx) => {
+            console.log(`Image ${idx + 1}: ${img.originalname} (${img.mimetype}) - ${img.buffer.length} bytes`);
+        });
+        
+        // Process images with OpenAI to extract stats
+        console.log("Starting GPT-4 Turbo processing for stats update...");
+        const extractedStats = await processStatsImages(images, userName);
+        console.log("GPT-4 Turbo processing completed with stats:", extractedStats);
+        
+        // Verify the extracted player name matches the username
+        if (extractedStats.playerName && 
+            extractedStats.playerName.toLowerCase() !== userName.toLowerCase()) {
+            return res.status(400).json({ 
+                success: false,
+                message: 'The gamertag in your screenshots does not match your username. Please upload screenshots from your own account.' 
+            });
+        }
+        
+        // Format data for DB
+        const formattedStats = formatStatsForDatabase(extractedStats);
+        console.log("Formatted stats for database:", formattedStats);
+        
+        // Update user stats
+        const updatedStats = await user_stats.findOneAndUpdate(
+            { userName },
+            formattedStats,
+            { new: true, upsert: true }
+        );
+        
+        if (!updatedStats) {
+            console.log("Failed to update stats record");
+        } else {
+            console.log("Updated stats successfully:", updatedStats);
+        }
+        
+        // Update user level if available in extracted stats
+        if (extractedStats.playerLevel) {
+            const updatedProfile = await user_profile.findOneAndUpdate(
+                { userName },
+                { level: extractedStats.playerLevel },
+                { new: true }
+            );
+            
+            if (!updatedProfile) {
+                console.log("Failed to update user profile with new level");
+            } else {
+                console.log("Updated user profile level successfully");
+            }
+        }
+        
+        // Update platform data if applicable
+        if (existingUser.platform && existingUser.gameId) {
+            try {
+                const { level, profilePic } = await fetchPlayerData(existingUser.platform, existingUser.gameId);
+                const updatedProfile = await user_profile.findOneAndUpdate(
+                    { userName },
+                    {
+                        level: extractedStats.playerLevel || level,
+                        profilePic
+                    },
+                    { new: true }
+                );
+                
+                if (!updatedProfile) {
+                    console.log("Failed to update profile with platform data");
+                } else {
+                    console.log("Updated profile with platform data successfully");
+                }
+            } catch (platformError) {
+                console.error("Error updating platform data:", platformError);
+                // Continue execution even if platform data update fails
+            }
+        }
+        
+        // Return success response
+        res.status(200).json({
+            success: true,
+            message: "Stats updated successfully",
+            userName
+        });
+        
+    } catch (error) {
+        console.error('Error updating stats:', error);
+        res.status(500).json({
+            success: false,
+            message: error.message,
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        });
+    }
+};
 
 // Backend Login Handler
 exports.loginUsers = async (req, res) => {

@@ -34,15 +34,15 @@ const statsSchema = new mongoose.Schema({
         required: true
        },
     distanceDrivenInMiles:{
-        type: Number,
+        type: String,
         required: true
        },
     longestJump:{
-        type: Number,
+        type: String,
         required: true
        },
     topSpeed:{
-        type: Number,
+        type: String,
         required: true
        },
     biggestAir:{
