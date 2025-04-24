@@ -17,7 +17,7 @@ Forza Horizon 5 StatHub is a web application designed to allow users to view and
 - **Inputting Stats via Screenshots**: Users will be able to upload screenshots of their stats in the Forza Horizon 5 gmae instead of having to manually input data for each required stats field 
 
 ## Conceptual Design
-- **Backend**: Node.js, express 
+- **Backend**: Node.js, Express.js
 
 - **Frontend**: HTML, CSS, JavaScript
 
