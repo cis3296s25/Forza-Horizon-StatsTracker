@@ -116,9 +116,8 @@ Afterwards, you will need your Steam ID and the steps to find your steam ID are 
 2. Click account details
 3. Now, the Steam ID should be on the top left under your account name
 
-### Manual Sign-Up (For Users Who Do Not Own The Game)
-If you are a user who wants to test the web application, but do not own the Forza Horizon 5 game, you can create an account manually using the Signup page. After inputting your information into the Signup form, use the username you created the account with in place for areas of the web application where it asks for a gamertag. For example, on the home page of the web application it asks to "Enter gamertag" in order to look up your stats, but in this case you will enter the username you created your account with in place of the gamertag. This will allow you to view your manually created stats.  
-
+### Manual Sign-Up 
+For manual sign-up, users are only required to upload screenshots of their Forza Horizon 5 in-game stats that match the gamertag entered in the sign-up form.
 
 
 
