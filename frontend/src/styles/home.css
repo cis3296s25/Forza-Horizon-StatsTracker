@@ -4,6 +4,10 @@
     --forza-yellow: #f9a825;
     --forza-dark: #111111;
     --forza-text: #ffffff;
+    --stroke-width: calc(1em / 8);
+    --font-size: 50px;
+    --font-weight: 700;
+    --letter-spacing: calc(1em / 8);
 }
 
 body {
@@ -27,7 +31,6 @@ body {
 }
 
 .forza-main {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,23 +47,28 @@ body {
     cursor: default;
     background: url('../forzaImgs/forzaHorizon4.jpg') no-repeat center center/cover;
     background-size: cover;
-  
- 
-  
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 .hero-section h1 {
-  font-size: 3rem;
-  font-weight: 900;
   margin-bottom: 1rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  margin-left: -400px;
+  margin-left: -500px;
   margin-top: -200px;
+  background-clip: text;
+  background-image: linear-gradient(to right, #09f1b8, #00a2ff, #ff00d2, #f9a825);
+  color: var(--color-background);
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
+  letter-spacing: var(--letter-spacing);
+  padding: calc(--stroke-width / 2);
+  -webkit-text-stroke-color: transparent;
+  -webkit-text-stroke-width: var(--stroke-width);
+  
 }
 
 .search-bar {
@@ -72,28 +80,50 @@ body {
 }
 
 .search-bar input {
-  flex: 1;
   padding: 0.75rem 1rem;
   font-size: 1rem;
   border: none;
   background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 4px 0 0 4px;
+  border-radius: 50px 0 0 8px;
+  border-top-style:solid;
+  border-top-color: #f57f17;
+  border-bottom-style: solid;
+  border-bottom-color: #f57f17;
+  border-left-style: solid;
+  border-left-color: #f57f17;
 }
 
-.search-bar button {
+.search-bar-button {
   padding: 0.75rem 1.25rem;
-  background-color: var(--forza-yellow);
-  color: var(--forza-dark);
+  margin-left: -5px;  
+  background: linear-gradient(90deg, #f9a825 50%, #f57f17 50%);
+  color: #fff;
+  background-size: 200% 100%;
   font-weight: 700;
   border: none;
   cursor: pointer;
-  border-radius: 0 4px 4px 0;
+  border-radius: 0 8px 50px 0;
   transition: background-color 0.3s;
+  border-top-style:solid;
+  border-top-color: #f57f17;
+  border-bottom-style: solid;
+  border-bottom-color: #f57f17;
+  border-right-style: solid;
+  border-right-color: #f57f17;
+  transition: background-position 0.4s ease-in-out;
 }
 
-.search-bar button:hover {
-  background-color: #f57f17;
+.search-bar-button:hover {
+  background-position: right;
 }
+
+.search-bar input:focus {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 5px #f9a825;
+  box-shadow: 0 0 5px #f9a825;
+  border-style:solid;
+}
+
 
 .no-user-box {
   position: absolute;
@@ -103,7 +133,7 @@ body {
   padding: 0px 30px;
   margin-top: 50px;
   background-color: rgba(36, 36, 36, 0.500);
-  color: rgba(255, 255, 255, 0.679);
+  color: rgb(255, 255, 255);
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(36, 36, 36, 1);
   text-align: center;
@@ -128,7 +158,7 @@ body {
   padding: 0px 30px;
   margin-top: 50px;
   background-color: rgba(36, 36, 36, 0.500);
-  color: rgba(255, 255, 255, 0.795);
+  color: rgb(255, 255, 255);
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(36, 36, 36, 1);
   text-align: center;
@@ -151,7 +181,7 @@ body {
   background-color: rgba(68, 68, 68, 1);
   color: white;
   text-align: center;
-  border-radius: 5px;
+  border-radius: 20px;
   padding: 8px;
 }
 
@@ -161,7 +191,7 @@ body {
   background-color:  rgba(85, 0, 142, 1);
   color: white;
   text-align: center;
-  border-radius: 5px;
+  border-radius: 20px;
   padding: 8px;
   margin: 0;
 }

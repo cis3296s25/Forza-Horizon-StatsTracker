@@ -3,7 +3,7 @@ import "../styles/CompareStats.css";
 import Nav from '../components/nav';
 import Footer from '../components/footer';
 import CompareTable from '../components/Table/comparisonTable';
-import { toast } from "react-hot-toast";
+import  toast  from "react-hot-toast";
 import { useLazyGetCompareStatsQuery } from '../redux/apis/stats';
 import { useGetUsersListQuery } from '../redux/apis/user';
 
@@ -132,7 +132,6 @@ const[triggerCompareStats, {data,error,isLoading}] = useLazyGetCompareStatsQuery
           {isLoading && <p>Loading...</p>}
 
           {playerNames.length > 0 && (
-            <div className="stats-table">
               <CompareTable
                 colNames={['victories', 'garageValue', 'topSpeed']}
                 colNameMap={{
@@ -143,7 +142,6 @@ const[triggerCompareStats, {data,error,isLoading}] = useLazyGetCompareStatsQuery
                 players={playerNames}
                 stats={userStats}
               />
-            </div>
           )}
         </div>
       </div>

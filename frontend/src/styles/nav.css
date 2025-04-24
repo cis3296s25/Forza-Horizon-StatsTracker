@@ -137,6 +137,23 @@
   }
 }
 
+.logout-button {
+  height: 30px;
+  border: none;
+  background: linear-gradient(90deg, #110b00 50%, #ffffff 50%);
+  color: #fff;
+  background-size: 200% 100%;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-position 0.4s ease-in-out;
+}
+
+.logout-button:hover {
+  background-position: right;
+  color: black;
+}
+
 /* Mobile screens (480px and below) */
 @media (max-width: 480px) {
   .navbar {

@@ -40,7 +40,6 @@ const Home = () => {
       const res = await search({ userName: gamertag });
 
       if (res.data) {
-        toast.success(res.data.message || "User found");
         setUserFound(true);
         setNoUserFound(false); // Reset the no user found state
           const platforms = res.data.platform.charAt(0).toUpperCase() + res.data.platform.slice(1).toLowerCase();
@@ -55,8 +54,6 @@ const Home = () => {
         });
         setSuggestions([]); 
       } else if (res.error) {
-        const errorMessage = res.error.data?.message || "User not found";
-        toast.error(errorMessage);
         setUserFound(false);
         setNoUserFound(true);
         setSuggestions([]);
@@ -76,7 +73,7 @@ const Home = () => {
         <main className="forza-main">
           <div className="hero-section">
             <Nav />
-            <h1>FORZA HORIZON 5 STATS</h1>
+            <h1 className='game-text'>FORZA HORIZON 5 STATS</h1>
             <div className="search-bar">
               <input
                 type="text"
@@ -91,12 +88,12 @@ const Home = () => {
                 ))}
               </datalist>
 
-              <button onClick={searchGamertag} disabled={isLoading}>Search</button>
+              <button onClick={searchGamertag} disabled={isLoading} className='search-bar-button'>Search</button>
             </div>
 
            {UserFound && (
             <div className="user-box">
-              <h2>{userStats.userName}</h2>
+              <h3 style={{fontWeight:"bold",fontSize:"30px"}}>{userStats.userName}</h3>
               <div className="platform-level">
                   <p className='boxes'><strong>Platform:</strong>{userStats.platform}</p>
                   {userStats.platform === "Xbox" && (<p className='boxes' style={{fontSize:"20px"}}><strong>Game Score:</strong>{userStats.level}</p>

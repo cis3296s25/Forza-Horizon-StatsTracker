@@ -59,7 +59,7 @@ function ComparisonTable({ players, stats, colNames, colNameMap = {}, pageNum = 
     const currentPage = sortedStats.slice(pageSize * page, pageSize * page + pageSize);
 
     return (
-        <div className="comparisonTable">
+        <div>
             {sortedStats.length > 0 ? (
                 <table cellPadding={0} cellSpacing={0}>
                     <thead>

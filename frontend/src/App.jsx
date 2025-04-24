@@ -4,7 +4,8 @@ import { Toaster } from 'react-hot-toast';
 import LoadingScreen from './pages/loadingScreen';
 import './App.css';
 import RouteProtection from './components/routeProtection';
-
+import FreeTierAlert from './components/alter'; // Import the alert component
+import Loader from './components/loading'; // Import the loading component
 
 // Lazy load the components
 const Home = lazy(() => import('./pages/home'));
@@ -19,7 +20,6 @@ const UpdateStatsPage = lazy(() => import('./pages/updateStats'));
 const LeaderboardPage = lazy(() => import('./pages/leaderboard'));
 const ForgotPassword = lazy(() => import('./pages/forgotPassword'));
 const ResetPassword = lazy(() => import('./pages/resetPassword'));
-
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -37,29 +37,34 @@ function App() {
       {loading ? (
         <LoadingScreen />
       ) : (
-        <Suspense>
+        <Suspense fallback={<Loader />}>
+          <FreeTierAlert />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/signup-stats" element={<SignupForm />} />
-            <Route path="/compare-page" element={<ComparePage />}/>
+            <Route path="/compare-page" element={<ComparePage />} />
             <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route
               path="/user/:username"
-              element={
-           <RouteProtection element={<StatsPage />} />
-            }
+              element={<RouteProtection element={<StatsPage />} />}
             />
-            <Route path="/update-stats-page" element= { <RouteProtection element={<UpdateStatsPage />} />}/>
-            <Route path="/delete" element={<RouteProtection element={<DeletePage />} />}/>
-            <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
+            <Route
+              path="/update-stats-page"
+              element={<RouteProtection element={<UpdateStatsPage />} />}
+            />
+            <Route
+              path="/delete"
+              element={<RouteProtection element={<DeletePage />} />}
+            />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-
+            <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
           </Routes>
         </Suspense>
       )}
+
       <Toaster position="bottom-center" />
     </Router>
   );

@@ -3,20 +3,20 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 // API for Signup (Mutation)
 export const signupAPI = createApi({
   reducerPath: "signupApi",
-  // base URL for the API
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_SERVER}/api/userAccount/`,
   }),
   endpoints: (builder) => ({
     signup: builder.mutation({
-      query: (body) => ({
+      query: (formData) => ({
         url: "newUser",
-        method: "POST",  
-        body,            
+        method: "POST",
+        body: formData,
       }),
     }),
   }),
 });
+
 
 // API for Search (Query)
 

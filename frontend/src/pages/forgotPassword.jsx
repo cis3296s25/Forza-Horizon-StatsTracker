@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import "../styles/profile.css";
+import "../styles/forgotPassword.css";
 import Nav from '../components/nav';
 import Footer from '../components/footer';
 import toast from 'react-hot-toast';
+import emails from '../assets/forzaImgs/email.jpg';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -29,18 +30,22 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="profile-mainContainer">
+    <div className="forget-mainContainer">
       <Nav />
-      <div className="login-container">
+      <div className="forget-container">
+        <h2>Forgot Password</h2>
+        <div className="input-wrapper">
         <input
           type="email"
           placeholder="Enter your account email"
-          className="login-input"
+          className="forgot-input"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <button className="login-button" onClick={handleResetRequest}>
+         <img src={emails} alt="Account Logo" className="account-logo" />
+        </div>
+        <button className="forgot-button" onClick={handleResetRequest}>
           Send Reset Link
         </button>
       </div>
