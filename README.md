@@ -1,18 +1,20 @@
 # Forza Horizon Stats Tracker
 
 ## Overview
-Forza Horizon 5 StatHub is a web application designed to allow users to view and compare their Forza Horizon 5 in-game stats with other players around the Forza Horizon 5 gaming community. Stats will be gathered via users self-reporting their in-game stats into the web application. The stats that will be gathered will include: time played, credits earned, number of victories, etc. Through this website, users will be able to view a community leaderboard where they can analyze the top players’ stats or compare their own stats with another verified user.
+Forza Horizon 5 StatHub is a web application designed to allow users to view and compare their Forza Horizon 5 in-game stats with other players around the Forza Horizon 5 gaming community. Stats will be gathered via users self-reporting their in-game stats. Users will upload screenshots of their Forza Horizon 5 in-game stats in order for the web application to process and verify the validity of the stats. The stats that will be gathered will include: time played, credits earned, number of victories, etc. Through this website, users will be able to view a community leaderboard where they can analyze the top players’ stats or compare their own stats with another verified user.
 
 ![homepage](./homepage.png)
 
 ## Features
 - **Search for Stats**: User can search up their username for their Forza Horizon 5 Stats and it will display a stats table 
 
-- **Compare Stats**: Signed-in user will be able to compare their stats with another user
+- **Compare Stats**: Verified users will be able to compare their stats with other verified users in the community
 
 - **View Leaderboard**: Users will be able to view a leaderboard of verified users to see where they rank amongst other users
 
 - **Update Stats**: Registered users can update their existing stats to reflect their latest in-game progress.
+
+- **Inputting Stats via Screenshots**: Users will be able to upload screenshots of their stats in the Forza Horizon 5 gmae instead of having to manually input data for each required stats field 
 
 ## Conceptual Design
 - **Backend**: Node.js, express 
