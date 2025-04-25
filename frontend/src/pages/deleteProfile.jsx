@@ -1,6 +1,6 @@
 import React from 'react';
 import "../styles/deleteProfile.css";
-import Nav from '../components/nav';
+import NavLog from '../components/navLog';
 import Footer from '../components/footer';
 import { useNavigate, useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -35,7 +35,7 @@ const Delete = () => {
 
   return (
     <div className="deleteProfileContainer">
-      <Nav />
+      <NavLog />
       <div className="deleteProfileContent">
         <h3>Are you sure you want to delete your profile?</h3>
         <button className="deleteButton" onClick={deleteFunction}>Yes</button>
