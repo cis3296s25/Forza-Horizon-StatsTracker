@@ -1,21 +1,23 @@
 # Forza Horizon Stats Tracker
 
 ## Overview
-Forza Horizon 5 StatHub is a web application designed to allow users to view and compare their Forza Horizon 5 in-game stats with other players around the Forza Horizon 5 gaming community. Stats will be gathered via users self-reporting their in-game stats into the web application. The stats that will be gathered will include: time played, credits earned, number of victories, etc. Through this website, users will be able to view a community leaderboard where they can analyze the top players’ stats or compare their own stats with another verified user.
+Forza Horizon 5 StatHub is a web application designed to allow users to view and compare their Forza Horizon 5 in-game stats with other players around the Forza Horizon 5 gaming community. Stats will be gathered via users self-reporting their in-game stats. Users will upload screenshots of their Forza Horizon 5 in-game stats in order for the web application to process and verify the validity of the stats. The stats that will be gathered will include: time played, credits earned, number of victories, etc. Through this website, users will be able to view a community leaderboard where they can analyze the top players’ stats or compare their own stats with another verified user.
 
 ![homepage](./homepage.png)
 
 ## Features
 - **Search for Stats**: User can search up their username for their Forza Horizon 5 Stats and it will display a stats table 
 
-- **Compare Stats**: Signed-in user will be able to compare their stats with another user
+- **Compare Stats**: Verified users will be able to compare their stats with other verified users in the community
 
 - **View Leaderboard**: Users will be able to view a leaderboard of verified users to see where they rank amongst other users
 
 - **Update Stats**: Registered users can update their existing stats to reflect their latest in-game progress.
 
+- **Inputting Stats via Screenshots**: Users will be able to upload screenshots of their stats in the Forza Horizon 5 gmae instead of having to manually input data for each required stats field 
+
 ## Conceptual Design
-- **Backend**: Node.js, express 
+- **Backend**: Node.js, Express.js
 
 - **Frontend**: HTML, CSS, JavaScript
 
@@ -28,25 +30,59 @@ Forza Horizon 5 StatHub is a web application designed to allow users to view and
 
 - **Render**: Will be hosted on render.
 
-## Modifications to Project for Personal Use
+## Modifications to Project for Personal Use (.env file)
 
-### How to get MongoDB URL:
+### Disclaimer for API Keys ### 
 
-1. To get your own MongoDB URL, create a MongoDB account if you don't have one with the following link: https://www.mongodb.com/cloud/atlas/register. 
+- You will need to create your own .env file in the backend folder, and this file will hold all the API keys mentioned below. 
+
+<pre><code class="language-env">MONGO_URI = your_mongodb_uri 
+PORT=3000 
+STEAM_API_KEY = your_steam_api_key 
+XBOX_API_KEY = your_xbox_api_key 
+SERVER = http://localhost:5173/ 
+JWT_SECRET = your_jwt_secret 
+RESET_EMAIL = your_email@example.com 
+RESET_EMAIL_PASSWORD = your_email_password 
+OPENAI_API_KEY = your_openai_key</code></pre>
+
+### Frontend .env file
+1. Create a .env file in the frontend folder
+2. Add VITE_SERVER=http://localhost:3000/ into the file like seen below
+
+<pre><code class="language-env">VITE_SERVER=http://localhost:3000/</code></pre>
+
+
+### How to get MongoDB URI:
+
+1. To get your own MongoDB URI, create a MongoDB account if you don't have one with the following link: https://www.mongodb.com/cloud/atlas/register. 
 2. Then, navigate to this link https://www.freecodecamp.org/news/get-mongodb-url-to-connect-to-a-nodejs-application/ and follow the steps given to acquire your own MongoDB URL. 
-3. Copy the MongoDB URL and paste it into the .env file in the backend folder.
+3. Copy the MongoDB URI and paste it into the .env file in the backend folder in the following manner: "MONGO_URI = your_mongo_uri_here".
 
-### How to get Steam API: 
+### How to get Steam API Key: 
 1. To get your own Steam API key, you will first need to create a Steam account if you do not have one already at https://store.steampowered.com/join. 
 2. Afterwards, you will need to navigate to https://steamcommunity.com/dev/apikey and register for an API key here. 
 3. When prompted for a domain name, you can enter the domain of your web applicaton or you can just input anything for the domain name in order to acquire the API key. 
-4. After pressing the register button, you should see your Steam API key and you can copy and paste that into your .env file located in the backend folder.
+4. After pressing the register button, you should see your Steam API key and you can copy and paste that into your .env file located in the backend folder in the following manner: "STEAM_API_KEY = your_steam_api_key_here". 
 
-### How to get Xbox API:
+### How to get Xbox API Key:
 1. To get your own Xbox API key, you will need to create a Microsoft account if you do not have one already at https://account.microsoft.com/account.
 2. Then, you will need to go to https://xbl.io/ and click "Login with Xbox Live." 
 3. After logging in with your Microsoft account, navigate to the "Personal API keys" section and press "Create+" to get a new Xbox API key. 
-4. Lastly, copy the Xbox API key that you created, and paste it into your .env file located in the backend folder.  
+4. Lastly, copy the Xbox API key that you created, and paste it into your .env file located in the backend folder in the following manner: "XBOX_API_KEY = your_xbox_api_key_here".  
+
+### JWT Token:
+1. In the .env file you can input a random string and this will be used by the backend to generate a JWT token.
+- Example: JWT_SECRET = secretjwtokenhere
+
+### Reset Email & Password for Forget Password Functionality
+1. First, create a brand new Gmail account and this will serve as the email that will send the forget password link to the user's email. 
+2. This email will be the value for "RESET_EMAIL" in the .env file of the backend folder.
+3. Next, you can get the app password using the instructions from this link: https://support.google.com/mail/answer/185833?hl=en
+4. You will input the 16-digit app password that you retrieved and copy and paste it into the value for "RESET_EMAIL_PASSWORD" which is also in the .env file in the backend folder. 
+
+### How to get ChatGPT API Key:
+1. To get a ChatGPT API Key, you can follow the instructions in this link: https://www.merge.dev/blog/chatgpt-api-key
 
 ## Live Website
 Visit the live website: https://forza-horizon-statstracker.onrender.com
@@ -114,6 +150,8 @@ Afterwards, you will need your Steam ID and the steps to find your steam ID are 
 2. Click account details
 3. Now, the Steam ID should be on the top left under your account name
 
+
+
 ### Manual Sign-Up (For Users Who Do Not Own The Game or don't want to give xuid or steam id)
 If you are a user who wants to test the web application, but do not want to give their xbox xuid or steam id then, you can create an account manually using the Signup page. Then you will need to upload a two screenshots of in game stats. The two screenshots needed are records and general tab. For general it dose not have to be all the stats, it can be the first 12 stats, and then you will be able to click submit and your account is created, use the username you created the account with in place for areas of the web application where it asks for a gamertag. For example, on the home page of the web application it asks to "Enter gamertag" in order to look up your stats, but in this case you will enter the username you created your account with in place of the gamertag. This will allow you to view your manually created stats.  
 
@@ -123,13 +161,6 @@ If you are a user who wants to test the web application, but do not want to give
 ## Project Board
 
 Project Board Link: https://github.com/orgs/cis3296s25/projects/65
-
-## Example Accounts for Testing and Comparison
-
-| Gamertag  | Password | Purpose                   |
-|-----------|----------|---------------------------|
-| Tester1   | 1234     | Use for testing as a verified user
-| Natsh     |    | Use this gamertag to compare your stats to
 
 
 
