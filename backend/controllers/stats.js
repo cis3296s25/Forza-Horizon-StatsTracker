@@ -134,7 +134,6 @@ exports.getCompareStats = async (req, res) => {
         res.status(500).json({ message: "Error comparing stats", error: error.message });
     }
 };
-
 exports.updateUserStats = async (req,res)=>{
 const tokUserName = req.user.userName;
 const {userName, updates} = req.body;
