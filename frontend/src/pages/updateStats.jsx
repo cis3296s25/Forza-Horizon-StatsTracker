@@ -64,17 +64,17 @@ function UpdateStatsPage() {
         const formDataToSend = new FormData();
         formDataToSend.append("userName", userName);
     
-        // Append any form fields from the formData state
-        for (const [key, value] of Object.entries(formData)) {
-          formDataToSend.append(key, value);
-        }
     
         images.forEach((image) => {
           formDataToSend.append("images", image); // must match backend key
         });
-    
+        
+        console.log(formDataToSend);
+
         const response = await updateUserStats(formDataToSend).unwrap();
-    
+          
+        console.log(formDataToSend);
+
         if(response) {
           toast.success("Images uploaded successfully!");
           resetImages(); // Reset images after successful upload
