@@ -168,7 +168,7 @@ const fetchPlayerData = async (platform, gameId) => {
     try {
         if (platform === "steam" && gameId) {
             // Fetch Steam level
-            const profileUrlLevel = `https://api.steampowered.com/IPlayerService/GetSteamLevel/v1/?key=${process.env.STEAM_API_Key}&steamid=${gameId}`;
+            const profileUrlLevel = `https://api.steampowered.com/IPlayerService/GetSteamLevel/v1/?key=${process.env.STEAM_API_KEY}&steamid=${gameId}`;
             const result_level = await fetch(profileUrlLevel);
             const data_level = await result_level.json();
             if (data_level?.response?.player_level !== undefined) {
