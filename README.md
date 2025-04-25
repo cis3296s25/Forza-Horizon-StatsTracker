@@ -26,9 +26,6 @@ Forza Horizon 5 StatHub is a web application designed to allow users to view and
 - **Database**: MongoDB  
 
 - **APIs**: Steam API, Xbox API, ChatGPT API
-
-- **Verification**: Microsoft Auth, Auth2.O
-
 - **Design**: Figma
 
 - **Render**: Will be hosted on render.
@@ -88,14 +85,17 @@ OPENAI_API_KEY = your_openai_key</code></pre>
 1. To get a ChatGPT API Key, you can follow the instructions in this link: https://www.merge.dev/blog/chatgpt-api-key
 
 ## Live Website
-Visit the live website: https://forza-horizon-statstracker.onrender.com/
-
+Visit the live website: https://forza-horizon-statstracker.onrender.com
+Back-up website: https://forza-horizon-frontend-statstracker.onrender.com
 
 
 ## Installation & Running Locally 
 Make sure you have to 
 To run the project locally, clone the repository and install dependencies:
 ``` bash 
+## have node installed
+ go to this website and install node and npm: https://nodejs.org/en/download
+
 # Clone the repository 
 
 git clone https://github.com/cis3296s25/Forza-Horizon-StatsTracker
@@ -150,8 +150,11 @@ Afterwards, you will need your Steam ID and the steps to find your steam ID are 
 2. Click account details
 3. Now, the Steam ID should be on the top left under your account name
 
-### Manual Sign-Up 
-For manual sign-up, users are only required to upload screenshots of their Forza Horizon 5 in-game stats that match the gamertag entered in the sign-up form.
+
+
+### Manual Sign-Up (For Users Who Do Not Own The Game or don't want to give xuid or steam id)
+If you are a user who wants to test the web application, but do not want to give their xbox xuid or steam id then, you can create an account manually using the Signup page. Then you will need to upload a two screenshots of in game stats. The two screenshots needed are records and general tab. For general it dose not have to be all the stats, it can be the first 12 stats, and then you will be able to click submit and your account is created, use the username you created the account with in place for areas of the web application where it asks for a gamertag. For example, on the home page of the web application it asks to "Enter gamertag" in order to look up your stats, but in this case you will enter the username you created your account with in place of the gamertag. This will allow you to view your manually created stats.  
+
 
 
 
