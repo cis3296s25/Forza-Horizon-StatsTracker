@@ -1,4 +1,4 @@
-import React, { Profiler, useEffect, useState } from 'react';
+import React, {Profiler, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';  // Import useNavigate for redirection
 import Table from '../components/Table/Table';
 import Nav from '../components/navLog';
@@ -17,8 +17,6 @@ function StatsPage() {
     const [noUserFound, setNoUserFound] = useState(false);
 
     const { data, error, isLoading: statsLoading } = useGetUserStatsQuery(username);
-    console.log("Data from API:", data); // Log the data received from the API
-
     const handleStats = async () => {
         try {
             navigate('/update-stats-page', { state: { userName: userStats.userName } });
@@ -36,20 +34,17 @@ function StatsPage() {
         }
     };
 
-    // Trigger searchGamertag automatically when the username is available
     useEffect(() => {
         if (username) {
-            searchGamertag();  // Call the search function automatically when username is present
+            searchGamertag();
         }
     }, [username]);
 
     // Function to search for a user and update the state
     const searchGamertag = async () => {
         const res = await search({ userName: username });
-
         if (res.data) {
-            console.log(res.data);
-            toast.success(res.data.message || "User found");
+            toast.success(`Weclcome, ${res.data.userName}`);
             setUserFound(true);
             setNoUserFound(false); // Reset the no user found state
             const platforms = res.data.platform.charAt(0).toUpperCase() + res.data.platform.slice(1).toLowerCase();
@@ -57,11 +52,9 @@ function StatsPage() {
                 userName: res.data.userName,
                 platform: platforms,
                 level: res.data.level,
-                profilePic: res.data.profilePic,
+                profilePic: res.data.profilePic // Use default avatar if not provided
             });
         } else if (res.error) {
-            const errorMessage = res.error.data?.message || "User not found";
-            toast.error(errorMessage);
             setUserFound(false);
             setNoUserFound(true);
         }
@@ -105,7 +98,6 @@ function StatsPage() {
                 {/* <h1>Profile</h1> */}
                 {userStats && (
                     <div className="user-box-stats">
-            
                         <img src={userStats.profilePic} alt="Avatar" className="avatar-profile" />
                         <h2>Welcome, {userStats.userName}</h2>
                         <div className="platform-level">
@@ -116,10 +108,9 @@ function StatsPage() {
                   )}
                   {userStats.platform === "Manually" && (<p className='boxes'><strong>Level:</strong>{userStats.level}</p>)}
                         </div>
-                        
                         <div className="action-buttons">
                             <button className="edit-button" onClick={handleStats}>Edit Stats</button>
-                            <button className="edit-button delete" onClick={handleDelete}>Delete Account</button>
+                            <button className="edit-button" onClick={handleDelete}>Delete Account</button>
                         </div>
                     </div>
                 )}
@@ -139,6 +130,7 @@ function StatsPage() {
                 <div className="stats-vertical-container">
                     <h1>Stats</h1>
                     {data && data.stats && (
+                        <div className="stats-box">
                         <Table
                             list={[data?.stats]} // Wrap the stats object in an array if needed
                             colNames={[
@@ -160,6 +152,7 @@ function StatsPage() {
                                 biggestAir: 'Biggest Air',
                             }}
                         />
+                        </div>
                     )}
                 </div>
             </div>

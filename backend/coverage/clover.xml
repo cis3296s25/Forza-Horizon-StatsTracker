@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1744336421153" clover="3.2.0">
-  <project timestamp="1744336421153" name="All files">
-    <metrics statements="259" coveredstatements="134" conditionals="110" coveredconditionals="27" methods="22" coveredmethods="9" elements="391" coveredelements="170" complexity="0" loc="259" ncloc="259" packages="5" files="9" classes="9"/>
+<coverage generated="1744384267155" clover="3.2.0">
+  <project timestamp="1744384267155" name="All files">
+    <metrics statements="262" coveredstatements="135" conditionals="112" coveredconditionals="28" methods="22" coveredmethods="9" elements="396" coveredelements="172" complexity="0" loc="262" ncloc="262" packages="5" files="9" classes="9"/>
     <package name="backend">
       <metrics statements="20" coveredstatements="19" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="2"/>
       <file name="app.js" path="C:\Computer Science\SD\FinalProject\Forza-Horizon-StatsTracker\backend\app.js">
@@ -29,9 +29,9 @@
       </file>
     </package>
     <package name="backend.controllers">
-      <metrics statements="199" coveredstatements="83" conditionals="106" coveredconditionals="27" methods="17" coveredmethods="7"/>
+      <metrics statements="202" coveredstatements="84" conditionals="108" coveredconditionals="28" methods="17" coveredmethods="7"/>
       <file name="stats.js" path="C:\Computer Science\SD\FinalProject\Forza-Horizon-StatsTracker\backend\controllers\stats.js">
-        <metrics statements="62" coveredstatements="8" conditionals="20" coveredconditionals="0" methods="8" coveredmethods="0"/>
+        <metrics statements="63" coveredstatements="8" conditionals="20" coveredconditionals="0" methods="8" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -86,17 +86,18 @@
         <line num="138" count="1" type="stmt"/>
         <line num="139" count="0" type="stmt"/>
         <line num="140" count="0" type="stmt"/>
-        <line num="142" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="143" count="0" type="stmt"/>
-        <line num="146" count="0" type="stmt"/>
-        <line num="147" count="0" type="stmt"/>
-        <line num="154" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="155" count="0" type="stmt"/>
+        <line num="142" count="0" type="stmt"/>
+        <line num="144" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="145" count="0" type="stmt"/>
+        <line num="148" count="0" type="stmt"/>
+        <line num="149" count="0" type="stmt"/>
+        <line num="156" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="157" count="0" type="stmt"/>
-        <line num="160" count="0" type="stmt"/>
+        <line num="159" count="0" type="stmt"/>
+        <line num="162" count="0" type="stmt"/>
       </file>
       <file name="users.js" path="C:\Computer Science\SD\FinalProject\Forza-Horizon-StatsTracker\backend\controllers\users.js">
-        <metrics statements="137" coveredstatements="75" conditionals="86" coveredconditionals="27" methods="9" coveredmethods="7"/>
+        <metrics statements="139" coveredstatements="76" conditionals="88" coveredconditionals="28" methods="9" coveredmethods="7"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -218,22 +219,24 @@
         <line num="260" count="0" type="stmt"/>
         <line num="265" count="6" type="stmt"/>
         <line num="266" count="3" type="stmt"/>
-        <line num="267" count="3" type="stmt"/>
-        <line num="268" count="3" type="stmt"/>
-        <line num="269" count="2" type="stmt"/>
-        <line num="270" count="2" type="stmt"/>
-        <line num="272" count="2" type="cond" truecount="5" falsecount="0"/>
-        <line num="273" count="1" type="stmt"/>
-        <line num="275" count="1" type="stmt"/>
-        <line num="278" count="1" type="stmt"/>
+        <line num="267" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="268" count="0" type="stmt"/>
+        <line num="271" count="3" type="stmt"/>
+        <line num="272" count="3" type="stmt"/>
+        <line num="273" count="2" type="stmt"/>
+        <line num="274" count="2" type="stmt"/>
+        <line num="276" count="2" type="cond" truecount="5" falsecount="0"/>
+        <line num="277" count="1" type="stmt"/>
         <line num="279" count="1" type="stmt"/>
-        <line num="283" count="6" type="stmt"/>
-        <line num="284" count="5" type="cond" truecount="1" falsecount="0"/>
-        <line num="285" count="5" type="stmt"/>
-        <line num="286" count="5" type="stmt"/>
-        <line num="290" count="4" type="stmt"/>
-        <line num="293" count="1" type="stmt"/>
-        <line num="294" count="1" type="stmt"/>
+        <line num="282" count="1" type="stmt"/>
+        <line num="283" count="1" type="stmt"/>
+        <line num="287" count="6" type="stmt"/>
+        <line num="288" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="289" count="5" type="stmt"/>
+        <line num="290" count="5" type="stmt"/>
+        <line num="294" count="4" type="stmt"/>
+        <line num="297" count="1" type="stmt"/>
+        <line num="298" count="1" type="stmt"/>
       </file>
     </package>
     <package name="backend.middlewares">
