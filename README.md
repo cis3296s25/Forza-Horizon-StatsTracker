@@ -159,11 +159,5 @@ For manual sign-up, users are only required to upload screenshots of their Forza
 
 Project Board Link: https://github.com/orgs/cis3296s25/projects/65
 
-## Example Account for Testing 
-
-| Gamertag  | Password | Purpose                   |
-|-----------|----------|---------------------------|
-| Tester1   | 1234     | Use for testing as a verified user
-
 
 
